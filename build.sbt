@@ -9,8 +9,8 @@ scalaVersion := "2.9.1"
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest-finders" % "1.0.1", 
   "org.scalatest" %% "scalatest"         % "2.0.M1", 
-  "org.specs2"    %% "specs2"            % "1.10",
-  "org.specs2"    %% "spec-runner"       % "0.2.0"
+  "org.scalatest" %% "spec-runner"       % "0.2.0",
+  "org.specs2"    %% "specs2"            % "1.10"
 )
 
 resolvers += "Local Maven Repository" at Path.userHome.asURL + "/.m2/repository"
