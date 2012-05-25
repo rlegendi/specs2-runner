@@ -4,8 +4,6 @@ version := "0.1.0"
  
 scalaVersion := "2.9.1"
 
-parallelExecution in Test := false
-
 // If you use groupID %% artifactID % revision rather than groupID % artifactID % revision (the difference is the double %% after the groupID), sbt will add your project's Scala version to the artifact name. 
 // https://github.com/harrah/xsbt/wiki/Getting-Started-Library-Dependencies
 libraryDependencies ++= Seq(
