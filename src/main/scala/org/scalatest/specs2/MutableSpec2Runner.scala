@@ -3,27 +3,20 @@ package org.scalatest.specs2
 import org.scalatest.Distributor
 import org.scalatest.Filter
 import org.scalatest.Reporter
-import org.scalatest.Resources
 import org.scalatest.Stopper
 import org.scalatest.Style
 import org.scalatest.Suite
 import org.scalatest.Tracker
-import org.scalatest.events.InfoProvided
-import org.scalatest.events.NameInfo
-import org.scalatest.specs.ScalaTestNotifierRunner
-import org.specs2.specification.Example
-import scala.collection.mutable.Stack
-import org.specs2.runner.JUnitDescriptionsFragments
+import org.specs2.Specs2Bridge.getContentFor
+import org.specs2.Specs2Bridge.tryToCreateObject
 import org.specs2.main.Arguments
-import org.specs2.Specs2Bridge._
-import org.specs2.specification.SpecificationStructure
-import org.specs2.reporter.DescriptionAndExamples
-import org.specs2.reporter.DefaultSelection
-import org.specs2.reporter.DefaultSequence
-import org.specs2.reporter.Exporters
-import org.scalatest.Resources
-import org.specs2.reporter.DescriptionAndExamples
 import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitDescriptionsFragments
+import org.specs2.specification.Action
+import org.specs2.specification.Example
+import org.specs2.specification.SpecificationStructure
+import org.specs2.specification.Step
+import org.specs2.text.MarkupString
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
@@ -34,14 +27,11 @@ import org.specs2.mutable.Specification
 // TODO Handle mutable specifications
 // TODO Specs2 arguments?
 //class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite with DefaultSelection with DefaultSequence with Exporters {
-@Style("org.scalatest.specs.Spec2Finder")
-//@Style("org.specs2.Spec2Finder")
+@Style("org.scalatest.specs.Spec2Finder") //@Style("org.specs2.Spec2Finder")
 class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite {
 
   //val spec2 = specs2Class.newInstance()
 
-  println("I AM EXECUTED")
-  
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
   override def suiteName = specs2Class.getSimpleName
@@ -51,14 +41,31 @@ class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite {
   private val descriptions = new JUnitDescriptionsFragments(specs2Class.getName)
 
   //implicit lazy val args: Arguments = spec2.content.arguments
-  //implicit lazy val args: Arguments = spec2.content.arguments
+  implicit lazy val args: Arguments = getContentFor(spec2).arguments
 
   //private lazy val DescriptionAndExamples(desc, executions) = descriptions.foldAll((select(args)(specification) |> sequence).fragments)
-  
-  override def expectedTestCount(filter: Filter): Int = getSpecTestCount(spec, filter)//spec.firstLevelExamplesNb
-  
 
-/*
+  override def expectedTestCount(filter: Filter): Int = {
+    //getContentFor(spec2).fragments.count(f => f.isInstanceOf[Example] || f.isInstanceOf[Step] || f.isInstanceOf[Action])
+    getContentFor(spec2).fragments.count { f =>
+      {
+        if (f.isInstanceOf[Example]) {
+          // TODO Ask Eric: Why do I need toString here? I get an error otherwise (overloaded method value apply with alternatives: ...)
+          // I cannot create an implicit because MarkupString is also package-private
+
+          // Usage copied from here: http://www.scalatest.org/scaladoc/1.3/org/scalatest/Filter.html
+          // TODO Ask Chee Seng why he didn't need to check the ignore flag
+          val (filterExample, ignoreTest) = filter(f.asInstanceOf[Example].desc.toString, tags, suiteId)
+
+          !filterExample && !ignoreTest
+        } else {
+          false
+        }
+      }
+    }
+  }
+
+  /*
   private def getSpecTestCount(theSpec: Specification, filter: Filter): Int = {
 
   }
@@ -111,16 +118,16 @@ class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite {
 
   override def expectedTestCount(filter: Filter): Int = getSpecTestCount(spec, filter) //spec.firstLevelExamplesNb
   */
-  
-//  override def expectedTestCount(filter: Filter): Int = {
-//    //spec2.content.
-//    println( spec2.content )
-//    0
-//  }
+
+  //  override def expectedTestCount(filter: Filter): Int = {
+  //    //spec2.content.
+  //    println( spec2.content )
+  //    0
+  //  }
 
   override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
     configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
-    
+
     println("I got you baby")
 
     if (null == testName) throw new IllegalArgumentException("testName == null")
@@ -132,14 +139,14 @@ class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite {
     if (null == tracker) throw new IllegalArgumentException("tracker == null")
 
     val stopRequested = stopper // TODO Can't this be done below at [1]?
-//    val report = wrapReporterIfNecessary(reporter) // TODO Can't this be done below where report() is used?
-//
-//    runSpec(Some(spec2), tracker, reporter, filter)
-//
-//    if (stopRequested()) { // [1]
-//      val rawString = Resources("executeStopping")
-//      report(InfoProvided(tracker.nextOrdinal(), rawString, Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
-//    }
+    //    val report = wrapReporterIfNecessary(reporter) // TODO Can't this be done below where report() is used?
+    //
+    //    runSpec(Some(spec2), tracker, reporter, filter)
+    //
+    //    if (stopRequested()) { // [1]
+    //      val rawString = Resources("executeStopping")
+    //      report(InfoProvided(tracker.nextOrdinal(), rawString, Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
+    //    }
   }
 
   private def runSpec(specification: Option[SpecificationStructure], tracker: Tracker, reporter: Reporter, filter: Filter): Option[Specification] = {
@@ -154,4 +161,8 @@ class MutableSpec2Runner(specs2Class: Class[_ <: Specification]) extends Suite {
     None
   }
 
+}
+
+object MutableSpec2Runner {
+  def apply(specs2Class: Class[_ <: Specification]) = new MutableSpec2Runner(specs2Class)
 }
