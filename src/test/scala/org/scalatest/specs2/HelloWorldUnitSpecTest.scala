@@ -25,10 +25,10 @@ class HelloWorldUnitSpec extends mutable.Specification {
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[MutableSpec2Runner])
+@WrapWith(classOf[Spec2Runner])
 class HelloWorldUnitSpecTest extends mutable.Specification {
 
-  val runner = MutableSpec2Runner(classOf[HelloWorldUnitSpec])
+  val runner = Spec2Runner(classOf[HelloWorldUnitSpec])
 
   "When executing 'HelloWorldUnitSpec' the runner" should {
     "find 3 examples" in {
@@ -36,5 +36,4 @@ class HelloWorldUnitSpecTest extends mutable.Specification {
       runner.expectedTestCount(noFilter) must be_==(3)
     }
   }
-
 }
