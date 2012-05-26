@@ -1,0 +1,47 @@
+This caused me quite a headache and a few hours of debugging.
+
+Reproduction
+------------
+
+- Create a Scala project, bug1
+- Create the following src/a/b/A.scala with the following content:
+
+	package a
+	//package a.b
+	
+	class A {
+	  println("R!")
+	}
+
+  Note that the package declaration is not consistent with the package folder hierarchy.
+
+- Add a breakpoint to the file (e.g., on the println statement)
+- Create a second scala project, bug2
+- Create the following file application:
+
+	object MyApp extends App {
+	  new a.A()
+	  //new a.b.A()
+	}
+
+- Start App in debugging.
+- The debugger won't stop on the breakpoint.
+
+I have traced back the issue until I got a ClassNotFoudException. If you put the proper package declarations
+into the sources (as I commented out), it works perfectly, and the program stops on the breakpoint.
+
+Probably it's the same issue, so it might help hunt it down (I'm not sure though):
+
+- Create a simple Scala Application in the default package:
+
+	package a;
+	object MyApp extends App {
+		println("N!")
+	}
+
+- Try right-click and Run As -> Scala application.
+- The result is an error message: Error: Could not find or load main class MyApp
+
+
+
+Wow, object App extends App is permitted in Scala?!
