@@ -13,4 +13,5 @@ TODO
     val string = "Hey you"
     def e1 = string must have size(7)
   }
+- Testing Spec2Finder could be done with `Spec1FinderSuite`, but probably there will be a better way to do that... hopefully (I'm not sure if I can link AST and Spec2 directly)
 
