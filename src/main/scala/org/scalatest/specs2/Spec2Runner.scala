@@ -32,6 +32,8 @@ import org.specs2.specification.ExecutedResult
 import org.scalatest.events.TestStarting
 import scala.reflect.NameTransformer
 import org.specs2.specification.ExecutedResult
+import org.specs2.specification.ExecutedFragment
+import org.scalatest.events.RunStarting
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
@@ -91,6 +93,8 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     val stopRequested = stopper // TODO Can't this be done below at [1]?
     val report = wrapReporterIfNecessary(reporter) // TODO Can't this be done below where report() is used?
 
+    //report(RunStarting()) //?
+    
     runSpec2(tracker, reporter, filter)
 
     if (stopRequested()) { // [1]
@@ -118,14 +122,15 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     notifyScalaTest(spec2, tracker, reporter)( export( executeSpecifications ) ) // TODO This is kinda... ugly?
   }
 
-  private def executeSpecifications =
-    getContentFor(spec2).fragments map {
-//      case f @ SpecStart(_, _, _) => executor.executeFragment(args)(f)
+  private def executeSpecifications : Seq[ExecutedFragment] =
+    //getContentFor(spec2).fragments foreach ( _ match {
+    getContentFor(spec2).fragments collect {
+      case f @ SpecStart(_, _, _) => executor.executeFragment(args)(f)
       case f @ Example(_, _) => executor.executeFragment(args)(f)
-//      case f @ Text(_) => executor.executeFragment(args)(f)
-//      case f @ Step(_) => executor.executeFragment(args)(f)
-//     case f @ Action(_) => executor.executeFragment(args)(f)
-//      case f @ SpecEnd(_) => executor.executeFragment(args)(f)
+      case f @ Text(_) => executor.executeFragment(args)(f)
+      case f @ Step(_) => executor.executeFragment(args)(f)
+      case f @ Action(_) => executor.executeFragment(args)(f)
+      case f @ SpecEnd(_) => executor.executeFragment(args)(f)
       //case _                     => None // TODO Is this a correct approach?
     }
 
