@@ -92,9 +92,11 @@ object Specs2Bridge {
            * ScopeOpened ---
            * ScopeClosed ---
            */
-
+          
         // TODO Ask Eric: When do the DecoratedResults are used?
-
+          
+          // TODO Indenting?
+          
         result match {
           case f @ Failure(m, e, st, d) =>
             //              notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
@@ -132,7 +134,7 @@ object Specs2Bridge {
         //notifier.fireTestFinished(desc)
         //reporter()
       }
-      case ExecutedSpecStart(_, _, _) => //notifier.fireTestRunStarted(desc)
+      case ExecutedSpecStart(_, _, _) => //notifier.fireTestRunStarted(desc) // TODO: Should we care?
       case ExecutedSpecEnd(_, _, _) => //notifier.fireTestRunFinished(new org.junit.runner.Result)
       case _ => // don't do anything otherwise too many tests will be counted
     }

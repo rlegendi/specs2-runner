@@ -21,3 +21,18 @@ Things to read/watch
 * Esp. High Wizardry in the Land of Scala - sounds a great title :-)
   http://hacking-scala.posterous.com/scalaz-resources-for-beginners
 
+Features I miss
+---------------
+
+- Unimplemented method declaration for Ctrl + Space
+- Companion objects: show apply() signature
+
+
+Scala stuff I found confusing first
+-----------------------------------
+
+- No type definition: Without the IDE, source is unreadable
+- Everything is changing quickly, builds are volatile and shatter quickly
+  (scala, sbt version-pending builds)
+- Mixing 4 build tools (sbt/ivy/mvn/tychoo)
+
