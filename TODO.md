@@ -15,3 +15,9 @@ TODO
   }
 - Testing Spec2Finder could be done with `Spec1FinderSuite`, but probably there will be a better way to do that... hopefully (I'm not sure if I can link AST and Spec2 directly)
 
+Things to read/watch
+--------------------
+
+* Esp. High Wizardry in the Land of Scala - sounds a great title :-)
+  http://hacking-scala.posterous.com/scalaz-resources-for-beginners
+
