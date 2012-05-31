@@ -8,6 +8,7 @@ import org.specs2.specification.SpecificationStructure
  *
  * @author rlegendi
  */
+private[specs2]
 object Utils {
 
   /**
@@ -21,6 +22,7 @@ object Utils {
    * 				<i>cannot be null</i>
    * @return a decorated version of the given <code>spec</code> (if applicable)
    */
+  // TODO Include .title (see UnitSpec example)
   def suiteNameFor(spec: SpecificationStructure): String = {
     if (null == spec) throw new IllegalArgumentException("spec == null")
 

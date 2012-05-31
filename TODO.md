@@ -36,3 +36,9 @@ Scala stuff I found confusing first
   (scala, sbt version-pending builds)
 - Mixing 4 build tools (sbt/ivy/mvn/tychoo)
 
+Incomplete features
+-------------------
+
+- That `"Fold Stack Trace"` buttion on the View: what should it do?
+- Error reporting: e.g., "a" must be_==("b") doesn't write the output on the View
+
