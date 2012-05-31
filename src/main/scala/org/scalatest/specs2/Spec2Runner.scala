@@ -45,12 +45,12 @@ import org.scalatest.events.RunStarting
 // Note: Avoid methods whose name starts with "test", those are handled as tests.
 // TODO Specs2 arguments?
 // TODO with DefaultSelection with DefaultSequence with Exporters?
-@Style("org.scalatest.specs.Spec2Finder") //@Style("org.specs2.Spec2Finder")
+@Style("org.scalatest.specs.Spec2Finder")
 class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite with TSpec2IntegrationExporters {
 
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
-  override def suiteName = specs2Class.getSimpleName
+  override def suiteName = Utils.suiteNameFor(spec2) //specs2Class.getSimpleName
 
   override def suiteId = specs2Class.getName
 
@@ -94,7 +94,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     val report = wrapReporterIfNecessary(reporter) // TODO Can't this be done below where report() is used?
 
     //report(RunStarting()) //?
-    
+
     runSpec2(tracker, reporter, filter)
 
     if (stopRequested()) { // [1]
@@ -111,18 +111,17 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     //      case _ => ()
     //    }
     //    specification
-    
-    
+
     //executeSpecifications |> export |> notifyScalaTest(notifier)
     // TODO In the original code (specs2.JUnitRunner) this worked (it was a Stream), but here it fails with a compilation error:
     //		value |> is not a member of Seq[...]
     //executeSpecifications |> export |> notifyScalaTest()
-    
+
     // TODO Should I pass specification here? isn't that
-    notifyScalaTest(spec2, tracker, reporter)( export( executeSpecifications ) ) // TODO This is kinda... ugly?
+    notifyScalaTest(spec2, tracker, reporter)(export(executeSpecifications)) // TODO This is kinda... ugly?
   }
 
-  private def executeSpecifications : Seq[ExecutedFragment] =
+  private def executeSpecifications: Seq[ExecutedFragment] =
     //getContentFor(spec2).fragments foreach ( _ match {
     getContentFor(spec2).fragments collect {
       case f @ SpecStart(_, _, _) => executor.executeFragment(args)(f)
@@ -145,7 +144,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     exportToOthers(parseArguments(commandLineArgs) <| args, exportTo)(executedSpecification)
     executed
   }
-  
+
 }
 
 /** Used for testing purposes only. */
