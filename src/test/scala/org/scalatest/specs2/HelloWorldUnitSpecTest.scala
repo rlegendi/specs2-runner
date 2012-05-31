@@ -9,7 +9,6 @@ import org.specs2.runner.JUnitRunner
 
 // This is the unit specification under test
 class HelloWorldUnitSpec extends mutable.Specification {
-
   "The 'Hello world' string" should {
     "contain 11 characters" in {
       "Hello world" must have size (11)
@@ -21,7 +20,6 @@ class HelloWorldUnitSpec extends mutable.Specification {
       "Hello world" must endWith("world")
     }
   }
-
 }
 
 @RunWith(classOf[JUnitRunner])

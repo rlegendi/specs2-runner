@@ -32,5 +32,7 @@ class HelloWorldSpecTest extends Specification { def is =
                                                                               end
    lazy val noFilter = new Filter(None, Set.empty[String])
 
-   def threeExamplesFound = Spec2Runner(classOf[HelloWorldSpec]).expectedTestCount(noFilter) must be_==(3)
+   val runner = Spec2Runner(classOf[HelloWorldSpec])
+
+   def threeExamplesFound = runner.expectedTestCount(noFilter) must be_==(3)
 }
