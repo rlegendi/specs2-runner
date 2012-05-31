@@ -50,7 +50,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
-  override def suiteName = Utils.suiteNameFor(spec2) //specs2Class.getSimpleName
+  override def suiteName = Utils.suiteNameFor(spec2)
 
   override def suiteId = specs2Class.getName
 
