@@ -34,6 +34,7 @@ import org.specs2.runner.{ NotifierRunner, JUnitDescriptionsFragments }
 import org.specs2.execute.Details
 import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
 import org.scalatest.events._
+import org.specs2.specification.SpecificationStructure
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
@@ -161,7 +162,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
     // ERIC: using a NotifierReporter might be the best approach for now
     new NotifierReporter {
-      val notifier = new ScalaTestNotifier(tracker, reporter)
+      val notifier = new ScalaTestNotifier(spec2, tracker, reporter)
     }.report(spec2)(args)
   }
   //
