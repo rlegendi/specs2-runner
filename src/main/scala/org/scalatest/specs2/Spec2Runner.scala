@@ -52,7 +52,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
   override def suiteName = Utils.suiteNameFor(spec2)
 
-  override def suiteId = specs2Class.getName
+  override def suiteId = Utils.suiteIdFor(spec2)
 
   protected val executor = new FragmentExecution {} // TODO Why do I need the {}s here?
 

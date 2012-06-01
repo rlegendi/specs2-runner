@@ -29,6 +29,9 @@ import org.scalatest.ScalaTestBridge
 import org.scalatest.events.TestFailed
 import org.specs2.execute.Error
 import org.scalatest.events.TestPending
+import org.scalatest.specs2.Utils
+import org.scalatest.specs2.Utils
+import org.scalatest.specs2.Utils
 
 object Specs2Bridge {
   def tryToCreateObject[T <: AnyRef](className: String, printMessage: Boolean = true, printStackTrace: Boolean = true,
@@ -65,13 +68,20 @@ object Specs2Bridge {
         //notifier.fireTestStarted(desc)
 
         val testName = res.text(spec2.content.arguments).toString
+        val exampleName = testName + " (exampleName)"
+
         val duration = 1000 //System.currentTimeMillis() - exampleStart
         //val formatter = ScalaTestBridge.getIndentedText(exampleName, indentLevel + 1, true)
         val formatter = ScalaTestBridge.getIndentedText(testName, 2, true)
 
-        reporter(TestStarting(tracker.nextOrdinal(), spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-          getDecodedName(spec2.getClass.getSimpleName), testName, testName,
-          getDecodedName(testName), Some(MotionToSuppress), None, Some(spec2.getClass.getName)))
+        res.message // TODO I should use this
+        
+        val name = Utils.suiteNameFor(spec2)
+        val id = Utils.suiteIdFor(spec2)
+
+        reporter(TestStarting(tracker.nextOrdinal(), name, id, Some(id),
+          getDecodedName(name), testName, exampleName,
+          getDecodedName(testName), Some(MotionToSuppress), None, Some(id)))
 
         /* TODO Required ScalaTest notifications:
            * TestStarting ---
@@ -92,44 +102,44 @@ object Specs2Bridge {
            * ScopeOpened ---
            * ScopeClosed ---
            */
-          
+
         // TODO Ask Eric: When do the DecoratedResults are used?
-          
-          // TODO Indenting?
-          
+
+        // TODO Indenting?
+
         result match {
           case f @ Failure(m, e, st, d) =>
             //              notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
             //reporter(TestFailed(tracker.nextOrdinal(), e.getMessage, spec.getClass.getSimpleName, spec.getClass.getName, Some(spec.getClass.getName), getDecodedName(spec.getClass.getSimpleName), testName, exampleName, getDecodedName(testName), Some(e), Some(duration), Some(formatter), None))
-            reporter(TestFailed(tracker.nextOrdinal(), m, spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName + " (exampleName)", getDecodedName(testName),
+            reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(testName),
               Some(f.exception), Some(duration), Some(formatter), None))
 
           case e @ Error(m, st) =>
             //              notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
-            reporter(TestFailed(tracker.nextOrdinal(), m, spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName + " (exampleName)", getDecodedName(spec2.getClass.getSimpleName),
+            reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(name),
               Some(e.exception), Some(duration), Some(formatter), None))
           case DecoratedResult(_, f @ Failure(m, e, st, d)) =>
             //              notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
-            reporter(TestFailed(tracker.nextOrdinal(), m, spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName + " (exampleName)", getDecodedName(spec2.getClass.getSimpleName),
+            reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(name),
               Some(f.exception), Some(duration), Some(formatter), None))
 
           case DecoratedResult(_, e @ Error(m, st)) =>
             //              notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
-            reporter(TestFailed(tracker.nextOrdinal(), m, spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName + " (exampleName)", getDecodedName(spec2.getClass.getSimpleName),
+            reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(name),
               Some(e.exception), Some(duration), Some(formatter), None))
 
           case Pending(_) | Skipped(_, _) =>
             //      notifier.fireTestIgnored(desc)
-            reporter(TestPending(tracker.nextOrdinal(), spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName + " (exampleName)", getDecodedName(testName), None, Some(formatter)))
+            reporter(TestPending(tracker.nextOrdinal(), name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(testName), None, Some(formatter)))
 
           case Success(_, _) | DecoratedResult(_, _) =>
-            reporter(TestSucceeded(tracker.nextOrdinal(), spec2.getClass.getSimpleName, spec2.getClass.getName, Some(spec2.getClass.getName),
-              getDecodedName(spec2.getClass.getSimpleName), testName, testName /*exampleName*/ , getDecodedName(testName), Some(duration), Some(formatter), None))
+            reporter(TestSucceeded(tracker.nextOrdinal(), name, id, Some(id),
+              getDecodedName(name), testName, exampleName, getDecodedName(testName), Some(duration), Some(formatter), None))
         }
         //notifier.fireTestFinished(desc)
         //reporter()
