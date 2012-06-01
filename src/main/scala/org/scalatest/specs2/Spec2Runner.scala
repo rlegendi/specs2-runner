@@ -215,12 +215,10 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     }
 */
 class ScalaTestNotifier(tracker: Tracker, reporter: Reporter) extends Notifier {
-  val title = "title"
-
   def specStart(title: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
   def specEnd(title: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
-  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
-  def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
+  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None))
+  def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None))
   def text(text: String, location: String) = reporter(InfoProvided(tracker.nextOrdinal(), text, None))
   def exampleStarted(name: String, location: String) = reporter(TestStarting(tracker.nextOrdinal(), name, name, None, None, "", "", None))
   def exampleSuccess(name: String, duration: Long) = reporter(TestSucceeded(tracker.nextOrdinal(), name, name, None, None, "", "", None))
