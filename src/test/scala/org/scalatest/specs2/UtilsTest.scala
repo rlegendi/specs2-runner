@@ -40,7 +40,25 @@ class UtilsTest extends Specification {
     }
 
     "append 'specs2 Test'" in {
-      Utils.suiteNameFor(new DummyNonExistentSpecification) must be_==("Dumm yNonExistentSpecification specs2 Test")
+      Utils.suiteNameFor(new DummyNonExistentSpecification) must be_==("DummyNonExistentSpecification specs2 Test")
+    }
+
+    "this is the first major example" >> { ok }
+    "this is minor and should be indented" >> { ok }
+    "this is the second major example" >> { ok }
+  }
+  
+  "a" should {
+    "f" in {
+      "a" in {
+        success
+      }
+    }
+
+    "g" in {
+      "b" in {
+        success
+      }
     }
   }
 }
