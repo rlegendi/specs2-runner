@@ -214,23 +214,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
       //case _                     => None // TODO Is this a correct approach?
     }
 */
-class ScalaTestNotifier(tracker: Tracker, reporter: Reporter) extends Notifier {
-  def specStart(title: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
-  def specEnd(title: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
-  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None))
-  def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None))
-  def text(text: String, location: String) = reporter(InfoProvided(tracker.nextOrdinal(), text, None))
-  def exampleStarted(name: String, location: String) = reporter(TestStarting(tracker.nextOrdinal(), name, name, None, None, "", "", None))
-  def exampleSuccess(name: String, duration: Long) = reporter(TestSucceeded(tracker.nextOrdinal(), name, name, None, None, "", "", None))
-  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None))
-  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None))
-  def exampleSkipped(name: String, message: String, duration: Long) =
-    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
-  def examplePending(name: String, message: String, duration: Long) =
-    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
-}
+
 
 /*
     val executedSpecification = createExecuteSpecification(getContentFor(spec2).specName, executed)
