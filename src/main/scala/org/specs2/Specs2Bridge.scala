@@ -17,6 +17,7 @@ import org.specs2.execute.Failure
 import org.specs2.execute.Success
 import org.scalatest.Tracker
 import org.scalatest.events.TestStarting
+import reporter.Reporter
 import scala.reflect.NameTransformer
 import org.scalatest.events.MotionToSuppress
 import org.specs2.specification.ExecutedSpecStart
@@ -40,7 +41,7 @@ object Specs2Bridge {
     Classes.tryToCreateObject(className, printMessage, printStackTrace, loader)(m)
   }
 
-  def getContentFor(spec: SpecificationStructure): Fragments = spec.content;
+  implicit def getContentFor(spec: SpecificationStructure): Fragments = spec.content;
 
   def createExecuteSpecification(name: SpecName, fs: Seq[ExecutedFragment], args: Arguments = Arguments()): ExecutingSpecification =
     ExecutingSpecification.create(name, fs, args)
@@ -107,6 +108,7 @@ object Specs2Bridge {
            */
 
         // TODO Ask Eric: When do the DecoratedResults are used?
+        // ERIC: this is used to display the html table for a DataTable when reporting to html files
 
         // TODO Indenting?
 
