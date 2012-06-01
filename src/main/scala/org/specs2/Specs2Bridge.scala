@@ -7,7 +7,6 @@ import org.specs2.main.Arguments
 import org.specs2.specification.ExecutingSpecification
 import org.specs2.specification.ExecutingFragment
 import org.specs2.specification.SpecName
-import org.specs2.specification.ExecutedFragment
 import org.specs2.execute.Pending
 import org.specs2.specification.ExecutedResult
 import org.specs2.execute.DecoratedResult
@@ -17,13 +16,11 @@ import org.specs2.execute.Failure
 import org.specs2.execute.Success
 import org.scalatest.Tracker
 import org.scalatest.events.TestStarting
-import reporter.Reporter
+//import reporter.Reporter
 import scala.reflect.NameTransformer
 import org.scalatest.events.MotionToSuppress
 import org.specs2.specification.ExecutedSpecStart
 import org.specs2.specification.ExecutedSpecEnd
-import org.scalatest.events.TestSucceeded
-import org.scalatest.events.TestSucceeded$
 import org.scalatest.events.TestSucceeded
 import org.scalatest.Suite
 import org.scalatest.ScalaTestBridge
@@ -31,8 +28,7 @@ import org.scalatest.events.TestFailed
 import org.specs2.execute.Error
 import org.scalatest.events.TestPending
 import org.scalatest.specs2.Utils
-import org.scalatest.specs2.Utils
-import org.scalatest.specs2.Utils
+import org.specs2.specification.ExecutedFragment
 
 object Specs2Bridge {
   def tryToCreateObject[T <: AnyRef](className: String, printMessage: Boolean = true, printStackTrace: Boolean = true,

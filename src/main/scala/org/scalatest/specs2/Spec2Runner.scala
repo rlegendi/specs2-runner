@@ -30,9 +30,9 @@ import scala.reflect.NameTransformer
 import org.specs2.specification.ExecutedResult
 import org.specs2.specification.ExecutedFragment
 import org.specs2.specification.Fragments._
-import org.specs2.runner.{NotifierRunner, JUnitDescriptionsFragments}
+import org.specs2.runner.{ NotifierRunner, JUnitDescriptionsFragments }
 import org.specs2.execute.Details
-import org.specs2.reporter.{NotifierReporter, Notifier, DefaultSelection}
+import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
 import org.scalatest.events._
 
 /**
@@ -75,30 +75,40 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     //
     // the <| method is used to override arguments. Note that I'm using the spec arguments to override the command line ones
     // so that a local definition of arguments in a specification can override generic arguments on the command line
-    val arguments = Arguments(filter.tagsToInclude.map(tags => "include "+tags.mkString(","))+" "+
-                              filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
+
+    /**
+     * val arguments = Arguments(filter.tagsToInclude.map(tags => "include "+tags.mkString(","))+" "+
+     * filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
+     */
+
+    println(">> ARGS: " + (filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
+      filter.tagsToExclude.mkString("exclude ", ",", "")))
+
+    val arguments = parseArguments(List(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
+      filter.tagsToExclude.mkString("exclude ", ",", ""))) <| args
 
     // There are methods in the Fragments object to filter specific fragments, like isAnExample
-    selection.select(arguments)(specs2.fragments).fragments.collect(isAnExample).size
+    //selection.select(arguments)(spec2.fragments).fragments.collect(isAnExample).size
+    selection.select(arguments)(spec2).fragments.collect(isAnExample).size
 
-//    spec2.fragments.count { f =>
-//      {
-//        if (f.isInstanceOf[Example]) {
-//          // TODO Ask Eric: Why do I need toString here? I get an error otherwise (overloaded method value apply with alternatives: ...)
-//          // ERIC: you get an error because desc is not a String. The error message says that none of the 2 apply methods works with the MarkupString type
-//          // I cannot create an implicit because MarkupString is also package-private
-//          // Should I use some inner class like Descriptor or something?
-//
-//          // Usage copied from here: http://www.scalatest.org/scaladoc/1.3/org/scalatest/Filter.html
-//          // TODO Ask Chee Seng why he didn't need to check the ignore flag
-//          val (filterExample, ignoreTest) = filter(f.asInstanceOf[Example].desc.toString, tags, suiteId)
-//
-//          !filterExample && !ignoreTest
-//        } else {
-//          false
-//        }
-//      }
-//    }
+    //    spec2.fragments.count { f =>
+    //      {
+    //        if (f.isInstanceOf[Example]) {
+    //          // TODO Ask Eric: Why do I need toString here? I get an error otherwise (overloaded method value apply with alternatives: ...)
+    //          // ERIC: you get an error because desc is not a String. The error message says that none of the 2 apply methods works with the MarkupString type
+    //          // I cannot create an implicit because MarkupString is also package-private
+    //          // Should I use some inner class like Descriptor or something?
+    //
+    //          // Usage copied from here: http://www.scalatest.org/scaladoc/1.3/org/scalatest/Filter.html
+    //          // TODO Ask Chee Seng why he didn't need to check the ignore flag
+    //          val (filterExample, ignoreTest) = filter(f.asInstanceOf[Example].desc.toString, tags, suiteId)
+    //
+    //          !filterExample && !ignoreTest
+    //        } else {
+    //          false
+    //        }
+    //      }
+    //    }
   }
 
   override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
@@ -144,37 +154,37 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     //executeSpecifications |> export |> notifyScalaTest()
 
     // TODO Should I pass specification here? isn't that
-//    notifyScalaTest(spec2, tracker, reporter)( export( executeSpecifications ) ) // TODO This is kinda... ugly?
+    //    notifyScalaTest(spec2, tracker, reporter)( export( executeSpecifications ) ) // TODO This is kinda... ugly?
 
     // ERIC: using a NotifierReporter might be the best approach for now
     new NotifierReporter {
-      val notifier = new ScalaTestNotifier(reporter)
+      val notifier = new ScalaTestNotifier(tracker, reporter)
     }.report(spec2)(args)
   }
-//
-//  private def executeSpecifications : Seq[ExecutedFragment] =
-//    spec2.fragments collect {
-//      case f @ SpecStart(_, _, _) => executor.executeFragment(args)(f)
-//      case f @ Example(_, _) => executor.executeFragment(args)(f)
-//      case f @ Text(_) => executor.executeFragment(args)(f)
-//      case f @ Step(_) => executor.executeFragment(args)(f)
-//      case f @ Action(_) => executor.executeFragment(args)(f)
-//      case f @ SpecEnd(_) => executor.executeFragment(args)(f)
-//      //case _                     => None // TODO Is this a correct approach?
-//    }
-//
-//  private def export = (executed: Seq[ExecutedFragment]) => {
-//    //val commandLineArgs = properties.getProperty("commandline").getOrElse("").split("\\s")
-//    val commandLineArgs = "".split("\\s")
-//    //def exportTo = (name: String) => properties.isDefined(name) || commandLineArgs.contains(name)
-//    def exportTo = (name: String) => false;
-//
-//    val executedSpecification = createExecuteSpecification(spec2.specName, executed)
-//    // TODO Ask Eric what's happening here :-)
-//    exportToOthers(parseArguments(commandLineArgs) <| args, exportTo)(executedSpecification)
-//    executed
-//  }
-//
+  //
+  //  private def executeSpecifications : Seq[ExecutedFragment] =
+  //    spec2.fragments collect {
+  //      case f @ SpecStart(_, _, _) => executor.executeFragment(args)(f)
+  //      case f @ Example(_, _) => executor.executeFragment(args)(f)
+  //      case f @ Text(_) => executor.executeFragment(args)(f)
+  //      case f @ Step(_) => executor.executeFragment(args)(f)
+  //      case f @ Action(_) => executor.executeFragment(args)(f)
+  //      case f @ SpecEnd(_) => executor.executeFragment(args)(f)
+  //      //case _                     => None // TODO Is this a correct approach?
+  //    }
+  //
+  //  private def export = (executed: Seq[ExecutedFragment]) => {
+  //    //val commandLineArgs = properties.getProperty("commandline").getOrElse("").split("\\s")
+  //    val commandLineArgs = "".split("\\s")
+  //    //def exportTo = (name: String) => properties.isDefined(name) || commandLineArgs.contains(name)
+  //    def exportTo = (name: String) => false;
+  //
+  //    val executedSpecification = createExecuteSpecification(spec2.specName, executed)
+  //    // TODO Ask Eric what's happening here :-)
+  //    exportToOthers(parseArguments(commandLineArgs) <| args, exportTo)(executedSpecification)
+  //    executed
+  //  }
+  //
 }
 
 /*
@@ -202,23 +212,24 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     }
 */
 class ScalaTestNotifier(tracker: Tracker, reporter: Reporter) extends Notifier {
-  def specStart(title: String, location: String)   = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
-  def specEnd(title: String, location: String)     = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
-  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
-  def contextEnd(text: String, location: String)   = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
-  def text(text: String, location: String)         = reporter(InfoProvided(tracker.nextOrdinal(), text, None))
-  def exampleStarted(name: String, location: String) = reporter(TestStarting(tracker.nextOrdinal(), text, "", "", None))
-  def exampleSuccess(name: String, duration: Long) = reporter(TestSucceeded(tracker.nextOrdinal(), text, "", "", None))
-  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None))
-  def exampleError  (name: String, message: String, location: String, f: Throwable, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None))
-  def exampleSkipped(name: String, message: String, duration: Long) =
-    reporter(TestSkipped(tracker.nextOrdinal(), message, "", "", None))
-  def examplePending(name: String, message: String, duration: Long) =
-    reporter(TestPending(tracker.nextOrdinal(), message, "", "", None))
-}
+  val title = "title"
 
+  def specStart(title: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
+  def specEnd(title: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
+  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), title, title, None, None))
+  def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
+  def text(text: String, location: String) = reporter(InfoProvided(tracker.nextOrdinal(), text, None))
+  def exampleStarted(name: String, location: String) = reporter(TestStarting(tracker.nextOrdinal(), name, name, None, None, "", "", None))
+  def exampleSuccess(name: String, duration: Long) = reporter(TestSucceeded(tracker.nextOrdinal(), name, name, None, None, "", "", None))
+  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long) =
+    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None))
+  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long) =
+    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None))
+  def exampleSkipped(name: String, message: String, duration: Long) =
+    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+  def examplePending(name: String, message: String, duration: Long) =
+    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+}
 
 /*
     val executedSpecification = createExecuteSpecification(getContentFor(spec2).specName, executed)
@@ -228,7 +239,7 @@ class ScalaTestNotifier(tracker: Tracker, reporter: Reporter) extends Notifier {
   }
 */
 
-}
+//}
 
 /** Used for testing purposes only. */
 private[specs2] object Spec2Runner {
