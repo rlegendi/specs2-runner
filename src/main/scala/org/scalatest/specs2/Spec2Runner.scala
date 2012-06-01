@@ -117,13 +117,13 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
     configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
 
-    if (null == testName) throw new IllegalArgumentException("testName == null")
-    if (null == reporter) throw new IllegalArgumentException("reporter ==null")
-    if (null == stopper) throw new IllegalArgumentException("stopper == null")
-    if (null == filter) throw new IllegalArgumentException("filter == null")
-    if (null == configMap) throw new IllegalArgumentException("configMap == null")
-    if (null == distributor) throw new IllegalArgumentException("distributor == null")
-    if (null == tracker) throw new IllegalArgumentException("tracker == null")
+    require(testName != null)
+    require(reporter != null)
+    require(stopper != null)
+    require(filter != null)
+    require(configMap != null)
+    require(distributor != null)
+    require(tracker != null)
 
     // ERIC: I don't really get that part for now
     val stopRequested = stopper // TODO Can't this be done below at [1]?
