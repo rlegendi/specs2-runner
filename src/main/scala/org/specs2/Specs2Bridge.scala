@@ -70,7 +70,10 @@ object Specs2Bridge {
         val testName = res.text(spec2.content.arguments).toString
         val exampleName = testName + " (exampleName)"
 
-        val duration = 1000 //System.currentTimeMillis() - exampleStart
+        //val duration = res.stats.time.toInt //System.currentTimeMillis() - exampleStart
+        // TODO Is this the correct time to use here?
+        val duration = timer.totalMillis
+        
         //val formatter = ScalaTestBridge.getIndentedText(exampleName, indentLevel + 1, true)
         val formatter = ScalaTestBridge.getIndentedText(testName, 2, true)
 
