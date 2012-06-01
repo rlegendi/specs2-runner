@@ -1,0 +1,20 @@
+>> ARGS: None exclude 
+Run starting. Expected test count is: 4
+ScalaTestNotifierUnitSpecTest:
+  ScalaTestNotifierUnitSpecTest
+Suite Starting - The locator function should
+Test Starting - require non-null parameter: 
+Test Succeeded - require non-null parameter: 
+Test Starting - return a proper location for a simple case: 
+Test Succeeded - return a proper location for a simple case: 
+Test Starting - return a proper location for a file with several spaces: 
+Test Succeeded - return a proper location for a file with several spaces: 
+Test Starting - return None for any malformed input: 
+Test Succeeded - return None for any malformed input: 
+Suite Completed - The locator function should
+Suite Completed - ScalaTestNotifierUnitSpecTest
+Run completed in 1 second, 270 milliseconds.
+Total number of tests run: 4
+Suites: completed 3, aborted 0
+Tests: succeeded 4, failed 0, ignored 0, pending 0, canceled 0
+All tests passed.
