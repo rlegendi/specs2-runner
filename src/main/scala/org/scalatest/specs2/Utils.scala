@@ -8,7 +8,6 @@ import org.specs2.specification.SpecificationStructure
  *
  * @author rlegendi
  */
-private[specs2]
 object Utils {
 
   /**
@@ -34,6 +33,13 @@ object Utils {
     else
       // Nothing falls into this category jet, but a default value is always good to have
       return baseName + " specs2 Test"
+  }
+
+  // TODO Should I return Some(...) / None here?
+  def suiteIdFor(spec: SpecificationStructure): String = {
+    if (null == spec) throw new IllegalArgumentException("spec == null")
+
+    spec.getClass.getName
   }
 
 }
