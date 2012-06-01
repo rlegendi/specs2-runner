@@ -50,11 +50,14 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
-  /** ERIC: the specification title is more appropriate than the class name because the user can specify a more readable name for its specification */
+  /**
+   * The specification title is more appropriate than the class name for a <code>suiteName</code>
+   * because the user can specify a more readable name for its specification.
+   */
   override def suiteName = spec2.identification.title // Utils.suiteNameFor(spec2)
 
   /** ERIC: fullName is the full class name of the specification */
-  override def suiteId = spec2.identification.fullName // Utils.suiteIdFor(spec2)
+  override def suiteId = Utils.suiteIdFor(spec2)
 
   // TODO Why do I need the {}s here?
   // ERIC: because I left the FragmentExecution object hidden, there's actually no compelling reason to do that

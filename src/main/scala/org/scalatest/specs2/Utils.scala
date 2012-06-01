@@ -2,6 +2,7 @@ package org.scalatest.specs2
 
 import org.specs2.Specification
 import org.specs2.specification.SpecificationStructure
+import org.specs2.specification.SpecificationStructure
 
 /**
  * A set of minimal utility functions.
@@ -23,7 +24,7 @@ object Utils {
    */
   // TODO Include .title (see UnitSpec example)
   def suiteNameFor(spec: SpecificationStructure): String = {
-    if (null == spec) throw new IllegalArgumentException("spec == null")
+    require(spec != null)
 
     val baseName = spec.getClass.getSimpleName
     if (spec.isInstanceOf[Specification])
@@ -35,11 +36,15 @@ object Utils {
       return baseName + " specs2 Test"
   }
 
-  // TODO Should I return Some(...) / None here?
+  //  // TODO Should I return Some(...) / None here?
+  //  def suiteIdFor(spec: SpecificationStructure): String = {
+  //    if (null == spec) throw new IllegalArgumentException("spec == null")
+  //
+  //    spec.getClass.getName
+  //  }
+
   def suiteIdFor(spec: SpecificationStructure): String = {
-    if (null == spec) throw new IllegalArgumentException("spec == null")
-
-    spec.getClass.getName
+    require(spec != null)
+    spec.identification.fullName
   }
-
 }
