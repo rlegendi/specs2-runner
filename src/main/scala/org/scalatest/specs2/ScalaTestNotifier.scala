@@ -60,7 +60,17 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
   var indentLevel: Int = 0
   private val scopeStack: Stack[String] = Stack()
 
-  def scopeOpened(name: String) {
+  // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
+  def scopeOpened(name: String, location: String) {
+    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
+      suiteName = suiteNameFor(spec),
+      suiteId = suiteIdFor(spec),
+      suiteClassName = Some(spec.getClass.getName),
+      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
+      formatter = Some(MotionToSuppress),
+      location = loc(location),
+      rerunner = Some(spec.getClass.getName)))
+
     indentLevel += 1
     if (scopeStack.isEmpty)
       scopeStack.push("") // Ignore the first scope, which is same as the suiteName
@@ -73,7 +83,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     }
   }
 
-  def scopeClosed(name: String) {
+  def scopeClosed(name: String, location: String): Unit = {
     scopeStack.pop()
     if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName 
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
@@ -81,6 +91,16 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
         None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
     }
     indentLevel -= 1
+
+    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
+      suiteName = suiteNameFor(spec),
+      suiteId = suiteIdFor(spec),
+      suiteClassName = Some(spec.getClass.getName),
+      decodedSuiteName = getDecodedName(spec.getClass.getSimpleName),
+      duration = None, // We would need this here, don't we?
+      formatter = Some(MotionToSuppress),
+      location = loc(location)) // Should I include it here? Save during exampleStarted()?
+      )
   }
 
   def getTestName(testText: String) = {
@@ -110,13 +130,13 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     reporter(SuiteStarting(tracker.nextOrdinal, title, suiteIdFor(spec), Some(spec.getClass.getName), None, Some(formatter), loc(location))) // ToDoLocation :-)
     */
 
-    scopeOpened(title)
+    scopeOpened(title, location)
   }
 
   def specEnd(title: String, location: String) = {
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
-    scopeClosed(title)
+    scopeClosed(title, location)
   }
 
   private def getDecodedName(name: String): Option[String] = {
@@ -124,7 +144,10 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     if (decoded == name) None else Some(decoded)
   }
 
-  def contextStart(text: String, location: String) = reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
+  def contextStart(text: String, location: String) = {
+    scopeOpened(text, location)
+    //reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
+  }
 
   def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
 
