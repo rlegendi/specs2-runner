@@ -10,9 +10,13 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest-finders" % "1.0.1", 
   "org.scalatest" %% "scalatest"         % "2.0.M1", 
   "org.scalatest" %% "spec-runner"       % "0.2.0",
-  "org.specs2"    %% "specs2"            % "1.10", // TODO Update to 1.11-SNAPSHOT to extend Arguments visibility
+  // 1.11 is required because of Arguments visibility has been extended
+  "org.specs2"    %% "specs2"            % "1.11-SNAPSHOT",
   "junit"         %  "junit"             % "4.10" % "test"
 )
 
 resolvers += "Local Maven Repository" at Path.userHome.asURL + "/.m2/repository"
+
+resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+                  "releases"  at "http://oss.sonatype.org/content/repositories/releases")
 
