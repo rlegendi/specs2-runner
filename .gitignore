@@ -1,7 +1,10 @@
+# Java
 *.class
+
+# Logging
 *.log
 
-# sbt specific
+# Sbt
 dist/*
 target/
 lib_managed/
@@ -9,6 +12,13 @@ src_managed/
 project/boot/
 project/plugins/project/
 
-# Scala-IDE specific
+# Scala-IDE
 .scala_dependencies
 .cache
+
+# Eclipse
+## Unfortunately, sbteclipse generates absolute references to the used 
+## dependencies
+.project
+.classpath
+
