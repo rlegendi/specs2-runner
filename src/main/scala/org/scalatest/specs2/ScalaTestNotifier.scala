@@ -28,6 +28,7 @@ import org.scalatest.events.ScopeOpened
 import org.scalatest.events.ScopeClosed
 import org.scalatest.events.MotionToSuppress
 import scala.reflect.NameTransformer
+import org.scalatest.events.TestIgnored
 
 object ScalaTestNotifier {
 
@@ -196,7 +197,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None, None, None, None, loc(location)))
 
   def exampleSkipped(name: String, message: String, duration: Long) =
-    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+    reporter(TestIgnored(tracker.nextOrdinal(), message, "", None, None, "", "", None))
 
   def examplePending(name: String, message: String, duration: Long) =
     reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
