@@ -37,10 +37,13 @@ Then generate the required `.project` and `.classpath` files for Eclipse by the 
 	[info] Done updating.
 	[info] Successfully created Eclipse project files for project(s): specs2-runner
 
-Note that the generated files contain absolute paths, that is the reason why they got ignored in the `.gitighore` file.
+Note that the generated files contain absolute paths, that is the reason why they got ignored in the `.gitignore` file.
 
 License
 -------
 
+This code is open source software licensed under [The MIT License](MIT) (MIT). Feel free to use it accordingly.
+
   [sbteclipse]: https://github.com/typesafehub/sbteclipse
+  [MIT]: http://www.opensource.org/licenses/mit-license.php
 

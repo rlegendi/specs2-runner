@@ -25,7 +25,8 @@ Features I miss
 ---------------
 
 - Unimplemented method declaration for Ctrl + Space
-- Companion objects: show apply() signature
+- Companion objects: show apply() signature parameters
+- Correct Organize Imports
 
 
 Scala stuff I found confusing first
