@@ -42,10 +42,6 @@ object Specs2Bridge {
   def createExecuteSpecification(name: SpecName, fs: Seq[ExecutedFragment], args: Arguments = Arguments()): ExecutingSpecification =
     ExecutingSpecification.create(name, fs, args)
 
-  def parseArguments(arguments: Seq[String]): Arguments = {
-    Arguments(arguments: _*) // TODO Hm, this is kinda smelly here
-  }
-
   // TODO This is exact copy&paste code from ScalaTestNotifier - should it be publicly visible?
   private def getDecodedName(name: String): Option[String] = {
     val decoded = NameTransformer.decode(name)
