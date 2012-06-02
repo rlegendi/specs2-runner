@@ -88,8 +88,11 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     println(">> ARGS: " + (filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
       filter.tagsToExclude.mkString("exclude ", ",", "")))
 
-    val arguments = parseArguments(List(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
-      filter.tagsToExclude.mkString("exclude ", ",", ""))) <| args
+//    val arguments = Arguments(List(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
+//      filter.tagsToExclude.mkString("exclude ", ",", ""))) <| args
+      
+    val arguments = Arguments(filter.tagsToInclude.map(tags => "include "+tags.mkString(","))+" "+
+     filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
 
     // There are methods in the Fragments object to filter specific fragments, like isAnExample
     //selection.select(arguments)(spec2.fragments).fragments.collect(isAnExample).size
