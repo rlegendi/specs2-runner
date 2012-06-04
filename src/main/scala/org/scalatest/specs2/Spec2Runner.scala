@@ -76,9 +76,6 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     // the <| method is used to override arguments. Note that I'm using the spec arguments to override the command line ones
     // so that a local definition of arguments in a specification can override generic arguments on the command line
 
-    println(">> ARGS: " + (filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
-      filter.tagsToExclude.mkString("exclude ", ",", "")))
-
     val arguments = Arguments(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
       filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
 

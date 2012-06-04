@@ -175,7 +175,16 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def text(text: String, location: String): Unit = {
-    reporter(InfoProvided(tracker.nextOrdinal(), text, None, None, None, None, None, loc(location)))
+    val formatter = Suite.getIndentedText(text, indentLevel + 1, true)
+    reporter(InfoProvided(
+      ordinal = tracker.nextOrdinal(),
+      message = text,
+      nameInfo = None, // : Option[NameInfo],
+      aboutAPendingTest = None, // : Option[Boolean] = None,
+      aboutACanceledTest = None, // : Option[Boolean] = None,
+      throwable = None, // : Option[Throwable] = None,
+      formatter = Some(formatter),
+      location = loc(location)))
   }
 
   def exampleStarted(name: String, location: String): Unit = {
