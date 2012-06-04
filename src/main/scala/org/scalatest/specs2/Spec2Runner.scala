@@ -23,7 +23,6 @@ import org.specs2.specification.SpecStart
 import org.specs2.specification.FragmentExecution
 import org.specs2.specification.ExecutedFragment
 import org.specs2.specification.ExecutingSpecification
-import org.specs2.TSpec2IntegrationExporters
 import org.specs2.main.Arguments
 import org.specs2.specification.ExecutedResult
 import scala.reflect.NameTransformer
@@ -47,7 +46,7 @@ import org.specs2.specification.SpecificationStructure
 // TODO Specs2 arguments?
 // TODO with DefaultSelection with DefaultSequence with Exporters?
 @Style("org.scalatest.specs.Spec2Finder")
-class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite with TSpec2IntegrationExporters {
+class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
 
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
@@ -57,7 +56,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
    */
   override def suiteName = spec2.identification.title // Utils.suiteNameFor(spec2)
 
-  /** ERIC: fullName is the full class name of the specification */
+  /** Unique id the full class name of the specification. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
   // TODO Why do I need the {}s here?
