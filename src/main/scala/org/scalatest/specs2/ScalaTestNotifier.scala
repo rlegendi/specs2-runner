@@ -87,14 +87,14 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
   def scopeOpened(name: String, location: String): Unit = {
-    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
-      suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
-      suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
-      formatter = Some(MotionToSuppress),
-      location = loc(location),
-      rerunner = rerunnerFor(spec)))
+//    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
+//      suiteName = suiteNameFor(spec),
+//      suiteId = suiteIdFor(spec),
+//      suiteClassName = suiteClassNameFor(spec),
+//      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
+//      formatter = Some(MotionToSuppress),
+//      location = loc(location),
+//      rerunner = rerunnerFor(spec)))
 
     indentLevel += 1
     if (scopeStack.isEmpty)
