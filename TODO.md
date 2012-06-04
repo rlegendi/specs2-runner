@@ -43,3 +43,7 @@ Incomplete features
 - That `"Fold Stack Trace"` buttion on the View: what should it do?
 - Error reporting: e.g., "a" must be_==("b") doesn't write the output on the View
 
+Specs2 typos
+------------
+Result.scala, line 288: "detailled"
+

@@ -29,6 +29,8 @@ import org.scalatest.events.ScopeClosed
 import org.scalatest.events.MotionToSuppress
 import scala.reflect.NameTransformer
 import org.scalatest.events.TestIgnored
+import org.specs2.execute.FailureDetails
+import org.specs2.main.Arguments
 
 object ScalaTestNotifier {
 
@@ -56,13 +58,13 @@ object ScalaTestNotifier {
 }
 
 // TODO Other params could be val members too...
-class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, val reporter: Reporter) extends Notifier {
+class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
 
   var indentLevel: Int = 0
   private val scopeStack: Stack[String] = Stack()
 
   // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
-  def scopeOpened(name: String, location: String) {
+  def scopeOpened(name: String, location: String): Unit = {
     reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
@@ -104,7 +106,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
       )
   }
 
-  def getTestName(testText: String) = {
+  def getTestName(testText: String): String = {
     if (scopeStack.isEmpty)
       testText
     else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
@@ -113,7 +115,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
 
   // TODO TestStarting?
 
-  def specStart(title: String, location: String) = {
+  def specStart(title: String, location: String): Unit = {
     //indentLevel += 1 // Sure?
     //reporter(SuiteStarting(tracker.nextOrdinal(), title, NameInfo(name, Some(spec.getClass.getName), Some(name), None, None))
     //reporter(SuiteStarting(tracker.nextOrdinal, title, NameInfo(title, Some(spec.getClass.getName), Some(title)),
@@ -134,7 +136,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     scopeOpened(title, location)
   }
 
-  def specEnd(title: String, location: String) = {
+  def specEnd(title: String, location: String): Unit = {
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
     scopeClosed(title, location)
@@ -145,19 +147,21 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
     if (decoded == name) None else Some(decoded)
   }
 
-  def contextStart(text: String, location: String) = {
+  def contextStart(text: String, location: String): Unit = {
     scopeOpened(text, location)
     //reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
   }
 
-  def contextEnd(text: String, location: String) = reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
+  def contextEnd(text: String, location: String): Unit = {
+    reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
+  }
 
-  def text(text: String, location: String) = reporter(InfoProvided(tracker.nextOrdinal(), text, None, None, None, None, None, loc(location)))
+  def text(text: String, location: String): Unit = {
+    reporter(InfoProvided(tracker.nextOrdinal(), text, None, None, None, None, None, loc(location)))
+  }
 
-  def exampleStarted(name: String, location: String) = {
+  def exampleStarted(name: String, location: String): Unit = {
     val testName = getTestName(name)
-    //reporter(TestStarting(tracker.nextOrdinal(), name, name, None, None, "", "", None, None, loc(location)))
-    //reporter(TestStarting(tracker.nextOrdinal(), spec.getClass.getSimpleName, spec.getClass.getName, Some(spec.getClass.getName), getDecodedName(spec.getClass.getSimpleName), testName, exampleName, getDecodedName(testName), Some(MotionToSuppress), None, Some(spec.getClass.getName)))
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
@@ -172,7 +176,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
       rerunner = Some(spec.getClass.getName)))
   }
 
-  def exampleSuccess(name: String, duration: Long) = {
+  def exampleSuccess(name: String, duration: Long): Unit = {
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
     val testName = getTestName(name)
     reporter(TestSucceeded(
@@ -182,7 +186,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
       suiteClassName = Some(spec.getClass.getName),
       decodedSuiteName = getDecodedName(spec.getClass.getSimpleName),
       testName = testName,
-      testText = testName + "(exampleName)",
+      testText = testName + "(testText)", // TODO Check where it is used
       decodedTestName = getDecodedName(testName),
       duration = Some(duration),
       formatter = Some(formatter),
@@ -190,15 +194,55 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val tracker: Tracker, 
       )
   }
 
-  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None, None, None, None, loc(location)))
+  private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
+    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
-  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long) =
-    reporter(TestFailed(tracker.nextOrdinal(), message, "", "", None, None, "", "", None, None, None, None, loc(location)))
+    // Any better way to do this? What if a new Details subclass is introduced?
+    // And its a bit against readability, is there anyway how I can make it a bit cleaner?
+    val reason = details.getOrElse(name + "testText") match {
+      case FailureDetails(expected, actual) if (args.diffs.show(expected, actual)) => {
+        val (expectedDiff, actualDiff) = args.diffs.showDiffs(expected, actual)
+        var ret = "Expected: " + expectedDiff + ", Actual: " + actualDiff
+        if (args.diffs.showFull) {
+          ret += "Expected (full): " + expected
+          ret += "Actual (full):   " + actual
+        }
+        ret
+      }
+      case _ => ""
+    }
 
-  def exampleSkipped(name: String, message: String, duration: Long) =
+    reporter(TestFailed(
+      ordinal = tracker.nextOrdinal(),
+      message = message,
+      suiteName = suiteNameFor(spec),
+      suiteId = suiteIdFor(spec),
+      suiteClassName = Some(spec.getClass.getName),
+      decodedSuiteName = Some(spec.getClass.getSimpleName),
+      testName = name,
+      testText = reason,
+      decodedTestName = Some(name),
+      throwable = Some(f),
+      duration = Some(duration),
+      formatter = Some(formatter),
+      location = loc(location),
+      rerunner = Some(spec.getClass.getName)))
+  }
+
+  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
+    testFailed(name, message, location, f, Some(details), duration)
+  }
+
+  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
+    // TODO Is there any way to report a test error without a suite error?
+    testFailed(name, message, location, f, None, duration)
+  }
+
+  def exampleSkipped(name: String, message: String, duration: Long): Unit = {
     reporter(TestIgnored(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+  }
 
-  def examplePending(name: String, message: String, duration: Long) =
+  def examplePending(name: String, message: String, duration: Long): Unit = {
     reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+  }
 }
