@@ -68,7 +68,7 @@ object ScalaTestNotifier {
     suiteClassNameFor(spec)
   }
 
-  private def getDecodedSuiteNameFor(spec: SpecificationStructure): Option[String] = {
+  private def decodedSuiteNameFor(spec: SpecificationStructure): Option[String] = {
     val name = spec.getClass.getSimpleName
     getDecodedName(name)
   }
@@ -121,7 +121,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       duration = None, // We would need this here, don't we?
       formatter = Some(MotionToSuppress),
       location = loc(location)) // Should I include it here? Save during exampleStarted()?
@@ -184,7 +184,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
       testText = testName + "(exampleName)",
       decodedTestName = getDecodedName(testName),
@@ -202,7 +202,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
       testText = testName + "(testText)", // TODO Check where it is used
       decodedTestName = getDecodedName(testName),
@@ -236,7 +236,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       testName = name,
       testText = reason,
       decodedTestName = Some(name),
@@ -266,7 +266,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       testName = name,
       testText = message,
       decodedTestName = Some(name),
@@ -283,7 +283,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
-      decodedSuiteName = getDecodedSuiteNameFor(spec),
+      decodedSuiteName = decodedSuiteNameFor(spec),
       testName = name,
       testText = message,
       decodedTestName = Some(name),
