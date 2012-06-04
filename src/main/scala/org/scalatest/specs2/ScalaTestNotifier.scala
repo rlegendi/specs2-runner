@@ -101,6 +101,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       scopeStack.push("") // Ignore the first scope, which is same as the suiteName
     else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
       scopeStack.push(scopeStack.head + (if (scopeStack.length > 1) " " else "") + name)
+      //scopeStack.push(name)
     if (scopeStack.length > 1) {
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
       reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
@@ -128,12 +129,12 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       )
   }
 
-  def getTestName(testText: String): String = {
-    if (scopeStack.isEmpty)
-      testText
-    else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
-      scopeStack.head + (if (scopeStack.length > 1) " " else "") + testText
-  }
+  //  def getTestName(testText: String): String = {
+  //    if (scopeStack.isEmpty)
+  //      testText
+  //    else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
+  //      scopeStack.head + (if (scopeStack.length > 1) " " else "") + testText
+  //  }
 
   // TODO TestStarting?
 
@@ -188,7 +189,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleStarted(name: String, location: String): Unit = {
-    val testName = getTestName(name)
+    //val testName = getTestName(name)
+    val testName = name
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
@@ -206,7 +208,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   // Note: we could report the location on the other hand, but it is not accessible here
   def exampleSuccess(name: String, duration: Long): Unit = {
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
-    val testName = getTestName(name)
+    //val testName = getTestName(name)
+    val testName = name
     reporter(TestSucceeded(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
