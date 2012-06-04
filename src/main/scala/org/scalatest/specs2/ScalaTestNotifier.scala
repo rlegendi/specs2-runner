@@ -170,7 +170,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def contextEnd(text: String, location: String): Unit = {
-    reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
+    scopeClosed(text, location);
+    //reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
   }
 
   def text(text: String, location: String): Unit = {
