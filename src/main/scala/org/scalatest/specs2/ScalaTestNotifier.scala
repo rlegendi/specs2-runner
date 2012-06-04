@@ -48,7 +48,7 @@ object ScalaTestNotifier {
 
       val colonIdx = spec2Loc.lastIndexOf(":")
       val file = spec2Loc.substring(classNameEndIdx + 2 /* colon is skipped */ , colonIdx)
-      val line = spec2Loc.substring(colonIdx + 1, spec2Loc.size - 1 /* last ) is dropped */ ).toInt
+      val line = spec2Loc.substring(colonIdx + 1, spec2Loc.size - 1 /* last ')' is dropped */ ).toInt
 
       return Some(LineInFile(line, file))
     } catch {
@@ -176,6 +176,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       rerunner = Some(spec.getClass.getName)))
   }
 
+  // Note: we could report the location on the other hand, but it is not accessible here
   def exampleSuccess(name: String, duration: Long): Unit = {
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
     val testName = getTestName(name)
@@ -190,8 +191,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       decodedTestName = getDecodedName(testName),
       duration = Some(duration),
       formatter = Some(formatter),
-      location = None) // Should I include it here? Save during exampleStarted()?
-      )
+      location = None)) // Should I include it here? Save during exampleStarted()?
   }
 
   private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
@@ -204,7 +204,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
         val (expectedDiff, actualDiff) = args.diffs.showDiffs(expected, actual)
         var ret = "Expected: " + expectedDiff + ", Actual: " + actualDiff
         if (args.diffs.showFull) {
-          ret += "Expected (full): " + expected
+          ret += EoL
+          ret += "Expected (full): " + expected + EoL
           ret += "Actual (full):   " + actual
         }
         ret
@@ -234,15 +235,43 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
-    // TODO Is there any way to report a test error without a suite error?
+    // TODO Is there any way to report a test error without a suite error? Do I even need it?
     testFailed(name, message, location, f, None, duration)
   }
 
+  // Note 1: duration cannot be reported in the standard ways through TestIgnored
+  // Note 2: we could report the location on the other hand, but it is not accessible here
   def exampleSkipped(name: String, message: String, duration: Long): Unit = {
-    reporter(TestIgnored(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+
+    reporter(TestIgnored(
+      ordinal = tracker.nextOrdinal(),
+      suiteName = suiteNameFor(spec),
+      suiteId = suiteIdFor(spec),
+      suiteClassName = Some(spec.getClass.getName),
+      decodedSuiteName = Some(spec.getClass.getSimpleName),
+      testName = name,
+      testText = message,
+      decodedTestName = Some(name),
+      formatter = Some(formatter),
+      location = None)) // See Note 2
   }
 
+  // Note: we could report the location on the other hand, but it is not accessible here
   def examplePending(name: String, message: String, duration: Long): Unit = {
-    reporter(TestPending(tracker.nextOrdinal(), message, "", None, None, "", "", None))
+    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+
+    reporter(TestPending(
+      ordinal = tracker.nextOrdinal(),
+      suiteName = suiteNameFor(spec),
+      suiteId = suiteIdFor(spec),
+      suiteClassName = Some(spec.getClass.getName),
+      decodedSuiteName = Some(spec.getClass.getSimpleName),
+      testName = name,
+      testText = message,
+      decodedTestName = Some(name),
+      duration = Some(duration),
+      formatter = Some(formatter),
+      location = None)) // See Note
   }
 }

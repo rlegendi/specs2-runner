@@ -11,6 +11,8 @@ import org.specs2.specification.SpecificationStructure
  */
 object Utils {
 
+  val EoL = sys.props("line.separator")
+
   /**
    * Creates a nice suite name for the given specs2 specification instance.
    *
