@@ -34,6 +34,9 @@ import org.specs2.main.Arguments
 import org.specs2.specification.SpecificationStructure
 import org.specs2.specification.SpecificationStructure
 import org.scalatest.events.Formatter
+import org.scalatest.events.NameInfo
+import org.scalatest.events.TestNameInfo
+import org.scalatest.events.NameInfo$
 
 object ScalaTestNotifier {
 
@@ -80,14 +83,20 @@ object ScalaTestNotifier {
   }
 }
 
+case class SuiteScope(val suiteName: String)
+
+// Override here?
+case class TestScope(override val suiteName: String, val testName: String) extends SuiteScope(suiteName)
+
 // TODO Other params could be val members too...
 class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
 
   var indentLevel: Int = 0
-  //private val scopeStack: Stack[String] = Stack()
+  private val suiteStack: Stack[SuiteScope] = Stack()
 
   // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
   def scopeOpened(name: String, location: String): Unit = {
+    suiteStack.push(SuiteScope(name))
     //    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
     //      suiteId = suiteIdFor(spec),
@@ -118,12 +127,13 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //    scopeStack.pop()
     //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName
     if (indentLevel > 1) {
-    val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
-    reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
-      None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
-    //    }
+      val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
+      reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
+        None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
+      //    }
     }
     indentLevel -= 1
+    suiteStack.pop
 
     //    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
@@ -144,7 +154,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   //  }
 
   // TODO TestStarting?
-  
+
   // TODO Externalize! (i.e., title == spec.name or something else...)
   var firstSpec = true
 
@@ -170,23 +180,23 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //val formatter = (indentLevel > 0) ? Suite.getIndentedText(title, indentLevel + 1, true)  : MotionToSuppress
 
     //val formatter = if (indentLevel > 0) Suite.getIndentedText(title, indentLevel + 1, true) else MotionToSuppress
-//    val formatter: Formatter = if (firstSpec) {
-//      firstSpec = false
-//	  MotionToSuppress
-//    } else {
-//      Suite.getIndentedText(title, indentLevel + 1, true) 
-//    }
-    
+    //    val formatter: Formatter = if (firstSpec) {
+    //      firstSpec = false
+    //	  MotionToSuppress
+    //    } else {
+    //      Suite.getIndentedText(title, indentLevel + 1, true) 
+    //    }
+
     val formatter = Suite.getIndentedText(title, indentLevel + 1, true)
-    
-//    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
-//      suiteName = suiteNameFor(spec),
-//      suiteId = suiteIdFor(spec),
-//      suiteClassName = suiteClassNameFor(spec),
-//      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
-//      formatter = Some(formatter),
-//      location = loc(location),
-//      rerunner = rerunnerFor(spec)))
+
+    //    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
+    //      suiteName = suiteNameFor(spec),
+    //      suiteId = suiteIdFor(spec),
+    //      suiteClassName = suiteClassNameFor(spec),
+    //      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
+    //      formatter = Some(formatter),
+    //      location = loc(location),
+    //      rerunner = rerunnerFor(spec)))
 
     scopeOpened(title, location)
   }
@@ -197,14 +207,14 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
     scopeClosed(title, location)
 
-//    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
-//      suiteName = suiteNameFor(spec),
-//      suiteId = suiteIdFor(spec),
-//      suiteClassName = suiteClassNameFor(spec),
-//      decodedSuiteName = decodedSuiteNameFor(spec),
-//      duration = None, // We would need this here, don't we?
-//      formatter = Some(MotionToSuppress),
-//      location = loc(location))) // Should I include it here? Save during exampleStarted()?
+    //    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
+    //      suiteName = suiteNameFor(spec),
+    //      suiteId = suiteIdFor(spec),
+    //      suiteClassName = suiteClassNameFor(spec),
+    //      decodedSuiteName = decodedSuiteNameFor(spec),
+    //      duration = None, // We would need this here, don't we?
+    //      formatter = Some(MotionToSuppress),
+    //      location = loc(location))) // Should I include it here? Save during exampleStarted()?
   }
 
   def contextStart(text: String, location: String): Unit = {
@@ -228,12 +238,26 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     reporter(InfoProvided(
       ordinal = tracker.nextOrdinal(),
       message = text,
-      nameInfo = None, // : Option[NameInfo],
+      //nameInfo = None, // : Option[NameInfo],
+      nameInfo = Some(NameInfo(
+        suiteName = suiteStack.head.suiteName,
+        suiteID = suiteIdFor(spec),
+        suiteClassName = suiteClassNameFor(spec),
+        decodedSuiteName = decodedSuiteNameFor(spec),
+        testName = getNameInfo())), // : Option[NameInfo],
       aboutAPendingTest = None, // : Option[Boolean] = None,
       aboutACanceledTest = None, // : Option[Boolean] = None,
       throwable = None, // : Option[Throwable] = None,
       formatter = Some(formatter),
       location = loc(location)))
+  }
+
+  def getNameInfo(): Option[TestNameInfo] = {
+    suiteStack.head match {
+      case s @ TestScope(_, testName) => Some(TestNameInfo(testName, getDecodedName(testName)))
+      case s @ SuiteScope(_) => None
+      case _ => None
+    }
   }
 
   def exampleStarted(name: String, location: String): Unit = {
