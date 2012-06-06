@@ -194,7 +194,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      Suite.getIndentedText(title, indentLevel + 1, true) 
     //    }
 
-    val formatter = Suite.getIndentedText(title, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(title, indentLevel, true)
 
     //    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
@@ -249,7 +249,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> text: " + text + "@" + location)
     }
 
-    val formatter = Suite.getIndentedText(text, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(text, indentLevel, true)
     reporter(InfoProvided(
       ordinal = tracker.nextOrdinal(),
       message = text,
@@ -302,7 +302,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> exampleSuccess: " + name + ", t=" + duration)
     }
 
-    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(name, indentLevel, true)
     //val testName = getTestName(name)
     val testName = name
     reporter(TestSucceeded(
@@ -324,7 +324,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
     }
 
-    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     // Any better way to do this? What if a new Details subclass is introduced?
     // And its a bit against readability, is there anyway how I can make it a bit cleaner?
@@ -381,7 +381,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> exampleSkipped: " + name + ", t=" + message)
     }
 
-    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestIgnored(
       ordinal = tracker.nextOrdinal(),
@@ -402,7 +402,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> examplePending: " + name + ", t=" + message)
     }
 
-    val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
+    val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestPending(
       ordinal = tracker.nextOrdinal(),
