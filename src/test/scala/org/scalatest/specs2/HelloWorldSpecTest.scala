@@ -35,3 +35,15 @@ class HelloWorldSpecTest extends Specification { def is =
 
    def threeExamplesFound = runner.expectedTestCount(noFilter) must be_==(3)
 }
+
+@RunWith(classOf[JUnitRunner])
+@WrapWith(classOf[Spec2Runner])
+class HelloWorldSpecTest2 extends Specification { def is =
+
+  "This is another Specification"    ^
+                                                                   p^
+  "When executing The other specification"                         ^
+    "something cool should happen"                                 ! e^
+                                                                   end
+   def e = success
+}

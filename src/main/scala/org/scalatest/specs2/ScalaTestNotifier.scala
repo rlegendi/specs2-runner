@@ -33,6 +33,7 @@ import org.specs2.execute.FailureDetails
 import org.specs2.main.Arguments
 import org.specs2.specification.SpecificationStructure
 import org.specs2.specification.SpecificationStructure
+import org.scalatest.events.Formatter
 
 object ScalaTestNotifier {
 
@@ -87,50 +88,50 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
   def scopeOpened(name: String, location: String): Unit = {
-//    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
-//      suiteName = suiteNameFor(spec),
-//      suiteId = suiteIdFor(spec),
-//      suiteClassName = suiteClassNameFor(spec),
-//      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
-//      formatter = Some(MotionToSuppress),
-//      location = loc(location),
-//      rerunner = rerunnerFor(spec)))
+    //    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
+    //      suiteName = suiteNameFor(spec),
+    //      suiteId = suiteIdFor(spec),
+    //      suiteClassName = suiteClassNameFor(spec),
+    //      decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
+    //      formatter = Some(MotionToSuppress),
+    //      location = loc(location),
+    //      rerunner = rerunnerFor(spec)))
 
     indentLevel += 1
-//    if (scopeStack.isEmpty)
-//      scopeStack.push("") // Ignore the first scope, which is same as the suiteName
-//    else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
-//      scopeStack.push(scopeStack.head + (if (scopeStack.length > 1) " " else "") + name)
-//      //scopeStack.push(name)
-//    if (scopeStack.length > 1) {
-    if (indentLevel > 1) {
+    //    if (scopeStack.isEmpty)
+    //      scopeStack.push("") // Ignore the first scope, which is same as the suiteName
+    //    else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
+    //      scopeStack.push(scopeStack.head + (if (scopeStack.length > 1) " " else "") + name)
+    //      //scopeStack.push(name)
+    //    if (scopeStack.length > 1) {
+    //if (indentLevel > 1) {
       println("Indent: " + indentLevel)
       println("Reporting: " + name)
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
       reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(formatter)))
-    }
-//    }
+    //}
+    //    }
   }
 
   def scopeClosed(name: String, location: String): Unit = {
-//    scopeStack.pop()
-//    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName 
-      val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
-      reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
-        None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
-//    }
+    //    scopeStack.pop()
+    //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName 
+    val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
+    reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
+      None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
+    //    }
     indentLevel -= 1
 
-//    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
-//      suiteName = suiteNameFor(spec),
-//      suiteId = suiteIdFor(spec),
-//      suiteClassName = suiteClassNameFor(spec),
-//      decodedSuiteName = decodedSuiteNameFor(spec),
-//      duration = None, // We would need this here, don't we?
-//      formatter = Some(MotionToSuppress),
-//      location = loc(location)) // Should I include it here? Save during exampleStarted()?
-//      )
+    //    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
+    //      suiteName = suiteNameFor(spec),
+    //      suiteId = suiteIdFor(spec),
+    //      suiteClassName = suiteClassNameFor(spec),
+    //      decodedSuiteName = decodedSuiteNameFor(spec),
+    //      duration = None, // We would need this here, don't we?
+    //      formatter = Some(MotionToSuppress),
+    //      location = loc(location)) // Should I include it here? Save during exampleStarted()?
+    //      )
   }
 
   //  def getTestName(testText: String): String = {
@@ -141,9 +142,12 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   //  }
 
   // TODO TestStarting?
+  
+  // TODO Externalize! (i.e., title == spec.name or something else...)
+  var firstSpec = true
 
   def specStart(title: String, location: String): Unit = {
-    println(">>> specStart: " + title + "@" + location )
+    println(">>> specStart: " + title + "@" + location)
     //indentLevel += 1 // Sure?
     //reporter(SuiteStarting(tracker.nextOrdinal(), title, NameInfo(name, suiteClassNameFor(spec), Some(name), None, None))
     //reporter(SuiteStarting(tracker.nextOrdinal, title, NameInfo(title, suiteClassNameFor(spec), Some(title)),
@@ -160,26 +164,38 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     val formatter = Suite.getIndentedTextForInfo(title, indentLevel, includeIcon = false, infoIsInsideATest = false) // TODO 
     reporter(SuiteStarting(tracker.nextOrdinal, title, suiteIdFor(spec), suiteClassNameFor(spec), None, Some(formatter), loc(location))) // ToDoLocation :-)
     */
+
+    //val formatter = (indentLevel > 0) ? Suite.getIndentedText(title, indentLevel + 1, true)  : MotionToSuppress
+
+    //val formatter = if (indentLevel > 0) Suite.getIndentedText(title, indentLevel + 1, true) else MotionToSuppress
+//    val formatter: Formatter = if (firstSpec) {
+//      firstSpec = false
+//	  MotionToSuppress
+//    } else {
+//      Suite.getIndentedText(title, indentLevel + 1, true) 
+//    }
+    
+    val formatter = Suite.getIndentedText(title, indentLevel + 1, true)
     
     reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = Some(spec.getClass.getSimpleName), // TODO Check this
-      formatter = Some(MotionToSuppress),
+      formatter = Some(formatter),
       location = loc(location),
       rerunner = rerunnerFor(spec)))
-      
+
     scopeOpened(title, location)
   }
 
   def specEnd(title: String, location: String): Unit = {
-    println(">>> specEnd: " + title + "@" + location )
+    println(">>> specEnd: " + title + "@" + location)
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
     scopeClosed(title, location)
-    
-        reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
+
+    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
       suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
@@ -190,22 +206,22 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def contextStart(text: String, location: String): Unit = {
-    println(">>> contextStart: " + text + "@" + location )
-    
+    println(">>> contextStart: " + text + "@" + location)
+
     scopeOpened(text, location)
     //reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
   }
 
   def contextEnd(text: String, location: String): Unit = {
-    println(">>> contextEnd: " + text + "@" + location )
-    
+    println(">>> contextEnd: " + text + "@" + location)
+
     scopeClosed(text, location);
     //reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
   }
 
   def text(text: String, location: String): Unit = {
-    println(">>> text: " + text + "@" + location )
-    
+    println(">>> text: " + text + "@" + location)
+
     val formatter = Suite.getIndentedText(text, indentLevel + 1, true)
     reporter(InfoProvided(
       ordinal = tracker.nextOrdinal(),
@@ -219,8 +235,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleStarted(name: String, location: String): Unit = {
-    println(">>> exampleStarted: " + name + "@" + location )
-    
+    println(">>> exampleStarted: " + name + "@" + location)
+
     //val testName = getTestName(name)
     val testName = name
     reporter(TestStarting(
@@ -239,8 +255,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // Note: we could report the location on the other hand, but it is not accessible here
   def exampleSuccess(name: String, duration: Long): Unit = {
-    println(">>> exampleSuccess: " + name + ", t=" + duration )
-    
+    println(">>> exampleSuccess: " + name + ", t=" + duration)
+
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
     //val testName = getTestName(name)
     val testName = name
@@ -260,7 +276,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
     println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
-    
+
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
     // Any better way to do this? What if a new Details subclass is introduced?
@@ -297,12 +313,12 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
-    println(">>> exampleFailure: " + name + ", t=" + message )
+    println(">>> exampleFailure: " + name + ", t=" + message)
     testFailed(name, message, location, f, Some(details), duration)
   }
 
   def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
-    println(">>> exampleError: " + name + ", t=" + message )
+    println(">>> exampleError: " + name + ", t=" + message)
     // TODO Is there any way to report a test error without a suite error? Do I even need it?
     testFailed(name, message, location, f, None, duration)
   }
@@ -310,8 +326,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   // Note 1: duration cannot be reported in the standard ways through TestIgnored
   // Note 2: we could report the location on the other hand, but it is not accessible here
   def exampleSkipped(name: String, message: String, duration: Long): Unit = {
-    println(">>> exampleSkipped: " + name + ", t=" + message )
-    
+    println(">>> exampleSkipped: " + name + ", t=" + message)
+
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
     reporter(TestIgnored(
@@ -330,7 +346,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   // Note: we could report the location on the other hand, but it is not accessible here
   def examplePending(name: String, message: String, duration: Long): Unit = {
     println(">>> examplePending: " + name + ", t=" + message)
-    
+
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
     reporter(TestPending(
@@ -346,4 +362,55 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       formatter = Some(formatter),
       location = None)) // See Note
   }
+}
+
+class EmptyNotifier extends Notifier {
+  def specStart(title: String, location: String): Unit = {
+    println(">>> specStart: " + title + "@" + location)
+  }
+
+  def specEnd(title: String, location: String): Unit = {
+    println(">>> specEnd: " + title + "@" + location)
+  }
+
+  def contextStart(text: String, location: String): Unit = {
+    println(">>> contextStart: " + text + "@" + location)
+  }
+
+  def contextEnd(text: String, location: String): Unit = {
+    println(">>> contextEnd: " + text + "@" + location)
+  }
+
+  def text(text: String, location: String): Unit = {
+    println(">>> text: " + text + "@" + location)
+  }
+
+  def exampleStarted(name: String, location: String): Unit = {
+    println(">>> exampleStarted: " + name + "@" + location)
+  }
+
+  def exampleSuccess(name: String, duration: Long): Unit = {
+    println(">>> exampleSuccess: " + name + ", t=" + duration)
+  }
+
+  private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
+    println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
+  }
+
+  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
+    println(">>> exampleFailure: " + name + ", t=" + message)
+  }
+
+  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
+    println(">>> exampleError: " + name + ", t=" + message)
+  }
+
+  def exampleSkipped(name: String, message: String, duration: Long): Unit = {
+    println(">>> exampleSkipped: " + name + ", t=" + message)
+  }
+
+  def examplePending(name: String, message: String, duration: Long): Unit = {
+    println(">>> examplePending: " + name + ", t=" + message)
+  }
+
 }

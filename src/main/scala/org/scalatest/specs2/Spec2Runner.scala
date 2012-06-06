@@ -110,6 +110,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   protected def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
     new NotifierReporter {
       val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
+      //val notifier = new EmptyNotifier
     }.report(spec2)(args)
   }
 }
