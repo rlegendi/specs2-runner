@@ -91,6 +91,7 @@ case class TestScope(override val suiteName: String, val testName: String) exten
 // TODO Other params could be val members too...
 class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
 
+  val debug = false
   var indentLevel: Int = 0
   private val suiteStack: Stack[SuiteScope] = Stack()
 
@@ -106,20 +107,24 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      location = loc(location),
     //      rerunner = rerunnerFor(spec)))
 
-    indentLevel += 1
     //    if (scopeStack.isEmpty)
     //      scopeStack.push("") // Ignore the first scope, which is same as the suiteName
     //    else // the scopeStack.length check is to make sure for the first scope "", there's no need for the space to concat.
     //      scopeStack.push(scopeStack.head + (if (scopeStack.length > 1) " " else "") + name)
     //      //scopeStack.push(name)
     //    if (scopeStack.length > 1) {
-    if (indentLevel > 1) {
-      println("Indent: " + indentLevel)
-      println("Reporting: " + name)
+    if (indentLevel > 0) {
+      if (debug) {
+        println("Indent: " + indentLevel)
+        println("Scope Opened: " + name)
+      }
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
       reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(formatter)))
     }
+    
+    indentLevel += 1
+    
     //    }
   }
 
@@ -159,7 +164,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   var firstSpec = true
 
   def specStart(title: String, location: String): Unit = {
-    println(">>> specStart: " + title + "@" + location)
+    if (debug) {
+      println(">>> specStart: " + title + "@" + location)
+    }
     //indentLevel += 1 // Sure?
     //reporter(SuiteStarting(tracker.nextOrdinal(), title, NameInfo(name, suiteClassNameFor(spec), Some(name), None, None))
     //reporter(SuiteStarting(tracker.nextOrdinal, title, NameInfo(title, suiteClassNameFor(spec), Some(title)),
@@ -202,7 +209,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def specEnd(title: String, location: String): Unit = {
-    println(">>> specEnd: " + title + "@" + location)
+    if (debug) {
+      println(">>> specEnd: " + title + "@" + location)
+    }
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
     scopeClosed(title, location)
@@ -218,21 +227,27 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def contextStart(text: String, location: String): Unit = {
-    println(">>> contextStart: " + text + "@" + location)
+    if (debug) {
+      println(">>> contextStart: " + text + "@" + location)
+    }
 
     scopeOpened(text, location)
     //reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
   }
 
   def contextEnd(text: String, location: String): Unit = {
-    println(">>> contextEnd: " + text + "@" + location)
+    if (debug) {
+      println(">>> contextEnd: " + text + "@" + location)
+    }
 
     scopeClosed(text, location);
     //reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
   }
 
   def text(text: String, location: String): Unit = {
-    println(">>> text: " + text + "@" + location)
+    if (debug) {
+      println(">>> text: " + text + "@" + location)
+    }
 
     val formatter = Suite.getIndentedText(text, indentLevel + 1, true)
     reporter(InfoProvided(
@@ -261,7 +276,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleStarted(name: String, location: String): Unit = {
-    println(">>> exampleStarted: " + name + "@" + location)
+    if (debug) {
+      println(">>> exampleStarted: " + name + "@" + location)
+    }
 
     //val testName = getTestName(name)
     val testName = name
@@ -281,7 +298,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // Note: we could report the location on the other hand, but it is not accessible here
   def exampleSuccess(name: String, duration: Long): Unit = {
-    println(">>> exampleSuccess: " + name + ", t=" + duration)
+    if (debug) {
+      println(">>> exampleSuccess: " + name + ", t=" + duration)
+    }
 
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
     //val testName = getTestName(name)
@@ -301,7 +320,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
-    println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
+    if (debug) {
+      println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
+    }
 
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
@@ -339,12 +360,16 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   }
 
   def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
-    println(">>> exampleFailure: " + name + ", t=" + message)
+    if (debug) {
+      println(">>> exampleFailure: " + name + ", t=" + message)
+    }
     testFailed(name, message, location, f, Some(details), duration)
   }
 
   def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
-    println(">>> exampleError: " + name + ", t=" + message)
+    if (debug) {
+      println(">>> exampleError: " + name + ", t=" + message)
+    }
     // TODO Is there any way to report a test error without a suite error? Do I even need it?
     testFailed(name, message, location, f, None, duration)
   }
@@ -352,7 +377,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   // Note 1: duration cannot be reported in the standard ways through TestIgnored
   // Note 2: we could report the location on the other hand, but it is not accessible here
   def exampleSkipped(name: String, message: String, duration: Long): Unit = {
-    println(">>> exampleSkipped: " + name + ", t=" + message)
+    if (debug) {
+      println(">>> exampleSkipped: " + name + ", t=" + message)
+    }
 
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
@@ -371,7 +398,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // Note: we could report the location on the other hand, but it is not accessible here
   def examplePending(name: String, message: String, duration: Long): Unit = {
-    println(">>> examplePending: " + name + ", t=" + message)
+    if (debug) {
+      println(">>> examplePending: " + name + ", t=" + message)
+    }
 
     val formatter = Suite.getIndentedText(name, indentLevel + 1, true)
 
