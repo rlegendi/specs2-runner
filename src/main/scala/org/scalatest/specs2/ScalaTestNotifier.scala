@@ -249,7 +249,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> text: " + text + "@" + location)
     }
 
-    val formatter = Suite.getIndentedText(text, indentLevel, true)
+    val formatter = Suite.getIndentedText(text, indentLevel, true) // getIndentedTextForInfo with infoIsInsideATest = 1
     reporter(InfoProvided(
       ordinal = tracker.nextOrdinal(),
       message = text,

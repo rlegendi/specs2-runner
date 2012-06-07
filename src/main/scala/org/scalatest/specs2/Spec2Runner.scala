@@ -58,7 +58,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   /** Unique id the full class name of the specification. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
-  protected val executor = new FragmentExecution {}
+  protected val executor = new FragmentExecution{}
 
   // TODO Content is package-private, this is a workaround, consult with Eric
   // ERIC: that's intentional. It is to avoid the namespace of the Specification inheritor to be polluted with something he never uses
@@ -107,7 +107,8 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     }
   }
 
-  protected def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
+  // TODO Use filter?
+  private[specs2] def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
     new NotifierReporter {
       val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
       //val notifier = new EmptyNotifier
