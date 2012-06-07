@@ -119,9 +119,9 @@ class TestSpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends S
 @RunWith(classOf[JUnitRunner])
 @WrapWith(classOf[Spec2Runner])
 class ReportingOutputUnitSpecTest extends Specification {
+  val defaultRunstamp = 1
   "The ScalaTest Specs2 runner" should {
     "report " in {
-      val defaultRunstamp = 1
       val tracker = new Tracker(new Ordinal(defaultRunstamp))
       val reporter = new TestReporter
       val runner = new TestSpec2Runner(classOf[SimpleSpec])

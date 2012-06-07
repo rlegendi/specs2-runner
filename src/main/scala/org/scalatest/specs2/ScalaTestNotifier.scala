@@ -37,6 +37,7 @@ import org.scalatest.events.Formatter
 import org.scalatest.events.NameInfo
 import org.scalatest.events.TestNameInfo
 import org.scalatest.events.NameInfo$
+import scala.reflect.generic.Scopes
 
 object ScalaTestNotifier {
 
@@ -97,7 +98,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
   // TODO Rename: reportSuiteStartingAndScopeOpened() -- or something like that
   def scopeOpened(name: String, location: String): Unit = {
-    suiteStack.push(SuiteScope(name))
+    //suiteStack.push(SuiteScope(name))
     //    reporter(SuiteStarting(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
     //      suiteId = suiteIdFor(spec),
@@ -113,7 +114,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      scopeStack.push(scopeStack.head + (if (scopeStack.length > 1) " " else "") + name)
     //      //scopeStack.push(name)
     //    if (scopeStack.length > 1) {
+    
+    
+	suiteStack.push(SuiteScope(name))    
     if (indentLevel > 0) {
+    //if (!suiteStack.isEmpty) {
       if (debug) {
         println("Indent: " + indentLevel)
         println("Scope Opened: " + name)
@@ -122,8 +127,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(formatter)))
     }
-    
-    indentLevel += 1
+	
+   	indentLevel += 1
     
     //    }
   }
@@ -131,12 +136,18 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   def scopeClosed(name: String, location: String): Unit = {
     //    scopeStack.pop()
     //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName
+    
+    // Closing the outmost scope would terminate the run, interrupting the execution of multiple specs in the same file
+    // But needs to be verified :-)
     if (indentLevel > 1) {
+   	//suiteStack.pop
+    //if (!suiteStack.isEmpty) {
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
       reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
       //    }
     }
+    
     indentLevel -= 1
     suiteStack.pop
 
