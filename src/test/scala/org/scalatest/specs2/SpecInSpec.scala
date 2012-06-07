@@ -12,7 +12,7 @@ import org.scalatest.events.LineInFile
 class SpecInSpecTest extends Specification {
 
   "The outer spec" should {
-    "check some other stuff" in {
+    "check some stuff" in {
       success
     }
   }

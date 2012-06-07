@@ -92,7 +92,7 @@ case class TestScope(override val suiteName: String, val testName: String) exten
 // TODO Other params could be val members too...
 class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
 
-  val debug = false
+  val debug = true
   var indentLevel: Int = 0
   private val suiteStack: Stack[SuiteScope] = Stack()
 
@@ -130,15 +130,20 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     */
 //   	indentLevel += 1
     
-    if (debug) {
+    suiteStack.push(SuiteScope(name))
+    if(1 == suiteStack.size) {
+      return
+    }
+    
+    //if (debug) {
       println("Indent: " + indentLevel)
       println("Scope Opened: " + name)
-    }
+    //}
     val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
     reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
       None, None, Some(formatter)))
       
-    suiteStack.push(SuiteScope(name))    
+    //suiteStack.push(SuiteScope(name))    
     indentLevel += 1
     //    }
   }
@@ -146,6 +151,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
   def scopeClosed(name: String, location: String): Unit = {
     //    scopeStack.pop()
     //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName
+    
+    suiteStack.pop
+    if (0 == suiteStack.size) {
+      return
+    }
     
     // Closing the outmost scope would terminate the run, interrupting the execution of multiple specs in the same file
     // But needs to be verified :-)
@@ -159,7 +169,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //}
     
     indentLevel -= 1
-    suiteStack.pop
+    //suiteStack.pop
 
     //    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
@@ -226,9 +236,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      location = loc(location),
     //      rerunner = rerunnerFor(spec)))
 
-    if (0 == indentLevel) {
-      return
-    }
+//    if (0 == indentLevel) {
+//      return
+//    }
     
     scopeOpened(title, location)
   }
@@ -240,9 +250,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
     
-    if (0 == indentLevel ) {
-      return
-    }
+//    if (0 == indentLevel ) {
+//      return
+//    }
     
     scopeClosed(title, location)
     
