@@ -35,18 +35,11 @@ import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
 import org.scalatest.events._
 import org.specs2.specification.SpecificationStructure
 
-/**
- * The central concept in ScalaTest is the suite, a collection of zero to many tests.
- *
- * This is a Suite that can handle both mutable and immutable specs2 specifications
- *
- * @author rlegendi
- */
-// Note: Avoid methods whose name starts with "test", those are handled as tests.
-@Style("org.scalatest.specs.Spec2Finder")
-class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
+abstract class TSpecRunner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
   require(specs2Class != null)
 
+  def buildNotifier() : Notifier
+  
   protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
 
   /**
@@ -109,10 +102,25 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
   protected def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
     new NotifierReporter {
-      val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
       //val notifier = new EmptyNotifier
+      
+      val notifier = buildNotifier()
     }.report(spec2)(args)
   }
+
+}
+
+/**
+ * The central concept in ScalaTest is the suite, a collection of zero to many tests.
+ *
+ * This is a Suite that can handle both mutable and immutable specs2 specifications
+ *
+ * @author rlegendi
+ */
+// Note: Avoid methods whose name starts with "test", those are handled as tests.
+@Style("org.scalatest.specs.Spec2Finder")
+class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends TSpecRunner(specs2Class) {
+ val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
 }
 
 /** Used for testing purposes only. */
