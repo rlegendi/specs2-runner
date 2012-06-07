@@ -20,7 +20,7 @@ class FirsOfTwoSpecInSameFile extends Specification { def is =
 @WrapWith(classOf[Spec2Runner])
 class SecondOfTwoSpecInSameFile extends Specification { def is =
 
-  "This is the first of two specs"                         ^
+  "This is the second of two specs"                         ^
     "and it should also do something cool"                 ! e^
                                                            end
    def e = success

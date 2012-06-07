@@ -115,7 +115,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      //scopeStack.push(name)
     //    if (scopeStack.length > 1) {
     
-    
+    /*
 	suiteStack.push(SuiteScope(name))    
     if (indentLevel > 0) {
     //if (!suiteStack.isEmpty) {
@@ -127,9 +127,19 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(formatter)))
     }
-	
-   	indentLevel += 1
+    */
+//   	indentLevel += 1
     
+    if (debug) {
+      println("Indent: " + indentLevel)
+      println("Scope Opened: " + name)
+    }
+    val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
+    reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
+      None, None, Some(formatter)))
+      
+    suiteStack.push(SuiteScope(name))    
+    indentLevel += 1
     //    }
   }
 
@@ -139,14 +149,14 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     
     // Closing the outmost scope would terminate the run, interrupting the execution of multiple specs in the same file
     // But needs to be verified :-)
-    if (indentLevel > 1) {
+    //if (indentLevel > 1) {
    	//suiteStack.pop
     //if (!suiteStack.isEmpty) {
       val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
       reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
         None, None, Some(MotionToSuppress))) // TODO MotionToSuppress
       //    }
-    }
+    //}
     
     indentLevel -= 1
     suiteStack.pop
@@ -216,6 +226,10 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //      location = loc(location),
     //      rerunner = rerunnerFor(spec)))
 
+    if (0 == indentLevel) {
+      return
+    }
+    
     scopeOpened(title, location)
   }
 
@@ -225,8 +239,13 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     }
     // indent -= 1 // TODO Decrease
     //reporter(SuiteCompleted(tracker.nextOrdinal(), title, title, None, None))
+    
+    if (0 == indentLevel ) {
+      return
+    }
+    
     scopeClosed(title, location)
-
+    
     //    reporter(SuiteCompleted(ordinal = tracker.nextOrdinal(),
     //      suiteName = suiteNameFor(spec),
     //      suiteId = suiteIdFor(spec),
@@ -243,6 +262,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     }
 
     scopeOpened(text, location)
+    //indentLevel += 1
     //reporter(SuiteStarting(tracker.nextOrdinal(), text, text, None, None, None, loc(location)))
   }
 
@@ -252,6 +272,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     }
 
     scopeClosed(text, location);
+   	//indentLevel -= 1
     //reporter(SuiteCompleted(tracker.nextOrdinal(), text, text, None, None, None, None, loc(location)))
   }
 
