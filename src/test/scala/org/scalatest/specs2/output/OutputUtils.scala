@@ -1,53 +1,33 @@
-package org.scalatest.specs2
+package org.scalatest.specs2.output
 
-import org.scalatest.WrapWith
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
-import org.specs2.mutable.Specification
-import org.scalatest.Tracker
-import org.scalatest.events.Ordinal
-import org.scalatest.events.Event
-import org.scalatest.Reporter
-import org.scalatest.events.TestStarting
 import org.scalatest.events.RunCompleted
 import org.scalatest.events.InfoProvided
 import org.scalatest.events.ScopeOpened
 import org.scalatest.events.TestSucceeded
 import org.scalatest.events.RunAborted
+import org.scalatest.events.TestStarting
 import org.scalatest.events.SuiteStarting
 import org.scalatest.events.TestIgnored
 import org.scalatest.events.TestPending
+import org.scalatest.events.IndentedText
 import org.scalatest.events.SuiteAborted
 import org.scalatest.events.TestFailed
 import org.scalatest.events.SuiteCompleted
 import org.scalatest.events.RunStopped
 import org.scalatest.events.TestCanceled
-import org.scalatest.events.ScopeClosed
-import org.scalatest.events.RunStarting
-import org.scalatest.events.MarkupProvided
-import org.specs2.specification.SpecificationStructure
-import org.scalatest.Suite
-import org.scalatest.Style
-import org.specs2.main.Arguments
-import org.specs2.reporter.Notifier
-import org.scalatest.Stopper
 import org.scalatest.Distributor
-import org.scalatest.Filter
-import org.scalatest.events.TestSucceeded
-import scala.collection.mutable.Stack
-import org.scalatest.events.IndentedText
-import org.scalatest.events.IndentedText
-import org.scalatest.events.NameInfo
+import org.scalatest.events.ScopeClosed
+import org.scalatest.specs2.Spec2Runner
 import org.specs2.specification.SpecificationStructure
-
-// Test subject
-class SimpleSpec extends Specification {
-  "The ScalaTest API" should {
-    "have the Runner.doRunRunRunDaDoRunRun() because it's funny" in {
-      success
-    }
-  }
-}
+import org.scalatest.events.RunStarting
+import org.scalatest.Stopper
+import org.scalatest.events.MarkupProvided
+import org.scalatest.events.Event
+import scala.collection.mutable.Stack
+import org.scalatest.Reporter
+import org.scalatest.Filter
+import org.scalatest.Tracker
+import org.scalatest.events.Ordinal
 
 // TODO Title?
 // TODO Other things from here http://etorreborre.github.com/specs2/guide/org.specs2.guide.Structure.html#Unit+specifications
@@ -115,7 +95,6 @@ class TestReporter extends Reporter {
   }
 }
 
-//@Style("org.scalatest.specs.Spec2Finder")
 class TestSpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Spec2Runner(specs2Class) {
   override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
     configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
@@ -126,12 +105,9 @@ class TestSpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends S
   }
 }
 
-@RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
-class ReportingOutputUnitSpecTest extends Specification {
-  val defaultRunstamp = 1
-
+object OutputUtils {
   def runSpecAndReturnReversedScopeStack(clazz: Class[_ <: SpecificationStructure]) = {
+    val defaultRunstamp = 1
     val tracker = new Tracker(new Ordinal(defaultRunstamp))
     val reporter = new TestReporter
     val runner = new TestSpec2Runner(clazz)
@@ -139,38 +115,5 @@ class ReportingOutputUnitSpecTest extends Specification {
     runner.runSpec2(tracker, reporter, Filter())
     reporter.stack.reverse.foreach(ft => println(ft.lvl + "/" + ft.msg))
     reporter.stack.reverse
-  }
-
-  "The ScalaTest Specs2 runner" should {
-    val reversedOutputStack = runSpecAndReturnReversedScopeStack(classOf[SimpleSpec])
-
-    "report 2 levels of output" in {
-      reversedOutputStack.size must be_==(2)
-    }
-
-    "where the first element" in {
-      val e0 = reversedOutputStack(0)
-
-      "must be at the 0th indentation level" in {
-        e0.lvl must be_==(0)
-      }
-
-      "must contain the proper 'should' declaration" in {
-        e0.msg must be_==("The ScalaTest API should")
-      }
-    }
-
-    "where the second element" in {
-      val e1 = reversedOutputStack(1)
-
-      "must be at the 1st indentation level" in {
-        e1.lvl must be_==(1)
-      }
-
-      "must contain the proper 'should' declaration" in {
-        e1.msg must be_==("have the Runner.doRunRunRunDaDoRunRun() because it's funny")
-      }
-    }
-
   }
 }
