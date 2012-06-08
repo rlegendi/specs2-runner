@@ -58,8 +58,8 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   /** Unique id the full class name of the specification. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
-  println(suiteName)
-  println(suiteId)
+//  println(suiteName)
+//  println(suiteId)
 
   protected val executor = new FragmentExecution {}
 

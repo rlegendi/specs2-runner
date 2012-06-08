@@ -131,9 +131,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 //   	indentLevel += 1
     
     suiteStack.push(SuiteScope(name))
-//    if(1 == suiteStack.size) {
-//      return
-//    }
+    if(1 == suiteStack.size) {
+      return
+    }
     
     if (debug) {
       println("Indent: " + indentLevel)
@@ -153,9 +153,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName
     
     suiteStack.pop
-//    if (0 == suiteStack.size) {
-//      return
-//    }
+    if (0 == suiteStack.size) {
+      return
+    }
     
     // Closing the outmost scope would terminate the run, interrupting the execution of multiple specs in the same file
     // But needs to be verified :-)
