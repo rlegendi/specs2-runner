@@ -159,5 +159,18 @@ class ReportingOutputUnitSpecTest extends Specification {
         e0.msg must be_==("The ScalaTest API should")
       }
     }
+
+    "where the second element" in {
+      val e1 = reversedOutputStack(1)
+
+      "must be at the 1st indentation level" in {
+        e1.lvl must be_==(1)
+      }
+
+      "must contain the proper 'should' declaration" in {
+        e1.msg must be_==("have the Runner.doRunRunRunDaDoRunRun() because it's funny")
+      }
+    }
+
   }
 }
