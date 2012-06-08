@@ -37,11 +37,13 @@ import org.scalatest.events.TestSucceeded
 import scala.collection.mutable.Stack
 import org.scalatest.events.IndentedText
 import org.scalatest.events.IndentedText
+import org.scalatest.events.NameInfo
+import org.specs2.specification.SpecificationStructure
 
 // Test subject
 class SimpleSpec extends Specification {
   "The ScalaTest API" should {
-    "have the Runner.doRunRunRunDaDoRunRun() because its funny" in {
+    "have the Runner.doRunRunRunDaDoRunRun() because it's funny" in {
       success
     }
   }
@@ -50,10 +52,10 @@ class SimpleSpec extends Specification {
 // TODO Title?
 // TODO Other things from here http://etorreborre.github.com/specs2/guide/org.specs2.guide.Structure.html#Unit+specifications
 
-//case class TestResult(msg: String, indent: Int)
+case class TestOutput(lvl: Int, msg: String)
 
 class TestReporter extends Reporter {
-  val stack: Stack[IndentedText] = Stack()
+  val stack: Stack[TestOutput] = Stack()
 
   var testStartedCtr = 0
   var suiteAbortedCtr = 0
@@ -81,7 +83,15 @@ class TestReporter extends Reporter {
       case e: TestIgnored => testIgnoredCtr += 1
       case e: InfoProvided => infoProvidedCtr += 1
       case e: MarkupProvided => markupProvidedCtr += 1
-      case e: ScopeOpened => scopeOpenedCtr += 1
+      case e @ ScopeOpened(_, name, _, _, _, Some(formatter), _, _, _, _) => {
+        formatter match {
+          case ft @ IndentedText(formattedText, rawText, indentationLevel) => {
+            stack.push(TestOutput(indentationLevel, rawText))
+          }
+          case _ => ()
+        }
+        scopeOpenedCtr += 1
+      }
       case e: ScopeClosed => scopeClosedCtr += 1
       case e: TestPending => testPendingCtr += 1
       case e: TestCanceled => testCanceledCtr += 1
@@ -92,7 +102,7 @@ class TestReporter extends Reporter {
       case e @ TestSucceeded(_, suiteName, _, _, _, testName, testText, _, _, Some(formatter), location, _, _, _, _) => {
         formatter match {
           case ft @ IndentedText(formattedText, rawText, indentationLevel) => {
-            stack.push(ft)
+            stack.push(TestOutput(indentationLevel, rawText))
           }
           case _ => ()
         }
@@ -120,15 +130,34 @@ class TestSpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends S
 @WrapWith(classOf[Spec2Runner])
 class ReportingOutputUnitSpecTest extends Specification {
   val defaultRunstamp = 1
-  "The ScalaTest Specs2 runner" should {
-    "report " in {
-      val tracker = new Tracker(new Ordinal(defaultRunstamp))
-      val reporter = new TestReporter
-      val runner = new TestSpec2Runner(classOf[SimpleSpec])
 
-      runner.runSpec2(tracker, reporter, Filter())
-      println(reporter.stack)
-      success
+  def runSpecAndReturnReversedScopeStack(clazz: Class[_ <: SpecificationStructure]) = {
+    val tracker = new Tracker(new Ordinal(defaultRunstamp))
+    val reporter = new TestReporter
+    val runner = new TestSpec2Runner(clazz)
+
+    runner.runSpec2(tracker, reporter, Filter())
+    reporter.stack.reverse.foreach(ft => println(ft.lvl + "/" + ft.msg))
+    reporter.stack.reverse
+  }
+
+  "The ScalaTest Specs2 runner" should {
+    val reversedOutputStack = runSpecAndReturnReversedScopeStack(classOf[SimpleSpec])
+
+    "report 2 levels of output" in {
+      reversedOutputStack.size must be_==(2)
+    }
+
+    "where the first element" in {
+      val e0 = reversedOutputStack(0)
+
+      "must be at the 0th indentation level" in {
+        e0.lvl must be_==(0)
+      }
+
+      "must contain the proper 'should' declaration" in {
+        e0.msg must be_==("The ScalaTest API should")
+      }
     }
   }
 }
