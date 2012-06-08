@@ -14,7 +14,7 @@ class MyClassSpec extends SpecificationWithJUnit {
       success
     }
 
-    args(skipAll = false)
+    args(skipAll = true)
     "do something with db" in {
       success
       // Check only if db is running, SKIP id not

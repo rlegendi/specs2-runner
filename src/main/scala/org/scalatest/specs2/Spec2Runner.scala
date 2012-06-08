@@ -58,7 +58,10 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   /** Unique id the full class name of the specification. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
-  protected val executor = new FragmentExecution{}
+  println(suiteName)
+  println(suiteId)
+
+  protected val executor = new FragmentExecution {}
 
   // TODO Content is package-private, this is a workaround, consult with Eric
   // ERIC: that's intentional. It is to avoid the namespace of the Specification inheritor to be polluted with something he never uses

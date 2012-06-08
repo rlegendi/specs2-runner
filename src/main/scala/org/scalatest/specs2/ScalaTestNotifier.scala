@@ -92,7 +92,7 @@ case class TestScope(override val suiteName: String, val testName: String) exten
 // TODO Other params could be val members too...
 class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
 
-  val debug = true
+  val debug = false
   var indentLevel: Int = 0
   private val suiteStack: Stack[SuiteScope] = Stack()
 
@@ -131,14 +131,14 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 //   	indentLevel += 1
     
     suiteStack.push(SuiteScope(name))
-    if(1 == suiteStack.size) {
-      return
-    }
+//    if(1 == suiteStack.size) {
+//      return
+//    }
     
-    //if (debug) {
+    if (debug) {
       println("Indent: " + indentLevel)
       println("Scope Opened: " + name)
-    //}
+    }
     val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
     reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
       None, None, Some(formatter)))
@@ -153,9 +153,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     //    if (scopeStack.length > 0) { // No need to fire for the last scope, which is the one same as the suiteName
     
     suiteStack.pop
-    if (0 == suiteStack.size) {
-      return
-    }
+//    if (0 == suiteStack.size) {
+//      return
+//    }
     
     // Closing the outmost scope would terminate the run, interrupting the execution of multiple specs in the same file
     // But needs to be verified :-)
