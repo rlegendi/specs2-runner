@@ -1,4 +1,4 @@
-package org.scalatest.specs2
+package org.scalatest.specs2.output
 
 import org.junit.runner.RunWith
 import org.scalatest.Style
@@ -6,6 +6,7 @@ import org.scalatest.WrapWith
 import org.scalatest.specs2.output.OutputUtils.runSpecAndReturnReversedScopeStack
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
+import org.scalatest.specs2.Spec2Runner
 
 // Test subject
 class SimpleSpec extends Specification {
