@@ -35,8 +35,8 @@ object Specs2Bridge {
     // This is a private utility class that is inaccessible from outer packages
     Classes.tryToCreateObject(specs2Class.getName).get
   }
-  
-  implicit def getContentFor(spec: SpecificationStructure): Fragments = spec.content;
+
+  implicit def getContentFor(spec: SpecificationStructure): Fragments = spec.content
 
   def createExecuteSpecification(name: SpecName, fs: Seq[ExecutedFragment], args: Arguments = Arguments()): ExecutingSpecification =
     ExecutingSpecification.create(name, fs, args)
@@ -65,12 +65,12 @@ object Specs2Bridge {
         //val duration = res.stats.time.toInt //System.currentTimeMillis() - exampleStart
         // TODO Is this the correct time to use here?
         val duration = timer.totalMillis
-        
+
         //val formatter = ScalaTestBridge.getIndentedText(exampleName, indentLevel + 1, true)
         val formatter = ScalaTestBridge.getIndentedText(testName, 2, true)
 
         res.message // TODO I should use this
-        
+
         val name = Utils.suiteNameFor(spec2)
         val id = Utils.suiteIdFor(spec2)
 
