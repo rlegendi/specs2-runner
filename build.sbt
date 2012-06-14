@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest"         % "2.0.M1", 
   "org.scalatest" %% "spec-runner"       % "0.2.0",
   // 1.11 is required because of Arguments visibility has been extended
-  "org.specs2"    %% "specs2"            % "1.11-SNAPSHOT",
+  // 1.12 is required because it contains a fix of "embedded" specifications
+  "org.specs2"    %% "specs2"            % "1.12-SNAPSHOT",
   "junit"         %  "junit"             % "4.10" % "test"
 )
 
