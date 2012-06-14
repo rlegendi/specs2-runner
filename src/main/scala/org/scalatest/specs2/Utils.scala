@@ -54,13 +54,15 @@ object Utils {
       return spec.identification.title
     } else {
       val baseName = spec.identification.name
-      if (spec.isInstanceOf[Specification])
+
+      if (spec.isInstanceOf[Specification]) {
         return baseName + " Acceptance Specification"
-      else if (spec.isInstanceOf[org.specs2.mutable.Specification])
+      } else if (spec.isInstanceOf[org.specs2.mutable.Specification]) {
         return baseName + " Unit Specification"
-      else
+      } else {
         // Nothing should fall into this category, but a default value is always good to have
         return baseName + " Specification"
+      }
     }
   }
 
