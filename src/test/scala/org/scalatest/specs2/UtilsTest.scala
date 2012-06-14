@@ -61,4 +61,14 @@ class UtilsTest extends Specification {
       Utils.suiteNameFor(new DummyNonExistentSpecification) must be_==("DummyNonExistentSpecification Specification")
     }
   }
+
+  "The suiteIdFor() function" should {
+    "throw an exception for null" in {
+      Utils.suiteIdFor(null) must throwA[IllegalArgumentException]
+    }
+
+    "return proper result for an acceptance specification'" in {
+      Utils.suiteIdFor(new DummySpecification) must be_==("org.scalatest.specs2.DummySpecification")
+    }
+  }
 }
