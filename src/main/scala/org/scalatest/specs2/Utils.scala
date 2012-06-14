@@ -41,6 +41,12 @@ object Utils {
    * The suite name is used to display on the <i>ScalaTest View</i>.
    * </p>
    *
+   * <p>
+   * The specification title is more appropriate than the class name for a
+   * <code>suiteName</code> because the user can specify a more readable name
+   * for a specification, so it is accessed as a first try.
+   * </p>
+   *
    * @param spec either an acceptance specification or a mutable (unit) specification;
    * 				<i>cannot be null</i>
    * @return the <i>title</i> of the specification if it was set by the user;

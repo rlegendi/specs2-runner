@@ -51,8 +51,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   protected lazy val spec2 = tryToCreateSpecification(specs2Class)
 
   /**
-   * The specification title is more appropriate than the class name for a <code>suiteName</code>
-   * because the user can specify a more readable name for its specification.
+   * 
    */
   override def suiteName = Utils.suiteNameFor(spec2)
 
