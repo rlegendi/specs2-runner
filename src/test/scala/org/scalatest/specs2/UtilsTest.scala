@@ -7,12 +7,17 @@ import org.specs2.runner.JUnitRunner
 import org.specs2.specification.Fragments
 import org.specs2.specification.SpecificationStructure
 
-// This is the unit specification under test
+// These are the subjects to test
+
 class DummySpecification extends org.specs2.Specification {
   def is = success
 }
 
 class DummyMutableSpecification extends Specification
+
+class DummyMutableSpecificationWithTitle extends Specification {
+  "Mutable Title".title
+}
 
 class DummyNonExistentSpecification extends SpecificationStructure {
   def is = new Fragments
@@ -23,6 +28,21 @@ class DummyNonExistentSpecification extends SpecificationStructure {
 class UtilsTest extends Specification {
 
   "In the Utils class".title
+
+  "The hasTitle() function" should {
+    "throw an exception for null" in {
+      Utils.hasTitle(null) must throwA[IllegalArgumentException]
+    }
+
+    "return false for unit spec without title" in {
+      Utils.hasTitle(new DummyMutableSpecification) must beFalse
+    }
+
+    "return true for unit spec with title" in {
+      Utils.hasTitle(new DummyMutableSpecificationWithTitle) must beTrue
+    }
+
+  }
 
   "The suiteNameFor() function" should {
     "throw an exception for null" in {
