@@ -34,6 +34,7 @@ import org.specs2.execute.Details
 import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
 import org.scalatest.events._
 import org.specs2.specification.SpecificationStructure
+import org.specs2.reflect.Classes
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
@@ -47,19 +48,19 @@ import org.specs2.specification.SpecificationStructure
 class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
   require(specs2Class != null)
 
-  protected lazy val spec2 = tryToCreateObject[SpecificationStructure](specs2Class.getName).get
+  protected lazy val spec2 = tryToCreateSpecification(specs2Class)
 
   /**
    * The specification title is more appropriate than the class name for a <code>suiteName</code>
    * because the user can specify a more readable name for its specification.
    */
-  override def suiteName = spec2.identification.title // Utils.suiteNameFor(spec2)
+  override def suiteName = Utils.suiteNameFor(spec2)
 
   /** Unique id the full class name of the specification. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
-//  println(suiteName)
-//  println(suiteId)
+  //  println(suiteName)
+  //  println(suiteId)
 
   protected val executor = new FragmentExecution {}
 

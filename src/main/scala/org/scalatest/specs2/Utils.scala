@@ -27,15 +27,17 @@ object Utils {
   // TODO Include .title (see UnitSpec example)
   def suiteNameFor(spec: SpecificationStructure): String = {
     require(spec != null)
+    
+    spec.identification.title
 
-    val baseName = spec.getClass.getSimpleName
-    if (spec.isInstanceOf[Specification])
-      return baseName + " specs2 Specification"
-    else if (spec.isInstanceOf[org.specs2.mutable.Specification])
-      return baseName + " specs2 Unit Specification"
-    else
-      // Nothing falls into this category jet, but a default value is always good to have
-      return baseName + " specs2 Test"
+//    val baseName = spec.getClass.getSimpleName
+//    if (spec.isInstanceOf[Specification])
+//      return baseName + " specs2 Specification"
+//    else if (spec.isInstanceOf[org.specs2.mutable.Specification])
+//      return baseName + " specs2 Unit Specification"
+//    else
+//      // Nothing falls into this category jet, but a default value is always good to have
+//      return baseName + " specs2 Test"
   }
 
   //  // TODO Should I return Some(...) / None here?
@@ -47,6 +49,9 @@ object Utils {
 
   def suiteIdFor(spec: SpecificationStructure): String = {
     require(spec != null)
-    spec.identification.fullName
+    //spec.identification.fullName
+    println("fn" + spec.identification.fullName)
+    println("jn" + spec.identification.javaClassName)
+    spec.identification.javaClassName
   }
 }

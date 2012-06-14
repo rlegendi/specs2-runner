@@ -31,12 +31,11 @@ import org.scalatest.specs2.Utils
 import org.specs2.specification.ExecutedFragment
 
 object Specs2Bridge {
-  def tryToCreateObject[T <: AnyRef](className: String, printMessage: Boolean = true, printStackTrace: Boolean = true,
-    loader: ClassLoader = Thread.currentThread.getContextClassLoader)(implicit m: Manifest[T]): Option[T] = {
-
-    Classes.tryToCreateObject(className, printMessage, printStackTrace, loader)(m)
+  def tryToCreateSpecification[T <: AnyRef](specs2Class: Class[_ <: SpecificationStructure]): SpecificationStructure = {
+    // This is a private utility class that is inaccessible from outer packages
+    Classes.tryToCreateObject(specs2Class.getName).get
   }
-
+  
   implicit def getContentFor(spec: SpecificationStructure): Fragments = spec.content;
 
   def createExecuteSpecification(name: SpecName, fs: Seq[ExecutedFragment], args: Arguments = Arguments()): ExecutingSpecification =
