@@ -9,11 +9,11 @@ import org.scalatest.events.LineInFile
 
 @RunWith(classOf[JUnitRunner])
 @WrapWith(classOf[Spec2Runner])
-// java.lang.IllegalStateException: Unable to find suite model for ScopeOpened, suiteId: org.scalatest.specs2.SpecInSpecTest
 class SpecInSpecTest extends Specification {
 
   // Issue was sent to Eric
-  skipAll
+  //skipAll
+  "SpecInSpecTest".title
   
   "The outer spec" should {
     "check some stuff" in {
