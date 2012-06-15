@@ -39,7 +39,10 @@ import org.specs2.reflect.Classes
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
  *
- * This is a Suite that can handle both mutable and immutable specs2 specifications
+ * <p>
+ * This is a Suite that can handle both specs2 acceptance specifications and (mutable
+ * unit specifications.
+ * </p>
  *
  * @author rlegendi
  */
@@ -48,30 +51,32 @@ import org.specs2.reflect.Classes
 class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
   require(specs2Class != null)
 
+  /** The specification instance to run. */
   protected lazy val spec2 = tryToCreateSpecification(specs2Class)
 
   /**
-   * 
+   * Name of the suite.
+   *
+   * <p>
+   * This is a bit tricky: the start of the suite is automatically reported by ScalaTest,
+   * so we need a bit of playing with the scope stack in {@link ScalaTestNotifier} (we do
+   * not report the start of the outermost suite and do not fire its close event, because
+   * it terminates the simulation. All this is required because of nested specifications
+   * in the same compilation unit (e.g., multiple Specifications is the same
+   * <code>*.scala</code> file, embedded Specifications, etc.).
+   * </p>
    */
   override def suiteName = Utils.suiteNameFor(spec2)
 
-  /** Unique id the full class name of the specification. */
+  /** Unique Id for the suite for ScalaTest. */
   override def suiteId = Utils.suiteIdFor(spec2)
 
-  //  println(suiteName)
-  //  println(suiteId)
-
-  protected val executor = new FragmentExecution {}
-
-  // TODO Content is package-private, this is a workaround, consult with Eric
-  // ERIC: that's intentional. It is to avoid the namespace of the Specification inheritor to be polluted with something he never uses
-  // one way to make things nicer is to add "implicit" to your getContent definition. This way, any spec can be seen as the list
-  // of Fragments it is holding
+  /** Holds all the options that are relevant for the execution (and reporting). */
   protected implicit lazy val args: Arguments = spec2.arguments
 
-  protected val selection = new DefaultSelection {}
-
   override def expectedTestCount(filter: Filter): Int = {
+    require(filter != null)
+
     // ERIC: I think that the best thing here is to reuse the code already in the Selection trait of specs2
     // the idea is to use ScalaTest options and translate them to specs2 arguments, as if they were passed from the command line
     // I'm not using ScalaTest's dynatags here because I'm not sure it's absolutely necessary to provide filtering capabilities based on tags
@@ -82,6 +87,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     val arguments = Arguments(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
       filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
 
+    val selection = new DefaultSelection {}
     // There are methods in the Fragments object to filter specific fragments, like isAnExample
     selection.select(arguments)(spec2).fragments.collect(isAnExample).size
   }
@@ -97,21 +103,26 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     require(distributor != null)
     require(tracker != null)
 
-    val stopRequested = stopper // TODO Can't this be done below at [1]?
-    val report = wrapReporterIfNecessary(reporter) // TODO Can't this be done below where report() is used?
+    //val stopRequested = stopper // TODO Can't this be done below at [1]?
+
+    // Just to make sure exceptions are properly handled during the test
+    val report = wrapReporterIfNecessary(reporter)
 
     //report(RunStarting()) //?
 
     runSpec2(tracker, reporter, filter)
 
-    if (stopRequested()) { // [1]
-      val rawString = Resources("executeStopping") // TODO Do I need it here? Or this is just a descriptive variable?
-      report(InfoProvided(tracker.nextOrdinal(), rawString, Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
+    if (stopper()) { // [1]
+      report(InfoProvided(tracker.nextOrdinal(), Resources("executeStopping"), Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
     }
   }
 
   // TODO Use filter?
   private[specs2] def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
+    require(tracker != null)
+    require(reporter != null)
+    require(filter != null)
+
     new NotifierReporter {
       val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
       //val notifier = new EmptyNotifier
