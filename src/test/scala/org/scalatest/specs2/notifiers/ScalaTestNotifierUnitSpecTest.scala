@@ -1,10 +1,11 @@
-package org.scalatest.specs2
+package org.scalatest.specs2.notifiers
 
 import org.specs2.mutable.Specification
-import ScalaTestNotifier._
 import org.junit.runner.RunWith
 import org.scalatest.WrapWith
 import org.specs2.runner.JUnitRunner
+import org.scalatest.specs2.Spec2Runner
+import ScalaTestNotifier._
 import org.scalatest.events.LineInFile
 
 @RunWith(classOf[JUnitRunner])

@@ -1,7 +1,6 @@
 package org.scalatest.specs2
 
 import org.specs2.mutable.Specification
-import ScalaTestNotifier._
 import org.junit.runner.RunWith
 import org.scalatest.WrapWith
 import org.specs2.runner.JUnitRunner

@@ -35,6 +35,7 @@ import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
 import org.scalatest.events._
 import org.specs2.specification.SpecificationStructure
 import org.specs2.reflect.Classes
+import org.scalatest.specs2.notifiers.ScalaTestNotifier
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.

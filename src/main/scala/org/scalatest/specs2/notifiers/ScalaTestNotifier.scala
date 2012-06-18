@@ -1,43 +1,34 @@
-package org.scalatest.specs2
+package org.scalatest.specs2.notifiers
 
-import org.specs2.reporter.Notifier
-import org.specs2.execute.Details
+import ScalaTestNotifier.decodedSuiteNameFor
+import ScalaTestNotifier.getDecodedName
+import ScalaTestNotifier.loc
+import ScalaTestNotifier.rerunnerFor
+import ScalaTestNotifier.suiteClassNameFor
 import org.scalatest.Reporter
+import org.scalatest.Suite
 import org.scalatest.Tracker
 import org.scalatest.events.InfoProvided
-import org.scalatest.events.TestSucceeded
-import org.scalatest.events.TestStarting
-import org.scalatest.events.SuiteStarting
-import org.scalatest.events.TestPending
-import org.scalatest.events.TestFailed
-import org.scalatest.events.SuiteCompleted
-import org.scalatest.Suite
-import org.scalatest.events.NameInfo
-import org.specs2.specification.SpecificationStructure
-import Utils._
-import org.scalatest.events.ToDoLocation
 import org.scalatest.events.LineInFile
 import org.scalatest.events.Location
-import org.scalatest.events.LineInFile
-import org.scalatest.events.LineInFile
-import ScalaTestNotifier._
-import scala.collection.mutable.Stack
-import org.scalatest.specs.ScalaTestAbstractNotifier
-import org.scalatest.specs.ScalaTestAbstractNotifier
-import org.scalatest.events.ScopeOpened
-import org.scalatest.events.ScopeClosed
 import org.scalatest.events.MotionToSuppress
-import scala.reflect.NameTransformer
+import org.scalatest.events.NameInfo
+import org.scalatest.events.ScopeClosed
+import org.scalatest.events.ScopeOpened
+import org.scalatest.events.TestFailed
 import org.scalatest.events.TestIgnored
+import org.scalatest.events.TestNameInfo
+import org.scalatest.events.TestPending
+import org.scalatest.events.TestStarting
+import org.scalatest.events.TestSucceeded
+import org.specs2.execute.Details
 import org.specs2.execute.FailureDetails
 import org.specs2.main.Arguments
+import org.specs2.reporter.Notifier
 import org.specs2.specification.SpecificationStructure
-import org.specs2.specification.SpecificationStructure
-import org.scalatest.events.Formatter
-import org.scalatest.events.NameInfo
-import org.scalatest.events.TestNameInfo
-import org.scalatest.events.NameInfo$
-import scala.reflect.generic.Scopes
+import scala.collection.mutable.Stack
+import scala.reflect.NameTransformer
+import org.scalatest.specs2.Utils._
 
 object ScalaTestNotifier {
 
@@ -459,55 +450,4 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       formatter = Some(formatter),
       location = None)) // See Note
   }
-}
-
-class EmptyNotifier extends Notifier {
-  def specStart(title: String, location: String): Unit = {
-    println(">>> specStart: " + title + "@" + location)
-  }
-
-  def specEnd(title: String, location: String): Unit = {
-    println(">>> specEnd: " + title + "@" + location)
-  }
-
-  def contextStart(text: String, location: String): Unit = {
-    println(">>> contextStart: " + text + "@" + location)
-  }
-
-  def contextEnd(text: String, location: String): Unit = {
-    println(">>> contextEnd: " + text + "@" + location)
-  }
-
-  def text(text: String, location: String): Unit = {
-    println(">>> text: " + text + "@" + location)
-  }
-
-  def exampleStarted(name: String, location: String): Unit = {
-    println(">>> exampleStarted: " + name + "@" + location)
-  }
-
-  def exampleSuccess(name: String, duration: Long): Unit = {
-    println(">>> exampleSuccess: " + name + ", t=" + duration)
-  }
-
-  private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
-    println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
-  }
-
-  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
-    println(">>> exampleFailure: " + name + ", t=" + message)
-  }
-
-  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
-    println(">>> exampleError: " + name + ", t=" + message)
-  }
-
-  def exampleSkipped(name: String, message: String, duration: Long): Unit = {
-    println(">>> exampleSkipped: " + name + ", t=" + message)
-  }
-
-  def examplePending(name: String, message: String, duration: Long): Unit = {
-    println(">>> examplePending: " + name + ", t=" + message)
-  }
-
 }
