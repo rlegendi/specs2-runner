@@ -179,12 +179,22 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     */
     None
   }
+  
+  private def testStarted(name: String, location: String): Unit = {
+    suiteStack.push(new ScopeElement(name, loc(location)))
+  }
+  
+  private def testEnded(): ScopeElement = {
+    suiteStack.pop
+  }
 
   def exampleStarted(name: String, location: String): Unit = {
     if (debug) {
       println(">>> exampleStarted: " + name + "@" + location)
     }
-
+    
+    testStarted(name, location)
+    
     val testName = name
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
@@ -205,6 +215,8 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     if (debug) {
       println(">>> exampleSuccess: " + name + ", t=" + duration)
     }
+    
+    val actScopeElement = testEnded()
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
     val testName = name
@@ -219,13 +231,17 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       decodedTestName = getDecodedName(testName),
       duration = Some(duration),
       formatter = Some(formatter),
-      location = None)) // Should I include it here? Save during exampleStarted()?
+      location = actScopeElement.location)) // TODO Should I include it here? Save during exampleStarted()?
   }
 
   private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
     if (debug) {
       println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
     }
+    
+    // We do not use the actual test location, because a test might contain multiple assertions, and any of them might fail
+    // It is more specific if we can report the exact example which is erroreous
+    testEnded() 
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
@@ -284,6 +300,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> exampleSkipped: " + name + ", t=" + message)
     }
 
+    val actScopeElement = testEnded()
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestIgnored(
@@ -296,7 +313,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       testText = message,
       decodedTestName = Some(name),
       formatter = Some(formatter),
-      location = None)) // See Note 2
+      location = actScopeElement.location)) // See Note 2
   }
 
   // Note: we could report the location on the other hand, but it is not accessible here
@@ -305,6 +322,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> examplePending: " + name + ", t=" + message)
     }
 
+    val actScopeElement = testEnded()
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestPending(
@@ -318,6 +336,6 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       decodedTestName = Some(name),
       duration = Some(duration),
       formatter = Some(formatter),
-      location = None)) // See Note
+      location = actScopeElement.location)) // See Note
   }
 }
