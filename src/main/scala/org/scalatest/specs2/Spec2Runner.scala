@@ -45,6 +45,8 @@ import org.specs2.reflect.Classes
  * </p>
  *
  * @author rlegendi
+ * @constructor create a new runner for the specified specification class;
+ * 					<i>cannot be null</i>
  */
 // Note: Avoid methods whose name starts with "test", those are handled as tests.
 @Style("org.scalatest.specs.Spec2Finder")
@@ -74,20 +76,30 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   /** Holds all the options that are relevant for the execution (and reporting). */
   protected implicit lazy val args: Arguments = spec2.arguments
 
+  /**
+   * Returns the expected number of tests.
+   *
+   * <p>
+   * Eric suggested that the best thing here is to reuse the code already in the Selection
+   * trait of specs2: the idea is to use ScalaTest options and translate them to specs2
+   * arguments, as if they were passed from the command line.
+   * </p>
+   *
+   * @param filter filter to use; <i>cannot be null</i>
+   * @return the number of sepcs2 examples found for the specification; <i>non-negative</i>
+   */
+  // TODO ScalaTest's dynatags here are not used because we're not sure it's absolutely necessary to provide filtering capabilities based on tags
   override def expectedTestCount(filter: Filter): Int = {
     require(filter != null)
 
-    // ERIC: I think that the best thing here is to reuse the code already in the Selection trait of specs2
-    // the idea is to use ScalaTest options and translate them to specs2 arguments, as if they were passed from the command line
-    // I'm not using ScalaTest's dynatags here because I'm not sure it's absolutely necessary to provide filtering capabilities based on tags
-    //
-    // the <| method is used to override arguments. Note that I'm using the spec arguments to override the command line ones
+    // The <| method is used to override arguments. Note that I'm using the spec arguments to override the command line ones
     // so that a local definition of arguments in a specification can override generic arguments on the command line
 
     val arguments = Arguments(filter.tagsToInclude.map(tags => "include " + tags.mkString(",")) + " " +
       filter.tagsToExclude.mkString("exclude ", ",", "")) <| args
 
     val selection = new DefaultSelection {}
+
     // There are methods in the Fragments object to filter specific fragments, like isAnExample
     selection.select(arguments)(spec2).fragments.collect(isAnExample).size
   }
@@ -103,16 +115,12 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     require(distributor != null)
     require(tracker != null)
 
-    //val stopRequested = stopper // TODO Can't this be done below at [1]?
-
     // Just to make sure exceptions are properly handled during the test
     val report = wrapReporterIfNecessary(reporter)
 
-    //report(RunStarting()) //?
-
     runSpec2(tracker, reporter, filter)
 
-    if (stopper()) { // [1]
+    if (stopper()) { // If stopped during execution
       report(InfoProvided(tracker.nextOrdinal(), Resources("executeStopping"), Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
     }
   }
@@ -125,7 +133,6 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
 
     new NotifierReporter {
       val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
-      //val notifier = new EmptyNotifier
     }.report(spec2)(args)
   }
 }
