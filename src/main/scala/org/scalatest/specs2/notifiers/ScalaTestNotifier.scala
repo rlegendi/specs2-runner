@@ -79,8 +79,8 @@ object ScalaTestNotifier {
 case class ScopeElement(val name: String, val location: Option[Location])
 
 class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
-  private val debug = false
-  private val suiteStack: Stack[ScopeElement] = Stack()
+  val debug = false
+  val suiteStack: Stack[ScopeElement] = Stack()
 
   private var indentLevel: Int = 0
 
@@ -161,10 +161,10 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
         suiteID = suiteIdFor(spec),
         suiteClassName = suiteClassNameFor(spec),
         decodedSuiteName = decodedSuiteNameFor(spec),
-        testName = getNameInfo())), // : Option[NameInfo],
-      aboutAPendingTest = None, // : Option[Boolean] = None,
-      aboutACanceledTest = None, // : Option[Boolean] = None,
-      throwable = None, // : Option[Throwable] = None,
+        testName = getNameInfo())),
+      aboutAPendingTest = None, // Option[Boolean]
+      aboutACanceledTest = None, // Option[Boolean]
+      throwable = None, // Option[Throwable]
       formatter = Some(formatter),
       location = loc(location)))
   }
