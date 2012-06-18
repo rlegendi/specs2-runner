@@ -132,7 +132,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
 
     val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
     reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
-      None, None, Some(MotionToSuppress)))
+      None, None, Some(MotionToSuppress), loc(location)))
 
     indentLevel -= 1
   }
@@ -165,6 +165,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     if (debug) {
       println(">>> contextEnd: " + text + "@" + location)
     }
+    
     scopeClosed(text, location);
   }
 
