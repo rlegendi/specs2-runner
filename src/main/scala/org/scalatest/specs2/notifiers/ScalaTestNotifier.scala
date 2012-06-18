@@ -32,6 +32,8 @@ import org.scalatest.specs2.Utils._
 
 object ScalaTestNotifier {
 
+  val debug = false
+
   // A sample Spec2 Location string looks something like:
   // 		classname (file name:line number)
   //
@@ -83,6 +85,8 @@ object ScalaTestNotifier {
  */
 case class ScopeElement(val name: String, val location: Option[Location])
 
+import ScalaTestNotifier._
+
 /**
  * <b>Note</b> This implementation <b>is not thread-safe</b>! It depends on a scope stack
  * which should not be used concurrently.
@@ -95,7 +99,6 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
   // --------------------------------------------------------------------------
   // --- Members --------------------------------------------------------------
 
-  val debug = true
   val suiteStack: Stack[ScopeElement] = Stack()
 
   private var indentLevel: Int = 0
@@ -179,7 +182,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       message = text,
       nameInfo = Some(NameInfo(
         suiteName = suiteStack.head.name,
-        suiteID = suiteIdFor(spec, suiteStack),
+        suiteID = suiteIdFor(spec),
         suiteClassName = suiteClassNameFor(spec),
         decodedSuiteName = decodedSuiteNameFor(spec),
         testName = getNameInfo())),
@@ -209,8 +212,35 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     suiteStack.pop
   }
 
+  /**
+   * This is required because two examples might have the same name, e.g.:
+   *
+   * <code>
+   * class SameNamesSpecs extends Specification {
+   * 	"One" should {
+   * 		"a" in {
+   * 			success
+   * 		}
+   * 	}
+   *
+   * 	"Other" should {
+   * 		"a" in {
+   * 			success
+   * 		}
+   * 	}
+   * }
+   * </code>
+   *
+   * In this case, <code>"a"</code> reported correctly, but the line numbers
+   * are messed up (since the latter rewrites the previous object with the
+   * same name).
+   *
+   * @param name the name of the test
+   * @return a simple list containing a textual representation of the path
+   */
   private def testNameFor(name: String): String = {
-    suiteStack.foldLeft(name + ": ")((cum, act) => cum + act)
+    suiteStack.foldLeft(name + ": ")((cum, act) => cum + ", " +
+      act.name + "@" + act.location)
   }
 
   def exampleStarted(name: String, location: String): Unit = {
@@ -219,14 +249,15 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     }
 
     testStarted(name, location)
+    val testName = testNameFor(name) // Must be evaluated *after* the test started
 
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec, suiteStack),
+      suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
-      testName = testNameFor(name),
+      testName = testName,
       testText = name,
       decodedTestName = getDecodedName(name),
       formatter = Some(MotionToSuppress), // Note suppressed event - this is what we want here! See Scaladoc of Formatter
@@ -246,7 +277,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     reporter(TestSucceeded(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec, suiteStack),
+      suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
@@ -289,7 +320,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       ordinal = tracker.nextOrdinal(),
       message = message,
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec, suiteStack),
+      suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
@@ -332,7 +363,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     reporter(TestIgnored(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec, suiteStack),
+      suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
@@ -354,7 +385,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     reporter(TestPending(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec, suiteStack),
+      suiteId = suiteIdFor(spec),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,

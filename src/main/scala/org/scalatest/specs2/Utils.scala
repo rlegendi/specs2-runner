@@ -84,13 +84,11 @@ object Utils {
    * 				<i>cannot be null</i>
    * @return the Id used during the execution for ScalaTest for the given <code>spec</code>
    */
-  // TODO Update docs
-  def suiteIdFor(spec: SpecificationStructure, scope: Seq[ScopeElement] = List()): String = {
+  def suiteIdFor(spec: SpecificationStructure): String = {
     require(spec != null)
 
     // TODO Ask Eric 2: Should I use fullName (i.e., decoded name) or javaClassName here?
     //                  fullName seems to have a bit more sense I guess
-    //scope.foldLeft(spec.identification.fullName)((cum, act) => cum + act)
     spec.identification.fullName
   }
 }
