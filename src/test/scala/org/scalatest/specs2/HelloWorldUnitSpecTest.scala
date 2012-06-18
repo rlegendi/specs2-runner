@@ -26,7 +26,7 @@ class HelloWorldUnitSpec extends mutable.Specification {
 @WrapWith(classOf[Spec2Runner])
 class HelloWorldUnitSpecTest extends mutable.Specification {
 
-  val runner = Spec2Runner(classOf[HelloWorldUnitSpec])
+  val runner = new Spec2Runner(classOf[HelloWorldUnitSpec])
 
   "When executing 'HelloWorldUnitSpec' the runner" should {
     "find 3 examples" in {

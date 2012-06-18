@@ -136,8 +136,3 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     }.report(spec2)(args)
   }
 }
-
-/** Used for testing purposes only. */
-private[specs2] object Spec2Runner {
-  def apply(specs2Class: Class[_ <: SpecificationStructure]) = new Spec2Runner(specs2Class)
-}

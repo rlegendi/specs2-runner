@@ -31,7 +31,7 @@ class HelloWorldSpecTest extends Specification { def is =
     "find 3 examples"                                                         ! threeExamplesFound^
                                                                               end
    val noFilter = new Filter(None, Set.empty[String])
-   val runner = Spec2Runner(classOf[HelloWorldSpec])
+   val runner = new Spec2Runner(classOf[HelloWorldSpec])
 
    def threeExamplesFound = runner.expectedTestCount(noFilter) must be_==(3)
 }
