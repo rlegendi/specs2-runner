@@ -2,6 +2,9 @@ package org.scalatest.specs2
 
 import org.specs2.Specification
 import org.specs2.specification.SpecificationStructure
+import scala.collection.immutable.Stack
+import org.scalatest.specs2.notifiers.ScopeElement
+import scala.collection.LinearSeq
 
 /**
  * A set of constants and minimal utility functions.
@@ -81,11 +84,13 @@ object Utils {
    * 				<i>cannot be null</i>
    * @return the Id used during the execution for ScalaTest for the given <code>spec</code>
    */
-  def suiteIdFor(spec: SpecificationStructure): String = {
+  // TODO Update docs
+  def suiteIdFor(spec: SpecificationStructure, scope: Seq[ScopeElement] = List()): String = {
     require(spec != null)
 
     // TODO Ask Eric 2: Should I use fullName (i.e., decoded name) or javaClassName here?
     //                  fullName seems to have a bit more sense I guess
+    //scope.foldLeft(spec.identification.fullName)((cum, act) => cum + act)
     spec.identification.fullName
   }
 }

@@ -78,7 +78,7 @@ object ScalaTestNotifier {
 
 /**
  * Simple utility class for handling the scope elements.
- * 
+ *
  * @author rlegendi
  */
 case class ScopeElement(val name: String, val location: Option[Location])
@@ -95,14 +95,14 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
   // --------------------------------------------------------------------------
   // --- Members --------------------------------------------------------------
 
-  val debug = false
+  val debug = true
   val suiteStack: Stack[ScopeElement] = Stack()
 
   private var indentLevel: Int = 0
 
   // --------------------------------------------------------------------------
   // --- Scope handling -------------------------------------------------------
-  
+
   def scopeOpened(name: String, location: String): Unit = {
     // TODO Requires... in the whole file
     suiteStack.push(new ScopeElement(name, loc(location)))
@@ -162,10 +162,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     if (debug) {
       println(">>> contextEnd: " + text + "@" + location)
     }
-
     scopeClosed(text, location);
   }
-  
+
   // --------------------------------------------------------------------------
   // --- Specific events ------------------------------------------------------
 
@@ -180,7 +179,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       message = text,
       nameInfo = Some(NameInfo(
         suiteName = suiteStack.head.name,
-        suiteID = suiteIdFor(spec),
+        suiteID = suiteIdFor(spec, suiteStack),
         suiteClassName = suiteClassNameFor(spec),
         decodedSuiteName = decodedSuiteNameFor(spec),
         testName = getNameInfo())),
@@ -210,6 +209,10 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     suiteStack.pop
   }
 
+  private def testNameFor(name: String): String = {
+    suiteStack.foldLeft(name + ": ")((cum, act) => cum + act)
+  }
+
   def exampleStarted(name: String, location: String): Unit = {
     if (debug) {
       println(">>> exampleStarted: " + name + "@" + location)
@@ -217,16 +220,15 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
 
     testStarted(name, location)
 
-    val testName = name
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
+      suiteId = suiteIdFor(spec, suiteStack),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
-      testName = testName,
-      testText = testName + "(exampleName)",
-      decodedTestName = getDecodedName(testName),
+      testName = testNameFor(name),
+      testText = name,
+      decodedTestName = getDecodedName(name),
       formatter = Some(MotionToSuppress), // Note suppressed event - this is what we want here! See Scaladoc of Formatter
       location = loc(location),
       rerunner = rerunnerFor(spec)))
@@ -237,19 +239,19 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       println(">>> exampleSuccess: " + name + ", t=" + duration)
     }
 
+    val testName = testNameFor(name)
     val actScopeElement = testEnded()
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
-    val testName = name
     reporter(TestSucceeded(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
+      suiteId = suiteIdFor(spec, suiteStack),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
       testName = testName,
-      testText = testName + "(testText)", // TODO Check where it is used
-      decodedTestName = getDecodedName(testName),
+      testText = name,
+      decodedTestName = getDecodedName(name),
       duration = Some(duration),
       formatter = Some(formatter),
       location = actScopeElement.location))
@@ -262,6 +264,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
 
     // We do not use the actual test location, because a test might contain multiple assertions, and any of them might fail
     // It is more specific if we can report the exact example which is erroreous
+    val testName = testNameFor(name)
     testEnded()
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
@@ -286,11 +289,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       ordinal = tracker.nextOrdinal(),
       message = message,
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
+      suiteId = suiteIdFor(spec, suiteStack),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
-      testName = name,
-      testText = reason,
+      testName = testName,
+      testText = name + ": " + reason,
       decodedTestName = Some(name),
       throwable = Some(f),
       duration = Some(duration),
@@ -303,7 +306,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     if (debug) {
       println(">>> exampleFailure: " + name + ", t=" + message)
     }
-    
+
     testFailed(name, message, location, f, Some(details), duration)
   }
 
@@ -311,7 +314,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
     if (debug) {
       println(">>> exampleError: " + name + ", t=" + message)
     }
-    
+
     // TODO Is there any way to report a test error without a suite error? Do I even need it?
     testFailed(name, message, location, f, None, duration)
   }
@@ -322,17 +325,18 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       println(">>> exampleSkipped: " + name + ", t=" + message)
     }
 
+    val testName = testNameFor(name)
     val actScopeElement = testEnded()
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestIgnored(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
+      suiteId = suiteIdFor(spec, suiteStack),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
-      testName = name,
-      testText = message,
+      testName = testName,
+      testText = name + ": " + message,
       decodedTestName = Some(name),
       formatter = Some(formatter),
       location = actScopeElement.location))
@@ -343,17 +347,18 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       println(">>> examplePending: " + name + ", t=" + message)
     }
 
+    val testName = testNameFor(name)
     val actScopeElement = testEnded()
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
     reporter(TestPending(
       ordinal = tracker.nextOrdinal(),
       suiteName = suiteNameFor(spec),
-      suiteId = suiteIdFor(spec),
+      suiteId = suiteIdFor(spec, suiteStack),
       suiteClassName = suiteClassNameFor(spec),
       decodedSuiteName = decodedSuiteNameFor(spec),
-      testName = name,
-      testText = message,
+      testName = testName,
+      testText = name + ": " + message,
       decodedTestName = Some(name),
       duration = Some(duration),
       formatter = Some(formatter),
