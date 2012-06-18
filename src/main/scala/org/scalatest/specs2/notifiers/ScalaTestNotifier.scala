@@ -115,15 +115,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     indentLevel -= 1
   }
 
-  // TODO Externalize! (i.e., title == spec.name or something else...)
-  var firstSpec = true
-
   def specStart(title: String, location: String): Unit = {
     if (debug) {
       println(">>> specStart: " + title + "@" + location)
     }
 
-    //val formatter = Suite.getIndentedText(title, indentLevel, true)
     scopeOpened(title, location)
   }
 
@@ -189,7 +185,6 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       println(">>> exampleStarted: " + name + "@" + location)
     }
 
-    //val testName = getTestName(name)
     val testName = name
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
@@ -212,7 +207,6 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     }
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
-    //val testName = getTestName(name)
     val testName = name
     reporter(TestSucceeded(
       ordinal = tracker.nextOrdinal(),
