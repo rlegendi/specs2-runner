@@ -116,7 +116,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
 
     val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
     reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
-      None, None, Some(formatter)))
+      None, None, Some(formatter), loc(location)))
 
     indentLevel += 1
   }
