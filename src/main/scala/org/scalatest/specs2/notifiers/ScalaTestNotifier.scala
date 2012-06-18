@@ -76,14 +76,33 @@ object ScalaTestNotifier {
   }
 }
 
+/**
+ * Simple utility class for handling the scope elements.
+ * 
+ * @author rlegendi
+ */
 case class ScopeElement(val name: String, val location: Option[Location])
 
-class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, val tracker: Tracker, val reporter: Reporter) extends Notifier {
+/**
+ * <b>Note</b> This implementation <b>is not thread-safe</b>! It depends on a scope stack
+ * which should not be used concurrently.
+ *
+ * @author rlegendi
+ */
+class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
+  val tracker: Tracker, val reporter: Reporter) extends Notifier {
+
+  // --------------------------------------------------------------------------
+  // --- Members --------------------------------------------------------------
+
   val debug = false
   val suiteStack: Stack[ScopeElement] = Stack()
 
   private var indentLevel: Int = 0
 
+  // --------------------------------------------------------------------------
+  // --- Scope handling -------------------------------------------------------
+  
   def scopeOpened(name: String, location: String): Unit = {
     // TODO Requires... in the whole file
     suiteStack.push(new ScopeElement(name, loc(location)))
@@ -146,6 +165,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
 
     scopeClosed(text, location);
   }
+  
+  // --------------------------------------------------------------------------
+  // --- Specific events ------------------------------------------------------
 
   def text(text: String, location: String): Unit = {
     if (debug) {
@@ -179,11 +201,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     */
     None
   }
-  
+
   private def testStarted(name: String, location: String): Unit = {
     suiteStack.push(new ScopeElement(name, loc(location)))
   }
-  
+
   private def testEnded(): ScopeElement = {
     suiteStack.pop
   }
@@ -192,9 +214,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     if (debug) {
       println(">>> exampleStarted: " + name + "@" + location)
     }
-    
+
     testStarted(name, location)
-    
+
     val testName = name
     reporter(TestStarting(
       ordinal = tracker.nextOrdinal(),
@@ -210,12 +232,11 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       rerunner = rerunnerFor(spec)))
   }
 
-  // Note: we could report the location on the other hand, but it is not accessible here
   def exampleSuccess(name: String, duration: Long): Unit = {
     if (debug) {
       println(">>> exampleSuccess: " + name + ", t=" + duration)
     }
-    
+
     val actScopeElement = testEnded()
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
@@ -231,17 +252,17 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       decodedTestName = getDecodedName(testName),
       duration = Some(duration),
       formatter = Some(formatter),
-      location = actScopeElement.location)) // TODO Should I include it here? Save during exampleStarted()?
+      location = actScopeElement.location))
   }
 
   private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
     if (debug) {
       println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
     }
-    
+
     // We do not use the actual test location, because a test might contain multiple assertions, and any of them might fail
     // It is more specific if we can report the exact example which is erroreous
-    testEnded() 
+    testEnded()
 
     val formatter = Suite.getIndentedText(name, indentLevel, true)
 
@@ -282,6 +303,7 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     if (debug) {
       println(">>> exampleFailure: " + name + ", t=" + message)
     }
+    
     testFailed(name, message, location, f, Some(details), duration)
   }
 
@@ -289,12 +311,12 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
     if (debug) {
       println(">>> exampleError: " + name + ", t=" + message)
     }
+    
     // TODO Is there any way to report a test error without a suite error? Do I even need it?
     testFailed(name, message, location, f, None, duration)
   }
 
   // Note 1: duration cannot be reported in the standard ways through TestIgnored
-  // Note 2: we could report the location on the other hand, but it is not accessible here
   def exampleSkipped(name: String, message: String, duration: Long): Unit = {
     if (debug) {
       println(">>> exampleSkipped: " + name + ", t=" + message)
@@ -313,10 +335,9 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       testText = message,
       decodedTestName = Some(name),
       formatter = Some(formatter),
-      location = actScopeElement.location)) // See Note 2
+      location = actScopeElement.location))
   }
 
-  // Note: we could report the location on the other hand, but it is not accessible here
   def examplePending(name: String, message: String, duration: Long): Unit = {
     if (debug) {
       println(">>> examplePending: " + name + ", t=" + message)
@@ -336,6 +357,6 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments, v
       decodedTestName = Some(name),
       duration = Some(duration),
       formatter = Some(formatter),
-      location = actScopeElement.location)) // See Note
+      location = actScopeElement.location))
   }
 }
