@@ -41,7 +41,6 @@ class UtilsTest extends Specification {
     "return true for unit spec with title" in {
       Utils.hasTitle(new DummyMutableSpecificationWithTitle) must beTrue
     }
-
   }
 
   "The suiteNameFor() function" should {

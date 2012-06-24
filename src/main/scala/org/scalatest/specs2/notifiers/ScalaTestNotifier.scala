@@ -32,7 +32,7 @@ import org.scalatest.specs2.Utils._
 
 object ScalaTestNotifier {
 
-  val debug = false
+  val debug = true
 
   // A sample Spec2 Location string looks something like:
   // 		classname (file name:line number)
