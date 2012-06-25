@@ -1,41 +1,22 @@
 package org.scalatest.specs2
 
+import org.specs2.reporter.NotifierReporter
+import org.specs2.reporter.DefaultSelection
 import org.scalatest.Distributor
-import org.scalatest.Filter
-import org.scalatest.Reporter
+import org.specs2.specification.SpecificationStructure
 import org.scalatest.Stopper
-import org.scalatest.Style
+import org.scalatest.Reporter
 import org.scalatest.Suite
+import org.specs2.main.Arguments
+import org.scalatest.Style
+import org.scalatest.Filter
 import org.scalatest.Tracker
-import org.specs2.Specs2Bridge._
-import org.specs2.main.Arguments
-import org.specs2.mutable.Specification
-import org.specs2.specification.Action
-import org.specs2.specification.Example
-import org.specs2.specification.SpecificationStructure
-import org.specs2.specification.Step
-import org.specs2.text.MarkupString
-import org.scalatest.Resources
-import org.specs2.specification.SpecStart
-import org.specs2.specification.Text
-import org.specs2.specification.SpecEnd
-import org.specs2.specification.SpecStart
-import org.specs2.specification.FragmentExecution
-import org.specs2.specification.ExecutedFragment
-import org.specs2.specification.ExecutingSpecification
-import org.specs2.main.Arguments
-import org.specs2.specification.ExecutedResult
-import scala.reflect.NameTransformer
-import org.specs2.specification.ExecutedResult
-import org.specs2.specification.ExecutedFragment
-import org.specs2.specification.Fragments._
-import org.specs2.runner.{ NotifierRunner, JUnitDescriptionsFragments }
-import org.specs2.execute.Details
-import org.specs2.reporter.{ NotifierReporter, Notifier, DefaultSelection }
-import org.scalatest.events._
-import org.specs2.specification.SpecificationStructure
-import org.specs2.reflect.Classes
+import org.scalatest.events.InfoProvided
 import org.scalatest.specs2.notifiers.ScalaTestNotifier
+import org.specs2.Specs2Bridge._
+import org.scalatest.Resources
+import org.scalatest.events.NameInfo
+import org.specs2.specification.Fragments
 
 /**
  * The central concept in ScalaTest is the suite, a collection of zero to many tests.
@@ -102,7 +83,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     val selection = new DefaultSelection {}
 
     // There are methods in the Fragments object to filter specific fragments, like isAnExample
-    selection.select(arguments)(spec2).fragments.collect(isAnExample).size
+    selection.select(arguments)(spec2).fragments.collect(Fragments.isAnExample).size
   }
 
   override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
