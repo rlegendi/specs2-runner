@@ -21,3 +21,5 @@ resolvers += "Local Maven Repository" at Path.userHome.asURL + "/.m2/repository"
 resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases"  at "http://oss.sonatype.org/content/repositories/releases")
 
+seq(ScctPlugin.scctSettings: _*)
+
