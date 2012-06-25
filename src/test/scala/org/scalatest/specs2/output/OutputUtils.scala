@@ -95,22 +95,23 @@ class TestReporter extends Reporter {
   }
 }
 
-class TestSpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Spec2Runner(specs2Class) {
-  override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
-    configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
-
-    // Note that reporter is unused
-    val usedReporter = new TestReporter()
-    super.run(testName, usedReporter, stopper, filter, configMap, distributor, tracker)
-  }
-}
-
 object OutputUtils {
+  // Had to hide this to prevent continuous OutOfMemory (PermGenSpace) caused by sbt-scct
+  class DummySpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Spec2Runner(specs2Class) {
+    override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
+      configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
+
+      // Note that reporter is unused
+      val usedReporter = new TestReporter()
+      super.run(testName, usedReporter, stopper, filter, configMap, distributor, tracker)
+    }
+  }
+
   def runSpecAndReturnReversedScopeStack(clazz: Class[_ <: SpecificationStructure]) = {
     val defaultRunstamp = 1
     val tracker = new Tracker(new Ordinal(defaultRunstamp))
     val reporter = new TestReporter
-    val runner = new TestSpec2Runner(clazz)
+    val runner = new DummySpec2Runner(clazz)
 
     runner.runSpec2(tracker, reporter, Filter())
     reporter.stack.reverse.foreach(ft => println(ft.lvl + "/" + ft.msg))
