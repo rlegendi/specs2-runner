@@ -47,3 +47,31 @@ Specs2 typos
 ------------
 Result.scala, line 288: "detailled"
 
+Code Coverage
+-------------
+
+* Checked out Scct, http://mtkopone.github.com/scct/
+  Unfortunately, it's quite Scala-Build tool dependant. E.g., the original repo works with only Sbt 0.10.1:
+
+	https://github.com/dvc94ch/sbt-scct
+
+  There's no support for 0.11.x, here's an issue about that:
+
+	https://github.com/dvc94ch/sbt-scct/issues/7
+
+  And it seems that there's no such movement on the project. This issue has been updated by different contributors:
+
+	https://github.com/dvc94ch/sbt-scct/network
+
+  I was able to use dimbleby's fork for the job:
+	
+	https://github.com/dimbleby/sbt-scct
+
+  **Note** This is working only because he shared his personal Maven repo for the required artifacts:
+
+	http://dimbleby.github.com/maven/ch/craven/
+
+  And we needed this specific sbt version:
+
+	http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt_2.9.1/
+
