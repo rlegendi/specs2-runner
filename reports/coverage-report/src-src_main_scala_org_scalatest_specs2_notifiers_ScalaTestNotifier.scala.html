@@ -1,0 +1,1629 @@
+<table class="classes"><tbody><tr>
+      <td class="barContainerLeft"><a href="#">&#x200B;file:/&#x200B;C:/&#x200B;007/&#x200B;work/&#x200B;ws_gsoc_2012/&#x200B;specs2-runner/&#x200B;src/&#x200B;main/&#x200B;scala/&#x200B;org/&#x200B;scalatest/&#x200B;specs2/&#x200B;notifiers/<span class="header">&#x200B;ScalaTestNotifier.scala</span></a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">57 %</div>
+        <div class="greenBar" style="width:114px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_notifiers_ScalaTestNotifier.scala.html#Class_org_scalatest_specs2_notifiers_ScalaTestNotifier"><img src="class.png"></img>ScalaTestNotifier</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">48 %</div>
+        <div class="greenBar" style="width:96px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_notifiers_ScalaTestNotifier.scala.html#Object_org_scalatest_specs2_notifiers_ScalaTestNotifier"><img src="object.png"></img>ScalaTestNotifier</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">94 %</div>
+        <div class="greenBar" style="width:188px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_notifiers_ScalaTestNotifier.scala.html#Class_org_scalatest_specs2_notifiers_ScopeElement"><img src="class.png"></img>ScopeElement</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">100 %</div>
+        <div class="greenBar" style="width:200px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr></tbody></table><table class="source"><tbody><tr>
+            <td class="black">1</td>
+            <td>package org.scalatest.specs2.notifiers
+</td>
+          </tr><tr>
+            <td class="black">2</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">3</td>
+            <td>import ScalaTestNotifier.decodedSuiteNameFor
+</td>
+          </tr><tr>
+            <td class="black">4</td>
+            <td>import ScalaTestNotifier.getDecodedName
+</td>
+          </tr><tr>
+            <td class="black">5</td>
+            <td>import ScalaTestNotifier.loc
+</td>
+          </tr><tr>
+            <td class="black">6</td>
+            <td>import ScalaTestNotifier.rerunnerFor
+</td>
+          </tr><tr>
+            <td class="black">7</td>
+            <td>import ScalaTestNotifier.suiteClassNameFor
+</td>
+          </tr><tr>
+            <td class="black">8</td>
+            <td>import org.scalatest.Reporter
+</td>
+          </tr><tr>
+            <td class="black">9</td>
+            <td>import org.scalatest.Suite
+</td>
+          </tr><tr>
+            <td class="black">10</td>
+            <td>import org.scalatest.Tracker
+</td>
+          </tr><tr>
+            <td class="black">11</td>
+            <td>import org.scalatest.events.InfoProvided
+</td>
+          </tr><tr>
+            <td class="black">12</td>
+            <td>import org.scalatest.events.LineInFile
+</td>
+          </tr><tr>
+            <td class="black">13</td>
+            <td>import org.scalatest.events.Location
+</td>
+          </tr><tr>
+            <td class="black">14</td>
+            <td>import org.scalatest.events.MotionToSuppress
+</td>
+          </tr><tr>
+            <td class="black">15</td>
+            <td>import org.scalatest.events.NameInfo
+</td>
+          </tr><tr>
+            <td class="black">16</td>
+            <td>import org.scalatest.events.ScopeClosed
+</td>
+          </tr><tr>
+            <td class="black">17</td>
+            <td>import org.scalatest.events.ScopeOpened
+</td>
+          </tr><tr>
+            <td class="black">18</td>
+            <td>import org.scalatest.events.TestFailed
+</td>
+          </tr><tr>
+            <td class="black">19</td>
+            <td>import org.scalatest.events.TestIgnored
+</td>
+          </tr><tr>
+            <td class="black">20</td>
+            <td>import org.scalatest.events.TestNameInfo
+</td>
+          </tr><tr>
+            <td class="black">21</td>
+            <td>import org.scalatest.events.TestPending
+</td>
+          </tr><tr>
+            <td class="black">22</td>
+            <td>import org.scalatest.events.TestStarting
+</td>
+          </tr><tr>
+            <td class="black">23</td>
+            <td>import org.scalatest.events.TestSucceeded
+</td>
+          </tr><tr>
+            <td class="black">24</td>
+            <td>import org.specs2.execute.Details
+</td>
+          </tr><tr>
+            <td class="black">25</td>
+            <td>import org.specs2.execute.FailureDetails
+</td>
+          </tr><tr>
+            <td class="black">26</td>
+            <td>import org.specs2.main.Arguments
+</td>
+          </tr><tr>
+            <td class="black">27</td>
+            <td>import org.specs2.reporter.Notifier
+</td>
+          </tr><tr>
+            <td class="black">28</td>
+            <td>import org.specs2.specification.SpecificationStructure
+</td>
+          </tr><tr>
+            <td class="black">29</td>
+            <td>import scala.collection.mutable.Stack
+</td>
+          </tr><tr>
+            <td class="black">30</td>
+            <td>import scala.reflect.NameTransformer
+</td>
+          </tr><tr>
+            <td class="black">31</td>
+            <td>import org.scalatest.specs2.Utils._
+</td>
+          </tr><tr>
+            <td class="black">32</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">33</td>
+            <td><a id="Object_org_scalatest_specs2_notifiers_ScalaTestNotifier"></a>object ScalaTestNotifier {
+</td>
+          </tr><tr>
+            <td class="black">34</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">35</td>
+            <td>  val debug = false
+</td>
+          </tr><tr>
+            <td class="black">36</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">37</td>
+            <td>  // A sample Spec2 Location string looks something like:
+</td>
+          </tr><tr>
+            <td class="black">38</td>
+            <td>  //     classname (file name:line number)
+</td>
+          </tr><tr>
+            <td class="black">39</td>
+            <td>  //
+</td>
+          </tr><tr>
+            <td class="black">40</td>
+            <td>  // e.g.:
+</td>
+          </tr><tr>
+            <td class="black">41</td>
+            <td>  //     org.scalatest.specs2.Spec2Runner (Spec2Runner.scala:164)
+</td>
+          </tr><tr>
+            <td class="black">42</td>
+            <td>  def loc(spec2Loc: String): Option[Location] = {
+</td>
+          </tr><tr>
+            <td class="green">43</td>
+            <td>    require(spec2Loc != null)
+</td>
+          </tr><tr>
+            <td class="black">44</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">45</td>
+            <td>    try {
+</td>
+          </tr><tr>
+            <td class="black">46</td>
+            <td>      // Class name shouldn't contain these, so hopefully we find the opening
+</td>
+          </tr><tr>
+            <td class="green">47</td>
+            <td>      val classNameEndIdx = spec2Loc.indexOf(&quot; (&quot;)
+</td>
+          </tr><tr>
+            <td class="green">48</td>
+            <td>      val className = spec2Loc.substring(0, classNameEndIdx)
+</td>
+          </tr><tr>
+            <td class="black">49</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">50</td>
+            <td>      val colonIdx = spec2Loc.lastIndexOf(&quot;:&quot;)
+</td>
+          </tr><tr>
+            <td class="green">51</td>
+            <td>      val file = spec2Loc.substring(classNameEndIdx + 2 /* colon is skipped */ , colonIdx)
+</td>
+          </tr><tr>
+            <td class="green">52</td>
+            <td>      val line = spec2Loc.substring(colonIdx + 1, spec2Loc.size - 1 /* last ')' is dropped */ ).toInt
+</td>
+          </tr><tr>
+            <td class="black">53</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">54</td>
+            <td>      return Some(LineInFile(line, file))
+</td>
+          </tr><tr>
+            <td class="black">55</td>
+            <td>    } catch {
+</td>
+          </tr><tr>
+            <td class="green">56</td>
+            <td>      case _ =&gt; return None
+</td>
+          </tr><tr>
+            <td class="black">57</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">58</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">59</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">60</td>
+            <td>  // The suiteNameFor and suiteIdFor functions are placed into a Utils object because they are needed elsewhere too
+</td>
+          </tr><tr>
+            <td class="black">61</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">62</td>
+            <td>  def suiteClassNameFor(spec: SpecificationStructure): Option[String] = {
+</td>
+          </tr><tr>
+            <td class="green">63</td>
+            <td>    Some(spec.getClass.getName)
+</td>
+          </tr><tr>
+            <td class="black">64</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">65</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">66</td>
+            <td>  def rerunnerFor(spec: SpecificationStructure): Option[String] = {
+</td>
+          </tr><tr>
+            <td class="green">67</td>
+            <td>    suiteClassNameFor(spec)
+</td>
+          </tr><tr>
+            <td class="black">68</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">69</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">70</td>
+            <td>  private def decodedSuiteNameFor(spec: SpecificationStructure): Option[String] = {
+</td>
+          </tr><tr>
+            <td class="green">71</td>
+            <td>    val name = spec.getClass.getSimpleName
+</td>
+          </tr><tr>
+            <td class="green">72</td>
+            <td>    getDecodedName(name)
+</td>
+          </tr><tr>
+            <td class="black">73</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">74</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">75</td>
+            <td>  private def getDecodedName(name: String): Option[String] = {
+</td>
+          </tr><tr>
+            <td class="green">76</td>
+            <td>    val decoded = NameTransformer.decode(name)
+</td>
+          </tr><tr>
+            <td class="yellow">77</td>
+            <td>    if (decoded == name) None else <span class="non">Some(decoded)
+</span></td>
+          </tr><tr>
+            <td class="black">78</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">79</td>
+            <td>}
+</td>
+          </tr><tr>
+            <td class="black">80</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">81</td>
+            <td>/**
+</td>
+          </tr><tr>
+            <td class="black">82</td>
+            <td> * Simple utility class for handling the scope elements.
+</td>
+          </tr><tr>
+            <td class="black">83</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">84</td>
+            <td> * @author rlegendi
+</td>
+          </tr><tr>
+            <td class="black">85</td>
+            <td> */
+</td>
+          </tr><tr>
+            <td class="green">86</td>
+            <td><a id="Class_org_scalatest_specs2_notifiers_ScopeElement"></a>case class ScopeElement(val name: String, val location: Option[Location])
+</td>
+          </tr><tr>
+            <td class="black">87</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">88</td>
+            <td>import ScalaTestNotifier._
+</td>
+          </tr><tr>
+            <td class="black">89</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">90</td>
+            <td>/**
+</td>
+          </tr><tr>
+            <td class="black">91</td>
+            <td> * &lt;b&gt;Note&lt;/b&gt; This implementation &lt;b&gt;is not thread-safe&lt;/b&gt;! It depends on a scope stack
+</td>
+          </tr><tr>
+            <td class="black">92</td>
+            <td> * which should not be used concurrently.
+</td>
+          </tr><tr>
+            <td class="black">93</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">94</td>
+            <td> * @author rlegendi
+</td>
+          </tr><tr>
+            <td class="black">95</td>
+            <td> */
+</td>
+          </tr><tr>
+            <td class="green">96</td>
+            <td><a id="Class_org_scalatest_specs2_notifiers_ScalaTestNotifier"></a>class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
+</td>
+          </tr><tr>
+            <td class="black">97</td>
+            <td>  val tracker: Tracker, val reporter: Reporter) extends Notifier {
+</td>
+          </tr><tr>
+            <td class="black">98</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">99</td>
+            <td>  // --------------------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">100</td>
+            <td>  // --- Members --------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">101</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">102</td>
+            <td>  val suiteStack: Stack[ScopeElement] = Stack()
+</td>
+          </tr><tr>
+            <td class="black">103</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">104</td>
+            <td>  private var indentLevel: Int = 0
+</td>
+          </tr><tr>
+            <td class="black">105</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">106</td>
+            <td>  // --------------------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">107</td>
+            <td>  // --- Scope handling -------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">108</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">109</td>
+            <td>  def scopeOpened(name: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="black">110</td>
+            <td>    // TODO Requires... in the whole file
+</td>
+          </tr><tr>
+            <td class="green">111</td>
+            <td>    suiteStack.push(new ScopeElement(name, loc(location)))
+</td>
+          </tr><tr>
+            <td class="black">112</td>
+            <td>    // Ignore the first scope, which is same as the suiteName
+</td>
+          </tr><tr>
+            <td class="green">113</td>
+            <td>    if (1 == suiteStack.size) {
+</td>
+          </tr><tr>
+            <td class="green">114</td>
+            <td>      return
+</td>
+          </tr><tr>
+            <td class="black">115</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">116</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">117</td>
+            <td>    val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
+</td>
+          </tr><tr>
+            <td class="green">118</td>
+            <td>    reporter(ScopeOpened(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
+</td>
+          </tr><tr>
+            <td class="black">119</td>
+            <td>      None, None, Some(formatter), loc(location)))
+</td>
+          </tr><tr>
+            <td class="black">120</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">121</td>
+            <td>    indentLevel += 1
+</td>
+          </tr><tr>
+            <td class="black">122</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">123</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">124</td>
+            <td>  def scopeClosed(name: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">125</td>
+            <td>    suiteStack.pop
+</td>
+          </tr><tr>
+            <td class="black">126</td>
+            <td>    // Closing the top-level scope would terminate the run, interrupting the execution of
+</td>
+          </tr><tr>
+            <td class="black">127</td>
+            <td>    // multiple specs in the same file
+</td>
+          </tr><tr>
+            <td class="black">128</td>
+            <td>    // TODO But needs to be verified :-)
+</td>
+          </tr><tr>
+            <td class="green">129</td>
+            <td>    if (0 == suiteStack.size) {
+</td>
+          </tr><tr>
+            <td class="green">130</td>
+            <td>      return
+</td>
+          </tr><tr>
+            <td class="black">131</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">132</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">133</td>
+            <td>    val formatter = Suite.getIndentedTextForInfo(name, indentLevel, false, false)
+</td>
+          </tr><tr>
+            <td class="green">134</td>
+            <td>    reporter(ScopeClosed(tracker.nextOrdinal, name, NameInfo(name, suiteClassNameFor(spec), Some(name)),
+</td>
+          </tr><tr>
+            <td class="black">135</td>
+            <td>      None, None, Some(MotionToSuppress), loc(location)))
+</td>
+          </tr><tr>
+            <td class="black">136</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">137</td>
+            <td>    indentLevel -= 1
+</td>
+          </tr><tr>
+            <td class="black">138</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">139</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">140</td>
+            <td>  def specStart(title: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">141</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">142</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; specStart: &quot; + title + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">143</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">144</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">145</td>
+            <td>    scopeOpened(title, location)
+</td>
+          </tr><tr>
+            <td class="black">146</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">147</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">148</td>
+            <td>  def specEnd(title: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">149</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">150</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; specEnd: &quot; + title + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">151</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">152</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">153</td>
+            <td>    scopeClosed(title, location)
+</td>
+          </tr><tr>
+            <td class="black">154</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">155</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">156</td>
+            <td>  def contextStart(text: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">157</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">158</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; contextStart: &quot; + text + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">159</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">160</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">161</td>
+            <td>    scopeOpened(text, location)
+</td>
+          </tr><tr>
+            <td class="black">162</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">163</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">164</td>
+            <td>  def contextEnd(text: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">165</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">166</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; contextEnd: &quot; + text + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">167</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">168</td>
+            <td>    
+</td>
+          </tr><tr>
+            <td class="green">169</td>
+            <td>    scopeClosed(text, location);
+</td>
+          </tr><tr>
+            <td class="black">170</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">171</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">172</td>
+            <td>  // --------------------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">173</td>
+            <td>  // --- Specific events ------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">174</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">175</td>
+            <td>  def text(text: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">176</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">177</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; text: &quot; + text + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">178</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">179</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">180</td>
+            <td>    val formatter = Suite.getIndentedText(text, indentLevel, true) // getIndentedTextForInfo with infoIsInsideATest = 1
+</td>
+          </tr><tr>
+            <td class="green">181</td>
+            <td>    reporter(InfoProvided(
+</td>
+          </tr><tr>
+            <td class="black">182</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">183</td>
+            <td>      message = text,
+</td>
+          </tr><tr>
+            <td class="black">184</td>
+            <td>      nameInfo = Some(NameInfo(
+</td>
+          </tr><tr>
+            <td class="black">185</td>
+            <td>        suiteName = suiteStack.head.name,
+</td>
+          </tr><tr>
+            <td class="black">186</td>
+            <td>        suiteID = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">187</td>
+            <td>        suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">188</td>
+            <td>        decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">189</td>
+            <td>        testName = getNameInfo())),
+</td>
+          </tr><tr>
+            <td class="black">190</td>
+            <td>      aboutAPendingTest = None, // Option[Boolean]
+</td>
+          </tr><tr>
+            <td class="black">191</td>
+            <td>      aboutACanceledTest = None, // Option[Boolean]
+</td>
+          </tr><tr>
+            <td class="black">192</td>
+            <td>      throwable = None, // Option[Throwable]
+</td>
+          </tr><tr>
+            <td class="black">193</td>
+            <td>      formatter = Some(formatter),
+</td>
+          </tr><tr>
+            <td class="black">194</td>
+            <td>      location = loc(location)))
+</td>
+          </tr><tr>
+            <td class="black">195</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">196</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">197</td>
+            <td>  def getNameInfo(): Option[TestNameInfo] = {
+</td>
+          </tr><tr>
+            <td class="black">198</td>
+            <td>    /*
+</td>
+          </tr><tr>
+            <td class="black">199</td>
+            <td>    suiteStack.head match {
+</td>
+          </tr><tr>
+            <td class="black">200</td>
+            <td>      case s @ TestScope(_, testName) =&gt; Some(TestNameInfo(testName, getDecodedName(testName)))
+</td>
+          </tr><tr>
+            <td class="black">201</td>
+            <td>      case s @ SuiteScope(_) =&gt; None
+</td>
+          </tr><tr>
+            <td class="black">202</td>
+            <td>      case _ =&gt; None
+</td>
+          </tr><tr>
+            <td class="black">203</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">204</td>
+            <td>    */
+</td>
+          </tr><tr>
+            <td class="green">205</td>
+            <td>    None
+</td>
+          </tr><tr>
+            <td class="black">206</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">207</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">208</td>
+            <td>  private def testStarted(name: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">209</td>
+            <td>    suiteStack.push(new ScopeElement(name, loc(location)))
+</td>
+          </tr><tr>
+            <td class="black">210</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">211</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">212</td>
+            <td>  private def testEnded(): ScopeElement = {
+</td>
+          </tr><tr>
+            <td class="green">213</td>
+            <td>    suiteStack.pop
+</td>
+          </tr><tr>
+            <td class="black">214</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">215</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">216</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">217</td>
+            <td>   * This is required because two examples might have the same name, e.g.:
+</td>
+          </tr><tr>
+            <td class="black">218</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">219</td>
+            <td>   * &lt;code&gt;
+</td>
+          </tr><tr>
+            <td class="black">220</td>
+            <td>   * class SameNamesSpecs extends Specification {
+</td>
+          </tr><tr>
+            <td class="black">221</td>
+            <td>   *   &quot;One&quot; should {
+</td>
+          </tr><tr>
+            <td class="black">222</td>
+            <td>   *     &quot;a&quot; in {
+</td>
+          </tr><tr>
+            <td class="black">223</td>
+            <td>   *       success
+</td>
+          </tr><tr>
+            <td class="black">224</td>
+            <td>   *     }
+</td>
+          </tr><tr>
+            <td class="black">225</td>
+            <td>   *   }
+</td>
+          </tr><tr>
+            <td class="black">226</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">227</td>
+            <td>   *   &quot;Other&quot; should {
+</td>
+          </tr><tr>
+            <td class="black">228</td>
+            <td>   *     &quot;a&quot; in {
+</td>
+          </tr><tr>
+            <td class="black">229</td>
+            <td>   *       success
+</td>
+          </tr><tr>
+            <td class="black">230</td>
+            <td>   *     }
+</td>
+          </tr><tr>
+            <td class="black">231</td>
+            <td>   *   }
+</td>
+          </tr><tr>
+            <td class="black">232</td>
+            <td>   * }
+</td>
+          </tr><tr>
+            <td class="black">233</td>
+            <td>   * &lt;/code&gt;
+</td>
+          </tr><tr>
+            <td class="black">234</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">235</td>
+            <td>   * In this case, &lt;code&gt;&quot;a&quot;&lt;/code&gt; reported correctly, but the line numbers
+</td>
+          </tr><tr>
+            <td class="black">236</td>
+            <td>   * are messed up (since the latter rewrites the previous object with the
+</td>
+          </tr><tr>
+            <td class="black">237</td>
+            <td>   * same name).
+</td>
+          </tr><tr>
+            <td class="black">238</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">239</td>
+            <td>   * @param name the name of the test
+</td>
+          </tr><tr>
+            <td class="black">240</td>
+            <td>   * @return a simple list containing a textual representation of the path
+</td>
+          </tr><tr>
+            <td class="black">241</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="black">242</td>
+            <td>  private def testNameFor(name: String): String = {
+</td>
+          </tr><tr>
+            <td class="green">243</td>
+            <td>    suiteStack.foldLeft(name + &quot;: &quot;)((cum, act) =&gt; cum + &quot;, &quot; +
+</td>
+          </tr><tr>
+            <td class="black">244</td>
+            <td>      act.name + &quot;@&quot; + act.location)
+</td>
+          </tr><tr>
+            <td class="black">245</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">246</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">247</td>
+            <td>  def exampleStarted(name: String, location: String): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">248</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">249</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; exampleStarted: &quot; + name + &quot;@&quot; + location)
+</span></td>
+          </tr><tr>
+            <td class="black">250</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">251</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">252</td>
+            <td>    testStarted(name, location)
+</td>
+          </tr><tr>
+            <td class="green">253</td>
+            <td>    val testName = testNameFor(name) // Must be evaluated *after* the test started
+</td>
+          </tr><tr>
+            <td class="black">254</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">255</td>
+            <td>    reporter(TestStarting(
+</td>
+          </tr><tr>
+            <td class="black">256</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">257</td>
+            <td>      suiteName = suiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">258</td>
+            <td>      suiteId = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">259</td>
+            <td>      suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">260</td>
+            <td>      decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">261</td>
+            <td>      testName = testName,
+</td>
+          </tr><tr>
+            <td class="black">262</td>
+            <td>      testText = name,
+</td>
+          </tr><tr>
+            <td class="black">263</td>
+            <td>      decodedTestName = getDecodedName(name),
+</td>
+          </tr><tr>
+            <td class="black">264</td>
+            <td>      formatter = Some(MotionToSuppress), // Note suppressed event - this is what we want here! See Scaladoc of Formatter
+</td>
+          </tr><tr>
+            <td class="black">265</td>
+            <td>      location = loc(location),
+</td>
+          </tr><tr>
+            <td class="black">266</td>
+            <td>      rerunner = rerunnerFor(spec)))
+</td>
+          </tr><tr>
+            <td class="black">267</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">268</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">269</td>
+            <td>  def exampleSuccess(name: String, duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">270</td>
+            <td>    if (debug) {
+</td>
+          </tr><tr>
+            <td class="red">271</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; exampleSuccess: &quot; + name + &quot;, t=&quot; + duration)
+</span></td>
+          </tr><tr>
+            <td class="black">272</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">273</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">274</td>
+            <td>    val testName = testNameFor(name)
+</td>
+          </tr><tr>
+            <td class="green">275</td>
+            <td>    val actScopeElement = testEnded()
+</td>
+          </tr><tr>
+            <td class="black">276</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">277</td>
+            <td>    val formatter = Suite.getIndentedText(name, indentLevel, true)
+</td>
+          </tr><tr>
+            <td class="green">278</td>
+            <td>    reporter(TestSucceeded(
+</td>
+          </tr><tr>
+            <td class="black">279</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">280</td>
+            <td>      suiteName = suiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">281</td>
+            <td>      suiteId = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">282</td>
+            <td>      suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">283</td>
+            <td>      decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">284</td>
+            <td>      testName = testName,
+</td>
+          </tr><tr>
+            <td class="black">285</td>
+            <td>      testText = name,
+</td>
+          </tr><tr>
+            <td class="black">286</td>
+            <td>      decodedTestName = getDecodedName(name),
+</td>
+          </tr><tr>
+            <td class="black">287</td>
+            <td>      duration = Some(duration),
+</td>
+          </tr><tr>
+            <td class="black">288</td>
+            <td>      formatter = Some(formatter),
+</td>
+          </tr><tr>
+            <td class="black">289</td>
+            <td>      location = actScopeElement.location))
+</td>
+          </tr><tr>
+            <td class="black">290</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">291</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">292</td>
+            <td>  private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="red">293</td>
+            <td>    if (<span class="non">debug) {
+</span></td>
+          </tr><tr>
+            <td class="red">294</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; testFailed: &quot; + name + &quot;, &quot; + message + &quot;, &quot; + location + &quot;, &quot; + f + &quot;, &quot; + details + &quot;, &quot; + duration)
+</span></td>
+          </tr><tr>
+            <td class="black">295</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">296</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">297</td>
+            <td>    // We do not use the actual test location, because a test might contain multiple assertions, and any of them might fail
+</td>
+          </tr><tr>
+            <td class="black">298</td>
+            <td>    // It is more specific if we can report the exact example which is erroreous
+</td>
+          </tr><tr>
+            <td class="red">299</td>
+            <td>    val testName = <span class="non">testNameFor(name)
+</span></td>
+          </tr><tr>
+            <td class="red">300</td>
+            <td>    <span class="non">testEnded()
+</span></td>
+          </tr><tr>
+            <td class="black">301</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">302</td>
+            <td>    val formatter = <span class="non">Suite.getIndentedText(name, indentLevel, true)
+</span></td>
+          </tr><tr>
+            <td class="black">303</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">304</td>
+            <td>    // Any better way to do this? What if a new Details subclass is introduced?
+</td>
+          </tr><tr>
+            <td class="black">305</td>
+            <td>    // And its a bit against readability, is there anyway how I can make it a bit cleaner?
+</td>
+          </tr><tr>
+            <td class="red">306</td>
+            <td>    val reason = <span class="non">details.getOrElse(name + &quot;testText&quot;) match {
+</span></td>
+          </tr><tr>
+            <td class="red">307</td>
+            <td>      case FailureDetails(expected, actual) if (<span class="non">args.diffs.show(expected, actual)) =&gt; {
+</span></td>
+          </tr><tr>
+            <td class="red">308</td>
+            <td>        val (<span class="non">expectedDiff, actualDiff) = args.diffs.showDiffs(expected, actual)
+</span></td>
+          </tr><tr>
+            <td class="red">309</td>
+            <td>        var ret = <span class="non">&quot;Expected: &quot; + expectedDiff + &quot;, Actual: &quot; + actualDiff
+</span></td>
+          </tr><tr>
+            <td class="red">310</td>
+            <td>        if (<span class="non">args.diffs.showFull) {
+</span></td>
+          </tr><tr>
+            <td class="red">311</td>
+            <td>          <span class="non">ret += EoL
+</span></td>
+          </tr><tr>
+            <td class="red">312</td>
+            <td>          <span class="non">ret += &quot;Expected (full): &quot; + expected + EoL
+</span></td>
+          </tr><tr>
+            <td class="red">313</td>
+            <td>          <span class="non">ret += &quot;Actual (full):   &quot; + actual
+</span></td>
+          </tr><tr>
+            <td class="black">314</td>
+            <td>        }
+</td>
+          </tr><tr>
+            <td class="red">315</td>
+            <td>        <span class="non">ret
+</span></td>
+          </tr><tr>
+            <td class="black">316</td>
+            <td>      }
+</td>
+          </tr><tr>
+            <td class="red">317</td>
+            <td>      case _ =&gt; <span class="non">&quot;&quot;
+</span></td>
+          </tr><tr>
+            <td class="black">318</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">319</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">320</td>
+            <td>    <span class="non">reporter(TestFailed(
+</span></td>
+          </tr><tr>
+            <td class="black">321</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">322</td>
+            <td>      message = message,
+</td>
+          </tr><tr>
+            <td class="black">323</td>
+            <td>      suiteName = suiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">324</td>
+            <td>      suiteId = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">325</td>
+            <td>      suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">326</td>
+            <td>      decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">327</td>
+            <td>      testName = testName,
+</td>
+          </tr><tr>
+            <td class="black">328</td>
+            <td>      testText = name + &quot;: &quot; + reason,
+</td>
+          </tr><tr>
+            <td class="black">329</td>
+            <td>      decodedTestName = Some(name),
+</td>
+          </tr><tr>
+            <td class="black">330</td>
+            <td>      throwable = Some(f),
+</td>
+          </tr><tr>
+            <td class="black">331</td>
+            <td>      duration = Some(duration),
+</td>
+          </tr><tr>
+            <td class="black">332</td>
+            <td>      formatter = Some(formatter),
+</td>
+          </tr><tr>
+            <td class="black">333</td>
+            <td>      location = loc(location),
+</td>
+          </tr><tr>
+            <td class="black">334</td>
+            <td>      rerunner = rerunnerFor(spec)))
+</td>
+          </tr><tr>
+            <td class="black">335</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">336</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">337</td>
+            <td>  def exampleFailure(name: String, message: String, location: String, f: Throwable, details: Details, duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="red">338</td>
+            <td>    if (<span class="non">debug) {
+</span></td>
+          </tr><tr>
+            <td class="red">339</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; exampleFailure: &quot; + name + &quot;, t=&quot; + message)
+</span></td>
+          </tr><tr>
+            <td class="black">340</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">341</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">342</td>
+            <td>    <span class="non">testFailed(name, message, location, f, Some(details), duration)
+</span></td>
+          </tr><tr>
+            <td class="black">343</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">344</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">345</td>
+            <td>  def exampleError(name: String, message: String, location: String, f: Throwable, duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="red">346</td>
+            <td>    if (<span class="non">debug) {
+</span></td>
+          </tr><tr>
+            <td class="red">347</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; exampleError: &quot; + name + &quot;, t=&quot; + message)
+</span></td>
+          </tr><tr>
+            <td class="black">348</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">349</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">350</td>
+            <td>    // TODO Is there any way to report a test error without a suite error? Do I even need it?
+</td>
+          </tr><tr>
+            <td class="red">351</td>
+            <td>    <span class="non">testFailed(name, message, location, f, None, duration)
+</span></td>
+          </tr><tr>
+            <td class="black">352</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">353</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">354</td>
+            <td>  // Note 1: duration cannot be reported in the standard ways through TestIgnored
+</td>
+          </tr><tr>
+            <td class="black">355</td>
+            <td>  def exampleSkipped(name: String, message: String, duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="red">356</td>
+            <td>    if (<span class="non">debug) {
+</span></td>
+          </tr><tr>
+            <td class="red">357</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; exampleSkipped: &quot; + name + &quot;, t=&quot; + message)
+</span></td>
+          </tr><tr>
+            <td class="black">358</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">359</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">360</td>
+            <td>    val testName = <span class="non">testNameFor(name)
+</span></td>
+          </tr><tr>
+            <td class="red">361</td>
+            <td>    val actScopeElement = <span class="non">testEnded()
+</span></td>
+          </tr><tr>
+            <td class="red">362</td>
+            <td>    val formatter = <span class="non">Suite.getIndentedText(name, indentLevel, true)
+</span></td>
+          </tr><tr>
+            <td class="black">363</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">364</td>
+            <td>    <span class="non">reporter(TestIgnored(
+</span></td>
+          </tr><tr>
+            <td class="black">365</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">366</td>
+            <td>      suiteName = suiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">367</td>
+            <td>      suiteId = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">368</td>
+            <td>      suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">369</td>
+            <td>      decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">370</td>
+            <td>      testName = testName,
+</td>
+          </tr><tr>
+            <td class="black">371</td>
+            <td>      testText = name + &quot;: &quot; + message,
+</td>
+          </tr><tr>
+            <td class="black">372</td>
+            <td>      decodedTestName = Some(name),
+</td>
+          </tr><tr>
+            <td class="black">373</td>
+            <td>      formatter = Some(formatter),
+</td>
+          </tr><tr>
+            <td class="black">374</td>
+            <td>      location = actScopeElement.location))
+</td>
+          </tr><tr>
+            <td class="black">375</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">376</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">377</td>
+            <td>  def examplePending(name: String, message: String, duration: Long): Unit = {
+</td>
+          </tr><tr>
+            <td class="red">378</td>
+            <td>    if (<span class="non">debug) {
+</span></td>
+          </tr><tr>
+            <td class="red">379</td>
+            <td>      <span class="non">println(&quot;&gt;&gt;&gt; examplePending: &quot; + name + &quot;, t=&quot; + message)
+</span></td>
+          </tr><tr>
+            <td class="black">380</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">381</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">382</td>
+            <td>    val testName = <span class="non">testNameFor(name)
+</span></td>
+          </tr><tr>
+            <td class="red">383</td>
+            <td>    val actScopeElement = <span class="non">testEnded()
+</span></td>
+          </tr><tr>
+            <td class="red">384</td>
+            <td>    val formatter = <span class="non">Suite.getIndentedText(name, indentLevel, true)
+</span></td>
+          </tr><tr>
+            <td class="black">385</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">386</td>
+            <td>    <span class="non">reporter(TestPending(
+</span></td>
+          </tr><tr>
+            <td class="black">387</td>
+            <td>      ordinal = tracker.nextOrdinal(),
+</td>
+          </tr><tr>
+            <td class="black">388</td>
+            <td>      suiteName = suiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">389</td>
+            <td>      suiteId = suiteIdFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">390</td>
+            <td>      suiteClassName = suiteClassNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">391</td>
+            <td>      decodedSuiteName = decodedSuiteNameFor(spec),
+</td>
+          </tr><tr>
+            <td class="black">392</td>
+            <td>      testName = testName,
+</td>
+          </tr><tr>
+            <td class="black">393</td>
+            <td>      testText = name + &quot;: &quot; + message,
+</td>
+          </tr><tr>
+            <td class="black">394</td>
+            <td>      decodedTestName = Some(name),
+</td>
+          </tr><tr>
+            <td class="black">395</td>
+            <td>      duration = Some(duration),
+</td>
+          </tr><tr>
+            <td class="black">396</td>
+            <td>      formatter = Some(formatter),
+</td>
+          </tr><tr>
+            <td class="black">397</td>
+            <td>      location = actScopeElement.location))
+</td>
+          </tr><tr>
+            <td class="black">398</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">399</td>
+            <td>}
+</td>
+          </tr></tbody></table>

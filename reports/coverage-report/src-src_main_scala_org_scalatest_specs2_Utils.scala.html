@@ -1,0 +1,393 @@
+<table class="classes"><tbody><tr>
+      <td class="barContainerLeft"><a href="#">&#x200B;file:/&#x200B;C:/&#x200B;007/&#x200B;work/&#x200B;ws_gsoc_2012/&#x200B;specs2-runner/&#x200B;src/&#x200B;main/&#x200B;scala/&#x200B;org/&#x200B;scalatest/&#x200B;specs2/<span class="header">&#x200B;Utils.scala</span></a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">100 %</div>
+        <div class="greenBar" style="width:200px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_Utils.scala.html#Object_org_scalatest_specs2_Utils"><img src="object.png"></img>Utils</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">100 %</div>
+        <div class="greenBar" style="width:200px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr></tbody></table><table class="source"><tbody><tr>
+            <td class="black">1</td>
+            <td>package org.scalatest.specs2
+</td>
+          </tr><tr>
+            <td class="black">2</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">3</td>
+            <td>import org.specs2.Specification
+</td>
+          </tr><tr>
+            <td class="black">4</td>
+            <td>import org.specs2.specification.SpecificationStructure
+</td>
+          </tr><tr>
+            <td class="black">5</td>
+            <td>import scala.collection.immutable.Stack
+</td>
+          </tr><tr>
+            <td class="black">6</td>
+            <td>import org.scalatest.specs2.notifiers.ScopeElement
+</td>
+          </tr><tr>
+            <td class="black">7</td>
+            <td>import scala.collection.LinearSeq
+</td>
+          </tr><tr>
+            <td class="black">8</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">9</td>
+            <td>/**
+</td>
+          </tr><tr>
+            <td class="black">10</td>
+            <td> * A set of constants and minimal utility functions.
+</td>
+          </tr><tr>
+            <td class="black">11</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">12</td>
+            <td> * @author rlegendi
+</td>
+          </tr><tr>
+            <td class="black">13</td>
+            <td> */
+</td>
+          </tr><tr>
+            <td class="black">14</td>
+            <td><a id="Object_org_scalatest_specs2_Utils"></a>object Utils {
+</td>
+          </tr><tr>
+            <td class="black">15</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">16</td>
+            <td>  // --------------------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">17</td>
+            <td>  // --- Constants ------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">18</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">19</td>
+            <td>  /** Dedicated constant for &lt;i&gt;End of Line&lt;/i&gt;. */
+</td>
+          </tr><tr>
+            <td class="green">20</td>
+            <td>  val EoL = sys.props(&quot;line.separator&quot;)
+</td>
+          </tr><tr>
+            <td class="black">21</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">22</td>
+            <td>  // --------------------------------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">23</td>
+            <td>  // --- Specs2 Utilities -----------------------------------------------------
+</td>
+          </tr><tr>
+            <td class="black">24</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">25</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">26</td>
+            <td>   * Checks if the given specification has an assigned title.
+</td>
+          </tr><tr>
+            <td class="black">27</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">28</td>
+            <td>   * @param spec either an acceptance specification or a mutable (unit) specification;
+</td>
+          </tr><tr>
+            <td class="black">29</td>
+            <td>   *         &lt;i&gt;cannot be null&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">30</td>
+            <td>   * @return &lt;code&gt;true&lt;/code&gt; if the specification is assigned a title (e.g., with the &lt;code&gt;&quot;...&quot;.title&lt;/code&gt; notation);
+</td>
+          </tr><tr>
+            <td class="black">31</td>
+            <td>   *         &lt;code&gt;false&lt;/code&gt; otherwise
+</td>
+          </tr><tr>
+            <td class="black">32</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="black">33</td>
+            <td>  def hasTitle(spec: SpecificationStructure): Boolean = {
+</td>
+          </tr><tr>
+            <td class="green">34</td>
+            <td>    require(spec != null)
+</td>
+          </tr><tr>
+            <td class="black">35</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">36</td>
+            <td>    // We exploit the representation here, should be covered with tests to catch if changes
+</td>
+          </tr><tr>
+            <td class="green">37</td>
+            <td>    spec.identification.title != spec.identification.name
+</td>
+          </tr><tr>
+            <td class="black">38</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">39</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">40</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">41</td>
+            <td>   * Creates a nice suite name for the given specs2 specification instance.
+</td>
+          </tr><tr>
+            <td class="black">42</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">43</td>
+            <td>   * &lt;p&gt;
+</td>
+          </tr><tr>
+            <td class="black">44</td>
+            <td>   * The suite name is used to display on the &lt;i&gt;ScalaTest View&lt;/i&gt;.
+</td>
+          </tr><tr>
+            <td class="black">45</td>
+            <td>   * &lt;/p&gt;
+</td>
+          </tr><tr>
+            <td class="black">46</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">47</td>
+            <td>   * &lt;p&gt;
+</td>
+          </tr><tr>
+            <td class="black">48</td>
+            <td>   * The specification title is more appropriate than the class name for a
+</td>
+          </tr><tr>
+            <td class="black">49</td>
+            <td>   * &lt;code&gt;suiteName&lt;/code&gt; because the user can specify a more readable name
+</td>
+          </tr><tr>
+            <td class="black">50</td>
+            <td>   * for a specification, so it is accessed as a first try.
+</td>
+          </tr><tr>
+            <td class="black">51</td>
+            <td>   * &lt;/p&gt;
+</td>
+          </tr><tr>
+            <td class="black">52</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">53</td>
+            <td>   * @param spec either an acceptance specification or a mutable (unit) specification;
+</td>
+          </tr><tr>
+            <td class="black">54</td>
+            <td>   *         &lt;i&gt;cannot be null&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">55</td>
+            <td>   * @return the &lt;i&gt;title&lt;/i&gt; of the specification if it was set by the user;
+</td>
+          </tr><tr>
+            <td class="black">56</td>
+            <td>   *         &lt;b&gt;or&lt;/b&gt; a bit decorated version of the name of the given
+</td>
+          </tr><tr>
+            <td class="black">57</td>
+            <td>   *         &lt;code&gt;spec&lt;/code&gt; (if applicable)
+</td>
+          </tr><tr>
+            <td class="black">58</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="black">59</td>
+            <td>  def suiteNameFor(spec: SpecificationStructure): String = {
+</td>
+          </tr><tr>
+            <td class="green">60</td>
+            <td>    require(spec != null)
+</td>
+          </tr><tr>
+            <td class="black">61</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">62</td>
+            <td>    if (hasTitle(spec)) {
+</td>
+          </tr><tr>
+            <td class="green">63</td>
+            <td>      return spec.identification.title
+</td>
+          </tr><tr>
+            <td class="black">64</td>
+            <td>    } else {
+</td>
+          </tr><tr>
+            <td class="green">65</td>
+            <td>      val baseName = spec.identification.name
+</td>
+          </tr><tr>
+            <td class="black">66</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">67</td>
+            <td>      if (spec.isInstanceOf[Specification]) {
+</td>
+          </tr><tr>
+            <td class="green">68</td>
+            <td>        return baseName + &quot; Acceptance Specification&quot;
+</td>
+          </tr><tr>
+            <td class="green">69</td>
+            <td>      } else if (spec.isInstanceOf[org.specs2.mutable.Specification]) {
+</td>
+          </tr><tr>
+            <td class="green">70</td>
+            <td>        return baseName + &quot; Unit Specification&quot;
+</td>
+          </tr><tr>
+            <td class="black">71</td>
+            <td>      } else {
+</td>
+          </tr><tr>
+            <td class="black">72</td>
+            <td>        // Nothing should fall into this category, but a default value is always good to have
+</td>
+          </tr><tr>
+            <td class="green">73</td>
+            <td>        return baseName + &quot; Specification&quot;
+</td>
+          </tr><tr>
+            <td class="black">74</td>
+            <td>      }
+</td>
+          </tr><tr>
+            <td class="black">75</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">76</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">77</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">78</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">79</td>
+            <td>   * Returns a proper suite Id for the given specification instance that identifies it
+</td>
+          </tr><tr>
+            <td class="black">80</td>
+            <td>   * during the execution of tests within the specification (it is used to fire/handle
+</td>
+          </tr><tr>
+            <td class="black">81</td>
+            <td>   * different ScalaTest Events).
+</td>
+          </tr><tr>
+            <td class="black">82</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">83</td>
+            <td>   * @param spec either an acceptance specification or a mutable (unit) specification;
+</td>
+          </tr><tr>
+            <td class="black">84</td>
+            <td>   *         &lt;i&gt;cannot be null&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">85</td>
+            <td>   * @return the Id used during the execution for ScalaTest for the given &lt;code&gt;spec&lt;/code&gt;
+</td>
+          </tr><tr>
+            <td class="black">86</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="black">87</td>
+            <td>  def suiteIdFor(spec: SpecificationStructure): String = {
+</td>
+          </tr><tr>
+            <td class="green">88</td>
+            <td>    require(spec != null)
+</td>
+          </tr><tr>
+            <td class="black">89</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">90</td>
+            <td>    // TODO Ask Eric 2: Should I use fullName (i.e., decoded name) or javaClassName here?
+</td>
+          </tr><tr>
+            <td class="black">91</td>
+            <td>    //                  fullName seems to have a bit more sense I guess
+</td>
+          </tr><tr>
+            <td class="green">92</td>
+            <td>    spec.identification.fullName
+</td>
+          </tr><tr>
+            <td class="black">93</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">94</td>
+            <td>}
+</td>
+          </tr></tbody></table>

@@ -1,0 +1,241 @@
+<coverage line-rate="0.54">
+  <packages>
+    <package name="org.scalatest" line-rate="0">
+      <classes>
+        <class filename="src/main/scala/org/scalatest/ScalaTestBridge.scala" name="ScalaTestBridge" line-rate="0">
+          <methods></methods>
+          <lines>
+            <line number="5" hits="0"></line>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="org.scalatest.specs2" line-rate="0.90">
+      <classes>
+        <class filename="src/main/scala/org/scalatest/specs2/Spec2Finder.scala" name="Spec2Finder" line-rate="0">
+          <methods></methods>
+          <lines>
+            <line number="12" hits="0"></line>
+            <line number="20" hits="0"></line>
+          </lines>
+        </class>
+        <class filename="src/main/scala/org/scalatest/specs2/Spec2Runner.scala" name="Spec2Runner" line-rate="0.92">
+          <methods></methods>
+          <lines>
+            <line number="35" hits="1"></line>
+            <line number="36" hits="1"></line>
+            <line number="39" hits="1"></line>
+            <line number="53" hits="1"></line>
+            <line number="56" hits="1"></line>
+            <line number="59" hits="1"></line>
+            <line number="75" hits="1"></line>
+            <line number="80" hits="1"></line>
+            <line number="83" hits="1"></line>
+            <line number="86" hits="1"></line>
+            <line number="92" hits="1"></line>
+            <line number="93" hits="1"></line>
+            <line number="94" hits="1"></line>
+            <line number="95" hits="1"></line>
+            <line number="96" hits="1"></line>
+            <line number="97" hits="1"></line>
+            <line number="98" hits="1"></line>
+            <line number="101" hits="1"></line>
+            <line number="103" hits="1"></line>
+            <line number="105" hits="1"></line>
+            <line number="106" hits="0"></line>
+            <line number="112" hits="1"></line>
+            <line number="113" hits="1"></line>
+            <line number="114" hits="1"></line>
+            <line number="117" hits="2"></line>
+            <line number="118" hits="1"></line>
+          </lines>
+        </class>
+        <class filename="src/main/scala/org/scalatest/specs2/Utils.scala" name="Utils" line-rate="1">
+          <methods></methods>
+          <lines>
+            <line number="20" hits="1"></line>
+            <line number="34" hits="1"></line>
+            <line number="37" hits="1"></line>
+            <line number="60" hits="1"></line>
+            <line number="62" hits="1"></line>
+            <line number="63" hits="1"></line>
+            <line number="65" hits="1"></line>
+            <line number="67" hits="1"></line>
+            <line number="68" hits="1"></line>
+            <line number="69" hits="1"></line>
+            <line number="70" hits="1"></line>
+            <line number="73" hits="1"></line>
+            <line number="88" hits="1"></line>
+            <line number="92" hits="1"></line>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="org.scalatest.specs2.notifiers" line-rate="0.50">
+      <classes>
+        <class filename="src/main/scala/org/scalatest/specs2/notifiers/EmptyNotifier.scala" name="EmptyNotifier" line-rate="0">
+          <methods></methods>
+          <lines>
+            <line number="11" hits="0"></line>
+            <line number="13" hits="0"></line>
+            <line number="17" hits="0"></line>
+            <line number="21" hits="0"></line>
+            <line number="25" hits="0"></line>
+            <line number="29" hits="0"></line>
+            <line number="33" hits="0"></line>
+            <line number="37" hits="0"></line>
+            <line number="41" hits="0"></line>
+            <line number="45" hits="0"></line>
+            <line number="49" hits="0"></line>
+            <line number="53" hits="0"></line>
+            <line number="57" hits="0"></line>
+          </lines>
+        </class>
+        <class 
+        filename="src/main/scala/org/scalatest/specs2/notifiers/ScalaTestNotifier.scala" name="ScalaTestNotifier" line-rate="0.48">
+          <methods></methods>
+          <lines>
+            <line number="96" hits="1"></line>
+            <line number="102" hits="1"></line>
+            <line number="104" hits="1"></line>
+            <line number="111" hits="1"></line>
+            <line number="113" hits="1"></line>
+            <line number="114" hits="1"></line>
+            <line number="117" hits="1"></line>
+            <line number="118" hits="1"></line>
+            <line number="121" hits="1"></line>
+            <line number="125" hits="1"></line>
+            <line number="129" hits="1"></line>
+            <line number="130" hits="1"></line>
+            <line number="133" hits="1"></line>
+            <line number="134" hits="1"></line>
+            <line number="137" hits="1"></line>
+            <line number="141" hits="1"></line>
+            <line number="142" hits="0"></line>
+            <line number="145" hits="1"></line>
+            <line number="149" hits="1"></line>
+            <line number="150" hits="0"></line>
+            <line number="153" hits="1"></line>
+            <line number="157" hits="1"></line>
+            <line number="158" hits="0"></line>
+            <line number="161" hits="1"></line>
+            <line number="165" hits="1"></line>
+            <line number="166" hits="0"></line>
+            <line number="169" hits="1"></line>
+            <line number="176" hits="1"></line>
+            <line number="177" hits="0"></line>
+            <line number="180" hits="1"></line>
+            <line number="181" hits="1"></line>
+            <line number="205" hits="1"></line>
+            <line number="209" hits="1"></line>
+            <line number="213" hits="1"></line>
+            <line number="243" hits="2"></line>
+            <line number="248" hits="1"></line>
+            <line number="249" hits="0"></line>
+            <line number="252" hits="1"></line>
+            <line number="253" hits="1"></line>
+            <line number="255" hits="1"></line>
+            <line number="270" hits="1"></line>
+            <line number="271" hits="0"></line>
+            <line number="274" hits="1"></line>
+            <line number="275" hits="1"></line>
+            <line number="277" hits="1"></line>
+            <line number="278" hits="1"></line>
+            <line number="293" hits="0"></line>
+            <line number="294" hits="0"></line>
+            <line number="299" hits="0"></line>
+            <line number="300" hits="0"></line>
+            <line number="302" hits="0"></line>
+            <line number="306" hits="0"></line>
+            <line number="307" hits="0"></line>
+            <line number="308" hits="0"></line>
+            <line number="309" hits="0"></line>
+            <line number="310" hits="0"></line>
+            <line number="311" hits="0"></line>
+            <line number="312" hits="0"></line>
+            <line number="313" hits="0"></line>
+            <line number="315" hits="0"></line>
+            <line number="317" hits="0"></line>
+            <line number="320" hits="0"></line>
+            <line number="338" hits="0"></line>
+            <line number="339" hits="0"></line>
+            <line number="342" hits="0"></line>
+            <line number="346" hits="0"></line>
+            <line number="347" hits="0"></line>
+            <line number="351" hits="0"></line>
+            <line number="356" hits="0"></line>
+            <line number="357" hits="0"></line>
+            <line number="360" hits="0"></line>
+            <line number="361" hits="0"></line>
+            <line number="362" hits="0"></line>
+            <line number="364" hits="0"></line>
+            <line number="378" hits="0"></line>
+            <line number="379" hits="0"></line>
+            <line number="382" hits="0"></line>
+            <line number="383" hits="0"></line>
+            <line number="384" hits="0"></line>
+            <line number="386" hits="0"></line>
+          </lines>
+</class>
+        <class 
+        filename="src/main/scala/org/scalatest/specs2/notifiers/ScalaTestNotifier.scala" name="ScalaTestNotifier" line-rate="0.94">
+          <methods></methods>
+          <lines>
+            <line number="35" hits="1"></line>
+            <line number="43" hits="1"></line>
+            <line number="47" hits="1"></line>
+            <line number="48" hits="1"></line>
+            <line number="50" hits="1"></line>
+            <line number="51" hits="1"></line>
+            <line number="52" hits="1"></line>
+            <line number="54" hits="1"></line>
+            <line number="56" hits="1"></line>
+            <line number="63" hits="1"></line>
+            <line number="67" hits="1"></line>
+            <line number="71" hits="1"></line>
+            <line number="72" hits="1"></line>
+            <line number="76" hits="1"></line>
+            <line number="77" hits="2"></line>
+          </lines>
+</class>
+        <class 
+        filename="src/main/scala/org/scalatest/specs2/notifiers/ScalaTestNotifier.scala" name="ScopeElement" line-rate="1">
+          <methods></methods>
+          <lines>
+            <line number="86" hits="1"></line>
+          </lines>
+</class>
+      </classes>
+    </package>
+    <package name="org.specs2" line-rate="0.083">
+      <classes>
+        <class filename="src/main/scala/org/specs2/Specs2Bridge.scala" name="Specs2Bridge" line-rate="0.083">
+          <methods></methods>
+          <lines>
+            <line number="36" hits="1"></line>
+            <line number="43" hits="1"></line>
+            <line number="46" hits="0"></line>
+            <line number="50" hits="0"></line>
+            <line number="51" hits="0"></line>
+            <line number="62" hits="0"></line>
+            <line number="66" hits="0"></line>
+            <line number="67" hits="0"></line>
+            <line number="71" hits="0"></line>
+            <line number="74" hits="0"></line>
+            <line number="76" hits="0"></line>
+            <line number="78" hits="0"></line>
+            <line number="79" hits="0"></line>
+            <line number="81" hits="0"></line>
+            <line number="110" hits="0"></line>
+            <line number="114" hits="0"></line>
+            <line number="120" hits="0"></line>
+            <line number="125" hits="0"></line>
+            <line number="131" hits="0"></line>
+            <line number="137" hits="0"></line>
+            <line number="141" hits="0"></line>
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

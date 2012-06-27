@@ -1,0 +1,501 @@
+<table class="classes"><tbody><tr>
+      <td class="barContainerLeft"><a href="#">&#x200B;file:/&#x200B;C:/&#x200B;007/&#x200B;work/&#x200B;ws_gsoc_2012/&#x200B;specs2-runner/&#x200B;src/&#x200B;main/&#x200B;scala/&#x200B;org/&#x200B;scalatest/&#x200B;specs2/<span class="header">&#x200B;Spec2Runner.scala</span></a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">92 %</div>
+        <div class="greenBar" style="width:184px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_Spec2Runner.scala.html#Class_org_scalatest_specs2_Spec2Runner"><img src="class.png"></img>Spec2Runner</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">92 %</div>
+        <div class="greenBar" style="width:184px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr></tbody></table><table class="source"><tbody><tr>
+            <td class="black">1</td>
+            <td>package org.scalatest.specs2
+</td>
+          </tr><tr>
+            <td class="black">2</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">3</td>
+            <td>import org.specs2.reporter.NotifierReporter
+</td>
+          </tr><tr>
+            <td class="black">4</td>
+            <td>import org.specs2.reporter.DefaultSelection
+</td>
+          </tr><tr>
+            <td class="black">5</td>
+            <td>import org.scalatest.Distributor
+</td>
+          </tr><tr>
+            <td class="black">6</td>
+            <td>import org.specs2.specification.SpecificationStructure
+</td>
+          </tr><tr>
+            <td class="black">7</td>
+            <td>import org.scalatest.Stopper
+</td>
+          </tr><tr>
+            <td class="black">8</td>
+            <td>import org.scalatest.Reporter
+</td>
+          </tr><tr>
+            <td class="black">9</td>
+            <td>import org.scalatest.Suite
+</td>
+          </tr><tr>
+            <td class="black">10</td>
+            <td>import org.specs2.main.Arguments
+</td>
+          </tr><tr>
+            <td class="black">11</td>
+            <td>import org.scalatest.Style
+</td>
+          </tr><tr>
+            <td class="black">12</td>
+            <td>import org.scalatest.Filter
+</td>
+          </tr><tr>
+            <td class="black">13</td>
+            <td>import org.scalatest.Tracker
+</td>
+          </tr><tr>
+            <td class="black">14</td>
+            <td>import org.scalatest.events.InfoProvided
+</td>
+          </tr><tr>
+            <td class="black">15</td>
+            <td>import org.scalatest.specs2.notifiers.ScalaTestNotifier
+</td>
+          </tr><tr>
+            <td class="black">16</td>
+            <td>import org.specs2.Specs2Bridge._
+</td>
+          </tr><tr>
+            <td class="black">17</td>
+            <td>import org.scalatest.Resources
+</td>
+          </tr><tr>
+            <td class="black">18</td>
+            <td>import org.scalatest.events.NameInfo
+</td>
+          </tr><tr>
+            <td class="black">19</td>
+            <td>import org.specs2.specification.Fragments
+</td>
+          </tr><tr>
+            <td class="black">20</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">21</td>
+            <td>/**
+</td>
+          </tr><tr>
+            <td class="black">22</td>
+            <td> * The central concept in ScalaTest is the suite, a collection of zero to many tests.
+</td>
+          </tr><tr>
+            <td class="black">23</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">24</td>
+            <td> * &lt;p&gt;
+</td>
+          </tr><tr>
+            <td class="black">25</td>
+            <td> * This is a Suite that can handle both specs2 acceptance specifications and (mutable
+</td>
+          </tr><tr>
+            <td class="black">26</td>
+            <td> * unit specifications.
+</td>
+          </tr><tr>
+            <td class="black">27</td>
+            <td> * &lt;/p&gt;
+</td>
+          </tr><tr>
+            <td class="black">28</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">29</td>
+            <td> * @author rlegendi
+</td>
+          </tr><tr>
+            <td class="black">30</td>
+            <td> * @constructor create a new runner for the specified specification class;
+</td>
+          </tr><tr>
+            <td class="black">31</td>
+            <td> *           &lt;i&gt;cannot be null&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">32</td>
+            <td> */
+</td>
+          </tr><tr>
+            <td class="black">33</td>
+            <td>// Note: Avoid methods whose name starts with &quot;test&quot;, those are handled as tests.
+</td>
+          </tr><tr>
+            <td class="black">34</td>
+            <td>@Style(&quot;org.scalatest.specs.Spec2Finder&quot;)
+</td>
+          </tr><tr>
+            <td class="green">35</td>
+            <td><a id="Class_org_scalatest_specs2_Spec2Runner"></a>class Spec2Runner(specs2Class: Class[_ &lt;: SpecificationStructure]) extends Suite {
+</td>
+          </tr><tr>
+            <td class="green">36</td>
+            <td>  require(specs2Class != null)
+</td>
+          </tr><tr>
+            <td class="black">37</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">38</td>
+            <td>  /** The specification instance to run. */
+</td>
+          </tr><tr>
+            <td class="green">39</td>
+            <td>  protected lazy val spec2 = tryToCreateSpecification(specs2Class)
+</td>
+          </tr><tr>
+            <td class="black">40</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">41</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">42</td>
+            <td>   * Name of the suite.
+</td>
+          </tr><tr>
+            <td class="black">43</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">44</td>
+            <td>   * &lt;p&gt;
+</td>
+          </tr><tr>
+            <td class="black">45</td>
+            <td>   * This is a bit tricky: the start of the suite is automatically reported by ScalaTest,
+</td>
+          </tr><tr>
+            <td class="black">46</td>
+            <td>   * so we need a bit of playing with the scope stack in {@link ScalaTestNotifier} (we do
+</td>
+          </tr><tr>
+            <td class="black">47</td>
+            <td>   * not report the start of the outermost suite and do not fire its close event, because
+</td>
+          </tr><tr>
+            <td class="black">48</td>
+            <td>   * it terminates the simulation. All this is required because of nested specifications
+</td>
+          </tr><tr>
+            <td class="black">49</td>
+            <td>   * in the same compilation unit (e.g., multiple Specifications is the same
+</td>
+          </tr><tr>
+            <td class="black">50</td>
+            <td>   * &lt;code&gt;*.scala&lt;/code&gt; file, embedded Specifications, etc.).
+</td>
+          </tr><tr>
+            <td class="black">51</td>
+            <td>   * &lt;/p&gt;
+</td>
+          </tr><tr>
+            <td class="black">52</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="green">53</td>
+            <td>  override def suiteName = Utils.suiteNameFor(spec2)
+</td>
+          </tr><tr>
+            <td class="black">54</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">55</td>
+            <td>  /** Unique Id for the suite for ScalaTest. */
+</td>
+          </tr><tr>
+            <td class="green">56</td>
+            <td>  override def suiteId = Utils.suiteIdFor(spec2)
+</td>
+          </tr><tr>
+            <td class="black">57</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">58</td>
+            <td>  /** Holds all the options that are relevant for the execution (and reporting). */
+</td>
+          </tr><tr>
+            <td class="green">59</td>
+            <td>  protected implicit lazy val args: Arguments = spec2.arguments
+</td>
+          </tr><tr>
+            <td class="black">60</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">61</td>
+            <td>  /**
+</td>
+          </tr><tr>
+            <td class="black">62</td>
+            <td>   * Returns the expected number of tests.
+</td>
+          </tr><tr>
+            <td class="black">63</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">64</td>
+            <td>   * &lt;p&gt;
+</td>
+          </tr><tr>
+            <td class="black">65</td>
+            <td>   * Eric suggested that the best thing here is to reuse the code already in the Selection
+</td>
+          </tr><tr>
+            <td class="black">66</td>
+            <td>   * trait of specs2: the idea is to use ScalaTest options and translate them to specs2
+</td>
+          </tr><tr>
+            <td class="black">67</td>
+            <td>   * arguments, as if they were passed from the command line.
+</td>
+          </tr><tr>
+            <td class="black">68</td>
+            <td>   * &lt;/p&gt;
+</td>
+          </tr><tr>
+            <td class="black">69</td>
+            <td>   *
+</td>
+          </tr><tr>
+            <td class="black">70</td>
+            <td>   * @param filter filter to use; &lt;i&gt;cannot be null&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">71</td>
+            <td>   * @return the number of sepcs2 examples found for the specification; &lt;i&gt;non-negative&lt;/i&gt;
+</td>
+          </tr><tr>
+            <td class="black">72</td>
+            <td>   */
+</td>
+          </tr><tr>
+            <td class="black">73</td>
+            <td>  // TODO ScalaTest's dynatags here are not used because we're not sure it's absolutely necessary to provide filtering capabilities based on tags
+</td>
+          </tr><tr>
+            <td class="black">74</td>
+            <td>  override def expectedTestCount(filter: Filter): Int = {
+</td>
+          </tr><tr>
+            <td class="green">75</td>
+            <td>    require(filter != null)
+</td>
+          </tr><tr>
+            <td class="black">76</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">77</td>
+            <td>    // The &lt;| method is used to override arguments. Note that I'm using the spec arguments to override the command line ones
+</td>
+          </tr><tr>
+            <td class="black">78</td>
+            <td>    // so that a local definition of arguments in a specification can override generic arguments on the command line
+</td>
+          </tr><tr>
+            <td class="black">79</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="yellow">80</td>
+            <td>    val arguments = Arguments(filter.tagsToInclude.map(tags =&gt; <span class="non">&quot;include &quot; + tags.mkString(&quot;,&quot;)) + &quot; &quot; +
+</span></td>
+          </tr><tr>
+            <td class="black">81</td>
+            <td>      filter.tagsToExclude.mkString(&quot;exclude &quot;, &quot;,&quot;, &quot;&quot;)) &lt;| args
+</td>
+          </tr><tr>
+            <td class="black">82</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">83</td>
+            <td>    val selection = new DefaultSelection {}
+</td>
+          </tr><tr>
+            <td class="black">84</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">85</td>
+            <td>    // There are methods in the Fragments object to filter specific fragments, like isAnExample
+</td>
+          </tr><tr>
+            <td class="green">86</td>
+            <td>    selection.select(arguments)(spec2).fragments.collect(Fragments.isAnExample).size
+</td>
+          </tr><tr>
+            <td class="black">87</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">88</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">89</td>
+            <td>  override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
+</td>
+          </tr><tr>
+            <td class="black">90</td>
+            <td>    configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
+</td>
+          </tr><tr>
+            <td class="black">91</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">92</td>
+            <td>    require(testName != null)
+</td>
+          </tr><tr>
+            <td class="green">93</td>
+            <td>    require(reporter != null)
+</td>
+          </tr><tr>
+            <td class="green">94</td>
+            <td>    require(stopper != null)
+</td>
+          </tr><tr>
+            <td class="green">95</td>
+            <td>    require(filter != null)
+</td>
+          </tr><tr>
+            <td class="green">96</td>
+            <td>    require(configMap != null)
+</td>
+          </tr><tr>
+            <td class="green">97</td>
+            <td>    require(distributor != null)
+</td>
+          </tr><tr>
+            <td class="green">98</td>
+            <td>    require(tracker != null)
+</td>
+          </tr><tr>
+            <td class="black">99</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">100</td>
+            <td>    // Just to make sure exceptions are properly handled during the test
+</td>
+          </tr><tr>
+            <td class="green">101</td>
+            <td>    val report = wrapReporterIfNecessary(reporter)
+</td>
+          </tr><tr>
+            <td class="black">102</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">103</td>
+            <td>    runSpec2(tracker, reporter, filter)
+</td>
+          </tr><tr>
+            <td class="black">104</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="green">105</td>
+            <td>    if (stopper()) { // If stopped during execution
+</td>
+          </tr><tr>
+            <td class="red">106</td>
+            <td>      <span class="non">report(InfoProvided(tracker.nextOrdinal(), Resources(&quot;executeStopping&quot;), Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
+</span></td>
+          </tr><tr>
+            <td class="black">107</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">108</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">109</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">110</td>
+            <td>  // TODO Use filter?
+</td>
+          </tr><tr>
+            <td class="black">111</td>
+            <td>  private[specs2] def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
+</td>
+          </tr><tr>
+            <td class="green">112</td>
+            <td>    require(tracker != null)
+</td>
+          </tr><tr>
+            <td class="green">113</td>
+            <td>    require(reporter != null)
+</td>
+          </tr><tr>
+            <td class="green">114</td>
+            <td>    require(filter != null)
+</td>
+          </tr><tr>
+            <td class="black">115</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">116</td>
+            <td>    // TODO Here we get where the whole thing starts, needs checking
+</td>
+          </tr><tr>
+            <td class="green">117</td>
+            <td>    new NotifierReporter {
+</td>
+          </tr><tr>
+            <td class="green">118</td>
+            <td>      val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
+</td>
+          </tr><tr>
+            <td class="black">119</td>
+            <td>    }.report(spec2)(args)
+</td>
+          </tr><tr>
+            <td class="black">120</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">121</td>
+            <td>}
+</td>
+          </tr></tbody></table>

@@ -1,0 +1,105 @@
+<table class="classes"><tbody><tr>
+      <td class="barContainerLeft"><a href="#">&#x200B;file:/&#x200B;C:/&#x200B;007/&#x200B;work/&#x200B;ws_gsoc_2012/&#x200B;specs2-runner/&#x200B;src/&#x200B;main/&#x200B;scala/&#x200B;org/&#x200B;scalatest/&#x200B;specs2/<span class="header">&#x200B;Spec2Finder.scala</span></a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">0 %</div>
+        <div class="greenBar" style="width:0px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_scalatest_specs2_Spec2Finder.scala.html#Class_org_scalatest_specs2_Spec2Finder"><img src="class.png"></img>Spec2Finder</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">0 %</div>
+        <div class="greenBar" style="width:0px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr></tbody></table><table class="source"><tbody><tr>
+            <td class="black">1</td>
+            <td>package org.scalatest.specs2
+</td>
+          </tr><tr>
+            <td class="black">2</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">3</td>
+            <td>import org.scalatest.finders.AstNode
+</td>
+          </tr><tr>
+            <td class="black">4</td>
+            <td>import org.scalatest.finders.Selection
+</td>
+          </tr><tr>
+            <td class="black">5</td>
+            <td>import org.scalatest.specs.Spec1Finder
+</td>
+          </tr><tr>
+            <td class="black">6</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">7</td>
+            <td>/**
+</td>
+          </tr><tr>
+            <td class="black">8</td>
+            <td> * Finder class that can find test cases in the format (&quot;should&quot;, &quot;can&quot;) { &quot;in&quot; { ... } }
+</td>
+          </tr><tr>
+            <td class="black">9</td>
+            <td> *
+</td>
+          </tr><tr>
+            <td class="black">10</td>
+            <td> * @author rlegendi
+</td>
+          </tr><tr>
+            <td class="black">11</td>
+            <td> */
+</td>
+          </tr><tr>
+            <td class="red">12</td>
+            <td><a id="Class_org_scalatest_specs2_Spec2Finder"></a>class Spec2Finder <span class="non">extends Spec1Finder {
+</span></td>
+          </tr><tr>
+            <td class="black">13</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">14</td>
+            <td>  // TODO Specifications with function 'is'? (scope..)
+</td>
+          </tr><tr>
+            <td class="black">15</td>
+            <td>  // TODO JUnitRunner in Specs2 searches for test extensively and it is well-tested
+</td>
+          </tr><tr>
+            <td class="black">16</td>
+            <td>  //      Can't we use that aproach instead of playing with AstNodes?
+</td>
+          </tr><tr>
+            <td class="black">17</td>
+            <td>  // TODO Test if it can find 2 tests in the same file (TwoSpecInSameFile.scala)
+</td>
+          </tr><tr>
+            <td class="black">18</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">19</td>
+            <td>  override def find(node: AstNode): Option[Selection] = {
+</td>
+          </tr><tr>
+            <td class="red">20</td>
+            <td>    <span class="non">super.find(node)
+</span></td>
+          </tr><tr>
+            <td class="black">21</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">22</td>
+            <td>}
+</td>
+          </tr></tbody></table>

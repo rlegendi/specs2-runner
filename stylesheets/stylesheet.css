@@ -25,7 +25,6 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font: inherit;
   vertical-align: baseline;
 }
 
@@ -258,7 +257,6 @@ form {
 }
 
 img {
-  width: 100%;
   max-width: 100%;
 }
 
@@ -303,6 +301,17 @@ Full-Width Styles
 
 #header_wrap .inner {
   padding: 50px 10px 30px 10px;
+}
+
+#warning {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('../images/warning.png');
 }
 
 #project_title {

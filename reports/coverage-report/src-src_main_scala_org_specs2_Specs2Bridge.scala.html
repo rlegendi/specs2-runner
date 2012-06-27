@@ -1,0 +1,629 @@
+<table class="classes"><tbody><tr>
+      <td class="barContainerLeft"><a href="#">&#x200B;file:/&#x200B;C:/&#x200B;007/&#x200B;work/&#x200B;ws_gsoc_2012/&#x200B;specs2-runner/&#x200B;src/&#x200B;main/&#x200B;scala/&#x200B;org/&#x200B;specs2/<span class="header">&#x200B;Specs2Bridge.scala</span></a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">8 %</div>
+        <div class="greenBar" style="width:16px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr><tr>
+      <td class="barContainerLeft"><a href="src-src_main_scala_org_specs2_Specs2Bridge.scala.html#Object_org_specs2_Specs2Bridge"><img src="object.png"></img>Specs2Bridge</a></td>
+      <td class="barContainerRight"><div class="percentages">
+      <div class="bar">
+        <div class="percentage">8 %</div>
+        <div class="greenBar" style="width:16px;">&nbsp;</div>
+      </div>
+    </div></td>
+    </tr></tbody></table><table class="source"><tbody><tr>
+            <td class="black">1</td>
+            <td>package org.specs2
+</td>
+          </tr><tr>
+            <td class="black">2</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">3</td>
+            <td>import org.specs2.reflect.Classes
+</td>
+          </tr><tr>
+            <td class="black">4</td>
+            <td>import org.specs2.specification.Fragments
+</td>
+          </tr><tr>
+            <td class="black">5</td>
+            <td>import org.specs2.specification.SpecificationStructure
+</td>
+          </tr><tr>
+            <td class="black">6</td>
+            <td>import org.specs2.main.Arguments
+</td>
+          </tr><tr>
+            <td class="black">7</td>
+            <td>import org.specs2.specification.ExecutingSpecification
+</td>
+          </tr><tr>
+            <td class="black">8</td>
+            <td>import org.specs2.specification.ExecutingFragment
+</td>
+          </tr><tr>
+            <td class="black">9</td>
+            <td>import org.specs2.specification.SpecName
+</td>
+          </tr><tr>
+            <td class="black">10</td>
+            <td>import org.specs2.execute.Pending
+</td>
+          </tr><tr>
+            <td class="black">11</td>
+            <td>import org.specs2.specification.ExecutedResult
+</td>
+          </tr><tr>
+            <td class="black">12</td>
+            <td>import org.specs2.execute.DecoratedResult
+</td>
+          </tr><tr>
+            <td class="black">13</td>
+            <td>import org.specs2.execute.Skipped
+</td>
+          </tr><tr>
+            <td class="black">14</td>
+            <td>import org.scalatest.Reporter
+</td>
+          </tr><tr>
+            <td class="black">15</td>
+            <td>import org.specs2.execute.Failure
+</td>
+          </tr><tr>
+            <td class="black">16</td>
+            <td>import org.specs2.execute.Success
+</td>
+          </tr><tr>
+            <td class="black">17</td>
+            <td>import org.scalatest.Tracker
+</td>
+          </tr><tr>
+            <td class="black">18</td>
+            <td>import org.scalatest.events.TestStarting
+</td>
+          </tr><tr>
+            <td class="black">19</td>
+            <td>//import reporter.Reporter
+</td>
+          </tr><tr>
+            <td class="black">20</td>
+            <td>import scala.reflect.NameTransformer
+</td>
+          </tr><tr>
+            <td class="black">21</td>
+            <td>import org.scalatest.events.MotionToSuppress
+</td>
+          </tr><tr>
+            <td class="black">22</td>
+            <td>import org.specs2.specification.ExecutedSpecStart
+</td>
+          </tr><tr>
+            <td class="black">23</td>
+            <td>import org.specs2.specification.ExecutedSpecEnd
+</td>
+          </tr><tr>
+            <td class="black">24</td>
+            <td>import org.scalatest.events.TestSucceeded
+</td>
+          </tr><tr>
+            <td class="black">25</td>
+            <td>import org.scalatest.Suite
+</td>
+          </tr><tr>
+            <td class="black">26</td>
+            <td>import org.scalatest.ScalaTestBridge
+</td>
+          </tr><tr>
+            <td class="black">27</td>
+            <td>import org.scalatest.events.TestFailed
+</td>
+          </tr><tr>
+            <td class="black">28</td>
+            <td>import org.specs2.execute.Error
+</td>
+          </tr><tr>
+            <td class="black">29</td>
+            <td>import org.scalatest.events.TestPending
+</td>
+          </tr><tr>
+            <td class="black">30</td>
+            <td>import org.scalatest.specs2.Utils
+</td>
+          </tr><tr>
+            <td class="black">31</td>
+            <td>import org.specs2.specification.ExecutedFragment
+</td>
+          </tr><tr>
+            <td class="black">32</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">33</td>
+            <td><a id="Object_org_specs2_Specs2Bridge"></a>object Specs2Bridge {
+</td>
+          </tr><tr>
+            <td class="black">34</td>
+            <td>  def tryToCreateSpecification[T &lt;: AnyRef](specs2Class: Class[_ &lt;: SpecificationStructure]): SpecificationStructure = {
+</td>
+          </tr><tr>
+            <td class="black">35</td>
+            <td>    // This is a private utility class that is inaccessible from outer packages
+</td>
+          </tr><tr>
+            <td class="green">36</td>
+            <td>    Classes.tryToCreateObject(specs2Class.getName).get
+</td>
+          </tr><tr>
+            <td class="black">37</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">38</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">39</td>
+            <td>  // TODO Content is package-private, this is a workaround, consult with Eric
+</td>
+          </tr><tr>
+            <td class="black">40</td>
+            <td>  // ERIC: that's intentional. It is to avoid the namespace of the Specification inheritor to be polluted with something he never uses
+</td>
+          </tr><tr>
+            <td class="black">41</td>
+            <td>  // one way to make things nicer is to add &quot;implicit&quot; to your getContent definition. This way, any spec can be seen as the list
+</td>
+          </tr><tr>
+            <td class="black">42</td>
+            <td>  // of Fragments it is holding
+</td>
+          </tr><tr>
+            <td class="green">43</td>
+            <td>  implicit def getContentFor(spec: SpecificationStructure): Fragments = spec.content
+</td>
+          </tr><tr>
+            <td class="black">44</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">45</td>
+            <td>  def createExecuteSpecification(name: SpecName, fs: Seq[ExecutedFragment], args: Arguments = Arguments()): ExecutingSpecification =
+</td>
+          </tr><tr>
+            <td class="red">46</td>
+            <td>    <span class="non">ExecutingSpecification.create(name, fs, args)
+</span></td>
+          </tr><tr>
+            <td class="black">47</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">48</td>
+            <td>  // TODO This is exact copy&amp;paste code from ScalaTestNotifier - should it be publicly visible?
+</td>
+          </tr><tr>
+            <td class="black">49</td>
+            <td>  private def getDecodedName(name: String): Option[String] = {
+</td>
+          </tr><tr>
+            <td class="red">50</td>
+            <td>    val decoded = <span class="non">NameTransformer.decode(name)
+</span></td>
+          </tr><tr>
+            <td class="red">51</td>
+            <td>    if (<span class="non">decoded == name) None else Some(decoded)
+</span></td>
+          </tr><tr>
+            <td class="black">52</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">53</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">54</td>
+            <td>  def notifyScalaTest(spec2: SpecificationStructure, tracker: Tracker, reporter: Reporter) = (executed: Seq[ExecutedFragment]) =&gt; {
+</td>
+          </tr><tr>
+            <td class="black">55</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">56</td>
+            <td>    // TODO Probably I will need some nice descriptions like JUnitDescriptionsFragments.mapper() has
+</td>
+          </tr><tr>
+            <td class="black">57</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">58</td>
+            <td>    // TODO Chee Seng: Why are we calling nextOrdinal() for a new suite name each time?
+</td>
+          </tr><tr>
+            <td class="black">59</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">60</td>
+            <td>    // TODO Utility methods for suiteId( spec ) = spec.getClass.getSimpleName, etc.
+</td>
+          </tr><tr>
+            <td class="black">61</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">62</td>
+            <td>    <span class="non">executed foreach {
+</span></td>
+          </tr><tr>
+            <td class="black">63</td>
+            <td>      case (res @ ExecutedResult(_, result, timer, _, _)) =&gt; {
+</td>
+          </tr><tr>
+            <td class="black">64</td>
+            <td>        //notifier.fireTestStarted(desc)
+</td>
+          </tr><tr>
+            <td class="black">65</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">66</td>
+            <td>        val testName = <span class="non">res.text(spec2.content.arguments).toString
+</span></td>
+          </tr><tr>
+            <td class="red">67</td>
+            <td>        val exampleName = <span class="non">testName + &quot; (exampleName)&quot;
+</span></td>
+          </tr><tr>
+            <td class="black">68</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">69</td>
+            <td>        //val duration = res.stats.time.toInt //System.currentTimeMillis() - exampleStart
+</td>
+          </tr><tr>
+            <td class="black">70</td>
+            <td>        // TODO Is this the correct time to use here?
+</td>
+          </tr><tr>
+            <td class="red">71</td>
+            <td>        val duration = <span class="non">timer.totalMillis
+</span></td>
+          </tr><tr>
+            <td class="black">72</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">73</td>
+            <td>        //val formatter = ScalaTestBridge.getIndentedText(exampleName, indentLevel + 1, true)
+</td>
+          </tr><tr>
+            <td class="red">74</td>
+            <td>        val formatter = <span class="non">ScalaTestBridge.getIndentedText(testName, 2, true)
+</span></td>
+          </tr><tr>
+            <td class="black">75</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">76</td>
+            <td>        <span class="non">res.message // TODO I should use this
+</span></td>
+          </tr><tr>
+            <td class="black">77</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">78</td>
+            <td>        val name = <span class="non">Utils.suiteNameFor(spec2)
+</span></td>
+          </tr><tr>
+            <td class="red">79</td>
+            <td>        val id = <span class="non">Utils.suiteIdFor(spec2)
+</span></td>
+          </tr><tr>
+            <td class="black">80</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">81</td>
+            <td>        <span class="non">reporter(TestStarting(tracker.nextOrdinal(), name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">82</td>
+            <td>          getDecodedName(name), testName, exampleName,
+</td>
+          </tr><tr>
+            <td class="black">83</td>
+            <td>          getDecodedName(testName), Some(MotionToSuppress), None, Some(id)))
+</td>
+          </tr><tr>
+            <td class="black">84</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">85</td>
+            <td>        /* TODO Required ScalaTest notifications:
+</td>
+          </tr><tr>
+            <td class="black">86</td>
+            <td>           * TestStarting ---
+</td>
+          </tr><tr>
+            <td class="black">87</td>
+            <td>           * TestSucceeded ---
+</td>
+          </tr><tr>
+            <td class="black">88</td>
+            <td>           * TestFailed ---
+</td>
+          </tr><tr>
+            <td class="black">89</td>
+            <td>           * TestIgnored
+</td>
+          </tr><tr>
+            <td class="black">90</td>
+            <td>           * TestPending ---
+</td>
+          </tr><tr>
+            <td class="black">91</td>
+            <td>           * TestCanceled
+</td>
+          </tr><tr>
+            <td class="black">92</td>
+            <td>           * SuiteStarting
+</td>
+          </tr><tr>
+            <td class="black">93</td>
+            <td>           * SuiteCompleted
+</td>
+          </tr><tr>
+            <td class="black">94</td>
+            <td>           * SuiteAborted
+</td>
+          </tr><tr>
+            <td class="black">95</td>
+            <td>           * RunStarting
+</td>
+          </tr><tr>
+            <td class="black">96</td>
+            <td>           * RunCompleted
+</td>
+          </tr><tr>
+            <td class="black">97</td>
+            <td>           * RunStopped
+</td>
+          </tr><tr>
+            <td class="black">98</td>
+            <td>           * RunAborted
+</td>
+          </tr><tr>
+            <td class="black">99</td>
+            <td>           * InfoProvided
+</td>
+          </tr><tr>
+            <td class="black">100</td>
+            <td>           * MarkupProvided
+</td>
+          </tr><tr>
+            <td class="black">101</td>
+            <td>           * ScopeOpened ---
+</td>
+          </tr><tr>
+            <td class="black">102</td>
+            <td>           * ScopeClosed ---
+</td>
+          </tr><tr>
+            <td class="black">103</td>
+            <td>           */
+</td>
+          </tr><tr>
+            <td class="black">104</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">105</td>
+            <td>        // TODO Ask Eric: When do the DecoratedResults are used?
+</td>
+          </tr><tr>
+            <td class="black">106</td>
+            <td>        // ERIC: this is used to display the html table for a DataTable when reporting to html files
+</td>
+          </tr><tr>
+            <td class="black">107</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">108</td>
+            <td>        // TODO Indenting?
+</td>
+          </tr><tr>
+            <td class="black">109</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="red">110</td>
+            <td>        <span class="non">result match {
+</span></td>
+          </tr><tr>
+            <td class="black">111</td>
+            <td>          case f @ Failure(m, e, st, d) =&gt;
+</td>
+          </tr><tr>
+            <td class="black">112</td>
+            <td>            //              notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
+</td>
+          </tr><tr>
+            <td class="black">113</td>
+            <td>            //reporter(TestFailed(tracker.nextOrdinal(), e.getMessage, spec.getClass.getSimpleName, spec.getClass.getName, Some(spec.getClass.getName), getDecodedName(spec.getClass.getSimpleName), testName, exampleName, getDecodedName(testName), Some(e), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="red">114</td>
+            <td>            <span class="non">reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">115</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(testName),
+</td>
+          </tr><tr>
+            <td class="black">116</td>
+            <td>              Some(f.exception), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="black">117</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">118</td>
+            <td>          case e @ Error(m, st) =&gt;
+</td>
+          </tr><tr>
+            <td class="black">119</td>
+            <td>            //              notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
+</td>
+          </tr><tr>
+            <td class="red">120</td>
+            <td>            <span class="non">reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">121</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(name),
+</td>
+          </tr><tr>
+            <td class="black">122</td>
+            <td>              Some(e.exception), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="black">123</td>
+            <td>          case DecoratedResult(_, f @ Failure(m, e, st, d)) =&gt;
+</td>
+          </tr><tr>
+            <td class="black">124</td>
+            <td>            //              notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
+</td>
+          </tr><tr>
+            <td class="red">125</td>
+            <td>            <span class="non">reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">126</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(name),
+</td>
+          </tr><tr>
+            <td class="black">127</td>
+            <td>              Some(f.exception), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="black">128</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">129</td>
+            <td>          case DecoratedResult(_, e @ Error(m, st)) =&gt;
+</td>
+          </tr><tr>
+            <td class="black">130</td>
+            <td>            //              notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
+</td>
+          </tr><tr>
+            <td class="red">131</td>
+            <td>            <span class="non">reporter(TestFailed(tracker.nextOrdinal(), m, name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">132</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(name),
+</td>
+          </tr><tr>
+            <td class="black">133</td>
+            <td>              Some(e.exception), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="black">134</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">135</td>
+            <td>          case Pending(_) | Skipped(_, _) =&gt;
+</td>
+          </tr><tr>
+            <td class="black">136</td>
+            <td>            //      notifier.fireTestIgnored(desc)
+</td>
+          </tr><tr>
+            <td class="red">137</td>
+            <td>            <span class="non">reporter(TestPending(tracker.nextOrdinal(), name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">138</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(testName), None, Some(formatter)))
+</td>
+          </tr><tr>
+            <td class="black">139</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">140</td>
+            <td>          case Success(_, _) | DecoratedResult(_, _) =&gt;
+</td>
+          </tr><tr>
+            <td class="red">141</td>
+            <td>            <span class="non">reporter(TestSucceeded(tracker.nextOrdinal(), name, id, Some(id),
+</span></td>
+          </tr><tr>
+            <td class="black">142</td>
+            <td>              getDecodedName(name), testName, exampleName, getDecodedName(testName), Some(duration), Some(formatter), None))
+</td>
+          </tr><tr>
+            <td class="black">143</td>
+            <td>        }
+</td>
+          </tr><tr>
+            <td class="black">144</td>
+            <td>        //notifier.fireTestFinished(desc)
+</td>
+          </tr><tr>
+            <td class="black">145</td>
+            <td>        //reporter()
+</td>
+          </tr><tr>
+            <td class="black">146</td>
+            <td>      }
+</td>
+          </tr><tr>
+            <td class="black">147</td>
+            <td>      case ExecutedSpecStart(_, _, _) =&gt; //notifier.fireTestRunStarted(desc) // TODO: Should we care?
+</td>
+          </tr><tr>
+            <td class="black">148</td>
+            <td>      case ExecutedSpecEnd(_, _, _) =&gt; //notifier.fireTestRunFinished(new org.junit.runner.Result)
+</td>
+          </tr><tr>
+            <td class="black">149</td>
+            <td>      case _ =&gt; // don't do anything otherwise too many tests will be counted
+</td>
+          </tr><tr>
+            <td class="black">150</td>
+            <td>    }
+</td>
+          </tr><tr>
+            <td class="black">151</td>
+            <td>  }
+</td>
+          </tr><tr>
+            <td class="black">152</td>
+            <td>
+</td>
+          </tr><tr>
+            <td class="black">153</td>
+            <td>}
+</td>
+          </tr></tbody></table>
