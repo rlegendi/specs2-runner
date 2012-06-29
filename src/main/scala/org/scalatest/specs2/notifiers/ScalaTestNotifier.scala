@@ -72,6 +72,7 @@ object ScalaTestNotifier {
     getDecodedName(name)
   }
 
+  // TODO This is exact copy&paste code from ScalaTestNotifier - should it be publicly visible?
   private def getDecodedName(name: String): Option[String] = {
     val decoded = NameTransformer.decode(name)
     if (decoded == name) None else Some(decoded)
