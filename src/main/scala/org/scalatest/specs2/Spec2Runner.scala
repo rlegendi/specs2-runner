@@ -113,7 +113,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     require(reporter != null)
     require(filter != null)
 
-    // TODO Here we get where the whole thing starts, needs checking
+    // TODO Here we get where the whole thing starts, needs checking (report execution started?)
     new NotifierReporter {
       val notifier = new ScalaTestNotifier(spec2, args, tracker, reporter)
     }.report(spec2)(args)
