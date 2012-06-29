@@ -290,7 +290,19 @@ class ScalaTestNotifier(val spec: SpecificationStructure, val args: Arguments,
       location = actScopeElement.location))
   }
 
-  private def testFailed(name: String, message: String, location: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
+  private def testFailed(name: String, message: String, simpleLocation: String, f: Throwable, details: Option[Details], duration: Long): Unit = {
+    
+    // ------------------------------------------------------------------------
+    // This is a pending issue here. The original loc(location) method cannot
+    // be used here, since the location we get for this callback method is not
+    // similar to the other ones. Needs to consult with Eric.
+    //
+    // This is a temporal wrapper solution to fix the issue.
+    
+    val location = spec.getClass.getName + " (" + simpleLocation + ")"
+    
+    // ------------------------------------------------------------------------
+    
     if (debug) {
       println(">>> testFailed: " + name + ", " + message + ", " + location + ", " + f + ", " + details + ", " + duration)
     }
