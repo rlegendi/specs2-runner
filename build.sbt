@@ -13,7 +13,9 @@ libraryDependencies ++= Seq(
   // 1.11 is required because of Arguments visibility has been extended
   // 1.12 is required because it contains a fix of "embedded" specifications
   "org.specs2"    %% "specs2"            % "1.12-SNAPSHOT",
-  "junit"         %  "junit"             % "4.10" % "test"
+  "junit"         %  "junit"             % "4.10" % "test",
+  // HTML reporting requirement
+  "org.pegdown"   % "pegdown"            % "1.0.2"
 )
 
 resolvers += "Local Maven Repository" at Path.userHome.asURL + "/.m2/repository"

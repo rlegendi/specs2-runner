@@ -28,7 +28,7 @@ class ScalaTestBridgeTest extends Specification {
       "not indent decorated text at level 1" in {
         ScalaTestBridge.getIndentedText("a", 1, true) must have be_== (IndentedText("- a", "a", 1))
       }
-
+      
       "indent decorated text at level 2" in {
         ScalaTestBridge.getIndentedText("a", 2, true) must have be_== (IndentedText("  - a", "a", 2))
       }
