@@ -8,11 +8,11 @@ Specs 2 is a redesigned version of Specs using functional components (see [a gre
 
 **Warning! Here be dragons!**
 
-The project is built upon several work-in-progress APIs. Until they are fixed and integrated it requires quite a work to put things together if you would like to try it out. Scala guys are quite brave in this kind of situations, so I try to summarize the things to be done.
+The project is built upon several work-in-progress APIs. Until they are fixed and integrated it requires quite a work to put things together if you would like to try it out. Scala guys are quite brave in this kind of situations, so I try to summarize the things that has to be done in order to make things work :-) You can start experimenting if you are brave enough, but I think it requires about ~2 full days to hack things together. So be careful.
 
 ### Setting up a Developer version of the Scala IDE ###
 
-The Typesafe documentations are quite clear about how to set up a developer environment.
+The Typesafe documentations are quite clear about how to set up a Scala IDE developer environment.
 
 Find all the dev docs here:
 
@@ -26,30 +26,31 @@ And how to run the build:
 
 http://scala-ide.org/docs/dev/building/building.html
 
-**In the case you would like to use the features of the Specs2 plugin, you should merge the changes of my fork of the scala-ide repository, or merge the changes.** You can find the repo here:
+**In the case you would like to use the features of the Specs2 plugin, you should merge the changes of my fork of the scala-ide repository, or use my fork directly.** You can find the repo here:
 
 https://github.com/rlegendi/scala-ide
 
-This version contains the Specs2 plugin, which contributes a few new wizards, templates and other things to the Scala IDE that helps working with specifications. Note that it contains [Skyluc's scalatest repository](https://github.com/skyluc/scalatest) (currently this is the primary repository for the ScalaTest integration) as a submodule. See next subsection for the details.
+This version contains the Specs2 plugin which contributes a few new wizards, templates and other things to the Scala IDE that helps working with specifications. Note that it contains [Skyluc's scalatest repository](https://github.com/skyluc/scalatest) (currently this is the primary repository for the ScalaTest integration) as a submodule (*see next subsection for the details*).
 
 **If you would like to simply run Specs2 specifications with the ScalaTest plugin, you only need the Scala IDE developer environment **and** Skyluc's `scalatest` repository.** This way you will be able to run Specs2 tests through the ScalaTest plugin, but nothing more is available.
 
 ### Integrating the ScalaTest plugin ###
 
-The ScalaTest integration is still under heavy development for the Scala IDE (thanks for [Skyluc]((https://github.com/skyluc/) and [Cheeseng](https://github.com/cheeseng/) for the great work!).
+The ScalaTest integration is still under heavy development for the Scala IDE (thanks for [Skyluc](https://github.com/skyluc/) and [Cheeseng](https://github.com/cheeseng/) for the great work!).
 
 The major things you should be aware of are:
 
 * Initial work on ScalaTest integration (**closed**): https://github.com/scala-ide/scala-ide/pull/94
-* Skyluc's temporal repository for the integration (**This is the current work in progress**): https://github.com/skyluc/scalatest
+* Skyluc's temporal repository for the integration (**this is the current work in progress**): https://github.com/skyluc/scalatest
 * A longer thread on the scala-ide-dev mailing list about the integration: https://groups.google.com/d/topic/scala-ide-dev/A-jWSJaotfQ/discussion
-  This is an important thread to follow, contains a few vital points on e.g., [how to build the `scalatest-finders` v1.0.1 dependency][finders-howto]
+  
+  This is an important thread to follow because it contains a few vital points (e.g., [how to build the scalatest-finders v1.0.1 dependency][finders-howto])
 
   [finders-howto]:	https://groups.google.com/d/msg/scala-ide-dev/A-jWSJaotfQ/R4IpykP8ldYJ
 
 ### Building the specs2-runner project ###
 
-If you have set up the developer version of the Scala IDE with the ScalaTest plugin, you can run specifications on any project if you add the `specs2-runner` and any `scalatest` libraries to the classpath of any project. Then simply right-click on any package or specification structure, and select the proper *ScalaTest* element from the *Run As...* menu.
+If you have set up the developer version of the Scala IDE with the ScalaTest plugin, you can run specifications on any project if you add the `specs2-runner` and the latest `scalatest` libraries to the classpath of that project. Then simply right-click on any package or specification structure, and select the proper *ScalaTest* element from the *Run As...* menu.
 
 To acquire the latest `specs2-runner` library, you have to build it by hand at the moment. It is a simple Sbt project, you can package it by the following command:
 
