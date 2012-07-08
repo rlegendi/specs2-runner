@@ -46,8 +46,6 @@ The major things you should be aware of are:
   
   This is an important thread to follow because it contains a few vital points (e.g., [how to build the scalatest-finders v1.0.1 dependency][finders-howto])
 
-  [finders-howto]:	https://groups.google.com/d/msg/scala-ide-dev/A-jWSJaotfQ/R4IpykP8ldYJ
-
 ### Building the specs2-runner project ###
 
 If you have set up the developer version of the Scala IDE with the ScalaTest plugin, you can run specifications on any project if you add the `specs2-runner` and the latest `scalatest` libraries to the classpath of that project. Then simply right-click on any package or specification structure, and select the proper *ScalaTest* element from the *Run As...* menu.
@@ -94,6 +92,7 @@ Note that the generated files contain absolute paths, that is the reason why the
 
 This code is open source software licensed under [The MIT License](MIT) (MIT). Feel free to use it accordingly.
 
+  [finders-howto]: https://groups.google.com/d/msg/scala-ide-dev/A-jWSJaotfQ/R4IpykP8ldYJ
   [sbteclipse]: https://github.com/typesafehub/sbteclipse
   [MIT]: http://www.opensource.org/licenses/mit-license.php
 
