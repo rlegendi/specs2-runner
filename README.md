@@ -1,19 +1,16 @@
-specs2-runner
-=============
+# specs2-runner #
 
 This is a Specs2 extension for the ScalaTest plug-in for ScalaIDE.
 
 Specs 2 is a redesigned version of Specs using functional components (see [a great introduction](http://www.youtube.com/watch?v=lMyNRUuEvNU) by Eric Torreborre).
 
-Putting together the Specs2 Scala-IDE plugin
---------------------------------------------
+## Putting together the Specs2 Scala-IDE plugin ##
 
 **Warning! Here be dragons!**
 
 The project is built upon several work-in-progress APIs. Until they are fixed and integrated it requires quite a work to put things together if you would like to try it out. Scala guys are quite brave in this kind of situations, so I try to summarize the things to be done.
 
-Setting up a Developer version of the Scala IDE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Setting up a Developer version of the Scala IDE ###
 
 The Typesafe documentations are quite clear about how to set up a developer environment.
 
@@ -37,8 +34,7 @@ This version contains the Specs2 plugin, which contributes a few new wizards, te
 
 **If you would like to simply run Specs2 specifications with the ScalaTest plugin, you only need the Scala IDE developer environment **and** Skyluc's `scalatest` repository.** This way you will be able to run Specs2 tests through the ScalaTest plugin, but nothing more is available.
 
-Integrating the ScalaTest plugin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Integrating the ScalaTest plugin ###
 
 The ScalaTest integration is still under heavy development for the Scala IDE (thanks for [Skyluc]((https://github.com/skyluc/) and [Cheeseng](https://github.com/cheeseng/) for the great work!).
 
@@ -51,8 +47,7 @@ The major things you should be aware of are:
 
   [finders-howto]:	https://groups.google.com/d/msg/scala-ide-dev/A-jWSJaotfQ/R4IpykP8ldYJ
 
-Building the specs2-runner project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Building the specs2-runner project ###
 
 If you have set up the developer version of the Scala IDE with the ScalaTest plugin, you can run specifications on any project if you add the `specs2-runner` and any `scalatest` libraries to the classpath of any project. Then simply right-click on any package or specification structure, and select the proper *ScalaTest* element from the *Run As...* menu.
 
@@ -64,15 +59,13 @@ You can find the generated Jar file in the `target` folder.
 
 That's all!
 
-Future work
-~~~~~~~~~~~
+### Future work ###
 
 Soon the ScalaTest integration is going to finish. If that task is completed, we can push a snapshot version of the `specs2-runner` project into any repository, so it will be easily available for any Sbt/Maven/Ivy projects, no further hacking will be required.
 
 As soon as the Scala IDE API is fixed, we can create a separate plugin (instead of working in the Scala IDE repo directly). This way we can create a separate update site, so the installation of the plugin would reqire nothing more just a few clicks in the IDE. 
 
-Importing the project into Eclipse
-----------------------------------
+## Importing the project into Eclipse ##
 
 First, you need to [install sbteclipse][sbteclipse], it requires sbt 0.11.3 at least.
 
@@ -96,8 +89,7 @@ Then generate the required `.project` and `.classpath` files for Eclipse by the 
 
 Note that the generated files contain absolute paths, that is the reason why they got ignored in the `.gitignore` file.
 
-License
--------
+## License ##
 
 This code is open source software licensed under [The MIT License](MIT) (MIT). Feel free to use it accordingly.
 
