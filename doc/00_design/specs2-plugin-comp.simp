@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sim-project version="5.92" multi-file="no">
+  <meta>
+    <name>Project</name>
+    <authors> </authors>
+    <description />
+  </meta>
+  <management>
+    <persons>
+      <person id="Pe075963c581541a88250c87df1412336">
+        <first-name />
+        <last-name />
+        <role />
+        <e-mail />
+        <phone-number />
+        <description />
+        <color>#00000000</color>
+      </person>
+    </persons>
+    <tasks />
+    <requirements />
+    <issues />
+    <to-dos />
+  </management>
+  <glossary />
+  <types>
+    <type-sets>
+      <type-set file="UmlTypes.xml" />
+    </type-sets>
+    <custom-types />
+  </types>
+  <filters />
+  <items>
+    <item id="ddip307519367604851183_565943040759139130" cid="IFC001" type="uml-interface" name="" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 17:07:45">
+      <stereotypes />
+      <tagged-values />
+      <associated-diagrams />
+      <owned-items />
+      <style background-type="vertical-linear" background-color="#FFD3D3D3" background-color2="#FFFFFFFF" border-color="#FF000000" border-width="1" shadow-type="smooth" shadow-offset="-2,-2" shadow-size="6,6" shadow-visible="true" shadow-color="#50000000" shadow-radius="6" gloss-effect="true" threed-gloss-effect="false" wrap-name-text="true" wrap-other-text="true" text-wrapping-threshold="0" padding="0" name-color="#FF000000" name-font="Microsoft Sans Serif;10;B" name-horizontal-alignment="center" name-vertical-alignment="center" part-header-color="#FF1E1E1E" part-header-font="Microsoft Sans Serif;9;I" part-header-horizontal-alignment="center" part-header-vertical-alignment="center" text-color="#FF000000" text-font="Microsoft Sans Serif;10;" text-horizontal-alignment="left" text-vertical-alignment="center" tagged-value-color="#FF1E1E1E" tagged-value-font="Microsoft Sans Serif;9;I" tagged-value-horizontal-alignment="center" tagged-value-vertical-alignment="center" stereotype-color="#FF1E1E1E" stereotype-font="Microsoft Sans Serif;9;I" stereotype-horizontal-alignment="center" stereotype-vertical-alignment="center" />
+    </item>
+  </items>
+  <models>
+    <model id="p668510907191720829" name="Model 1" type="model" namespace="" order-index="1">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>07/08/2012 16:58:52</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+      <diagram type="uml-component" id="p307519367604851183" name="Specs2 plugin" order-index="1" show-nullability="false">
+        <style>
+          <background-color index="1" color="#FFFFFFFF" />
+          <background-color index="2" color="#FFFFFFFF" />
+          <background-type type="solid" />
+        </style>
+        <meta>
+          <authors>
+            <author> </author>
+          </authors>
+          <description />
+          <creation-date>07/08/2012 16:58:52</creation-date>
+          <change-date>07/08/2012 17:21:12</change-date>
+          <revision-count>0</revision-count>
+          <version />
+        </meta>
+        <abstract-items>
+          <item id="ddip307519367604851183_353171184726888904" cid="CPT001" type="component" name="Scala IDE" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 16:59:06">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="ddip307519367604851183_308151040284852736" cid="CPT002" type="component" name="ScalaTest plugin" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 16:59:16">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="ddip307519367604851183_436467610112976021" cid="CPT003" type="component" name="Specs2 plugin" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 17:00:16">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="ddip307519367604851183_683728336568140698" cid="RIF004" type="uml-required-interface" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 17:06:49">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="ddip307519367604851183_618655468252966859" cid="REL004" type="relationship" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pe075963c581541a88250c87df1412336" creation-date="07/08/2012 17:08:56">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <relation from="ddip307519367604851183_565943040759139130" to="ddip307519367604851183_353171184726888904">
+              <start-role id="" name="" multiplicity="" navigability="" association-type="association" visibility="private" />
+              <end-role id="" name="" multiplicity="" navigability="" association-type="association" visibility="private" />
+            </relation>
+          </item>
+        </abstract-items>
+        <layer name="Default" visible="true" enabled="true" locked="false">
+          <item id="ddip307519367604851183_353171184726888904" iid="3592d1af8b89479486f74869a4f57e6a" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 16:59:06" order-index="0" type="entity">
+            <layout ax="77" ay="88" awidth="249" aheight="185" x="77" y="88" width="249" height="185" />
+          </item>
+          <item id="ddip307519367604851183_308151040284852736" iid="d8a204bc257e4da7a23231fb79ea0540" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 16:59:16" order-index="1" type="entity">
+            <layout ax="112" ay="188" awidth="197" aheight="52" x="112" y="188" width="197" height="52" />
+          </item>
+          <item id="ddip307519367604851183_436467610112976021" iid="393f4cd3cc364276ae2a73b847da5c5d" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:00:16" order-index="2" type="entity">
+            <layout ax="91" ay="418" awidth="210" aheight="81" x="91" y="418" width="210" height="81" />
+          </item>
+          <item id="ddip307519367604851183_683728336568140698" iid="50dd23c7b0c144a995582e6aa6928660" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:06:49" order-index="6" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" name-position="6,1" x1="198" y1="418" x2="199.1654" y2="370.9958" start-border-pos="0.126943642752511" end-border-pos="0.625056711832682">
+              <points>
+                <point x="198" y="418" />
+                <point x="199.1654" y="370.9958" />
+              </points>
+            </layout>
+            <relation from="ddip307519367604851183_436467610112976021" from-iid="393f4cd3cc364276ae2a73b847da5c5d" to="ddip307519367604851183_565943040759139130" to-iid="dc8131c2b4ac41ad82459d13986abfb9" />
+          </item>
+          <item id="ddip307519367604851183_618655468252966859" iid="58cff49a2c3f4680bf3a24270a9b7e6f" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:08:56" order-index="8" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" name-position="10,-10" x1="200" y1="348" x2="201" y2="273" start-border-pos="0.128518507215712" end-border-pos="0.624464517616364">
+              <points>
+                <point x="200" y="348" />
+                <point x="201" y="273" />
+              </points>
+            </layout>
+            <relation from="ddip307519367604851183_565943040759139130" from-iid="dc8131c2b4ac41ad82459d13986abfb9" to="ddip307519367604851183_353171184726888904" to-iid="3592d1af8b89479486f74869a4f57e6a" />
+            <role-positions start-role="25,15" end-role="25,15" start-multiplicity="25,-15" end-multiplicity="25,-15" />
+          </item>
+          <item id="di320423743978078621" iid="1cf29e7fd3e346109167418a069901fc" name="Element1" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:14:54" order-index="9" type="drawing-text">
+            <layout ax="114" ay="336" awidth="57" aheight="41" x="114" y="336" width="57" height="41" />
+            <drawing-text>
+              <text>Scala IDE API</text>
+            </drawing-text>
+            <style class="default" />
+          </item>
+          <item id="ddip307519367604851183_565943040759139130" iid="dc8131c2b4ac41ad82459d13986abfb9" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:07:45" order-index="7" type="entity">
+            <layout ax="177" ay="348" awidth="45" aheight="24" x="177" y="348" width="45" height="24" />
+          </item>
+        </layer>
+      </diagram>
+    </model>
+  </models>
+  <documents />
+  <document-templates />
+</sim-project>
