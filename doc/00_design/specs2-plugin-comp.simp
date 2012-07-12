@@ -65,7 +65,7 @@
           </authors>
           <description />
           <creation-date>07/08/2012 16:58:52</creation-date>
-          <change-date>07/08/2012 17:21:12</change-date>
+          <change-date>07/09/2012 10:31:59</change-date>
           <revision-count>0</revision-count>
           <version />
         </meta>
@@ -109,6 +109,13 @@
               <end-role id="" name="" multiplicity="" navigability="" association-type="association" visibility="private" />
             </relation>
           </item>
+          <item id="ddip307519367604851183_124866777302977394" cid="CPT001" type="component" name="Component1" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creation-date="07/09/2012 10:31:59">
+            <stereotypes />
+            <tagged-values />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
         </abstract-items>
         <layer name="Default" visible="true" enabled="true" locked="false">
           <item id="ddip307519367604851183_353171184726888904" iid="3592d1af8b89479486f74869a4f57e6a" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 16:59:06" order-index="0" type="entity">
@@ -148,6 +155,9 @@
           </item>
           <item id="ddip307519367604851183_565943040759139130" iid="dc8131c2b4ac41ad82459d13986abfb9" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/08/2012 17:07:45" order-index="7" type="entity">
             <layout ax="177" ay="348" awidth="45" aheight="24" x="177" y="348" width="45" height="24" />
+          </item>
+          <item id="ddip307519367604851183_124866777302977394" iid="a31736de242448d2a4fd909c016eeb00" show-cid="false" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" creation-date="07/09/2012 10:31:59" order-index="10" type="entity">
+            <layout ax="341.6654" ay="231" awidth="140" aheight="160" x="341.6654" y="231" width="0" height="0" />
           </item>
         </layer>
       </diagram>
