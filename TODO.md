@@ -1,6 +1,15 @@
 TODO
 ====
 
+Actual TODOs
+------------
+
+- Export wizard for HTML documentation
+  - http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fdialogs_wizards_extensions.htm&cp=2_0_5_4
+  - http://www.vogella.com/articles/EclipseWizards/article.html
+
+---------------------------------
+
 - Ask the ScalaTest experts about ScalaTestBridge
 
 ---------------------------------
