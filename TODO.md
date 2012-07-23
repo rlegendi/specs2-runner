@@ -7,6 +7,8 @@ Actual TODOs
 - Export wizard for HTML documentation
   - http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fdialogs_wizards_extensions.htm&cp=2_0_5_4
   - http://www.vogella.com/articles/EclipseWizards/article.html
+- Create a *Cheat sheet* for helping the usage of the plugin
+  - http://www.ibm.com/developerworks/opensource/library/os-ecl-cheatsheets/
 
 ---------------------------------
 
