@@ -31,7 +31,7 @@ import org.specs2.specification.Fragments
  * 					<i>cannot be null</i>
  */
 // Note: Avoid methods whose name starts with "test", those are handled as tests.
-@Style("org.scalatest.specs.Spec2Finder")
+@Style("org.scalatest.specs.Specs2Finder")
 class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
   require(specs2Class != null)
 
