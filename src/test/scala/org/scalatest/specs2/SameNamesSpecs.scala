@@ -6,7 +6,7 @@ import org.scalatest.WrapWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class SameNamesSpecs extends Specification {
   "One" should {
     "a" in {

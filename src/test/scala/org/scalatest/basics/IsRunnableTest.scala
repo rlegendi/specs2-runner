@@ -1,11 +1,11 @@
 package org.scalatest.basics
 
-import org.specs2.mutable.Specification
-import org.scalatest.WrapWith
-import org.scalatest.specs2.Spec2Runner
 import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
+import org.scalatest.WrapWith
 import org.scalatest.specs2.output.ReportingOutputUnitSpecTest
+import org.scalatest.specs2.Specs2Runner
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
 
 // Test subject
 class SomeOtherSimpleSpec extends Specification {
@@ -17,7 +17,7 @@ class SomeOtherSimpleSpec extends Specification {
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class IsRunnableTest extends Specification {
   def isRunnable(clazz: java.lang.Class[_]): Boolean = {
     val wrapWithAnnotation = clazz.getAnnotation(classOf[WrapWith])

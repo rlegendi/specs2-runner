@@ -24,7 +24,7 @@ class DummyNonExistentSpecification extends SpecificationStructure {
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class UtilsTest extends Specification {
 
   "In the Utils class".title

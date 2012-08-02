@@ -32,7 +32,7 @@ import org.specs2.specification.Fragments
  */
 // Note: Avoid methods whose name starts with "test", those are handled as tests.
 @Style("org.scalatest.specs.Specs2Finder")
-class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
+class Specs2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite {
   require(specs2Class != null)
 
   /** The specification instance to run. */
@@ -100,7 +100,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
     // Just to make sure exceptions are properly handled during the test
     val report = wrapReporterIfNecessary(reporter)
 
-    runSpec2(tracker, reporter, filter)
+    runSpecs2(tracker, reporter, filter)
 
     if (stopper()) { // If stopped during execution
       report(InfoProvided(tracker.nextOrdinal(), Resources("executeStopping"), Some(NameInfo(suiteName, Some(this.getClass.getName), testName))))
@@ -108,7 +108,7 @@ class Spec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Suite
   }
 
   // TODO Use filter?
-  private[specs2] def runSpec2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
+  private[specs2] def runSpecs2(tracker: Tracker, reporter: Reporter, filter: Filter): Unit = {
     require(tracker != null)
     require(reporter != null)
     require(filter != null)

@@ -2,11 +2,11 @@ package org.scalatest.bridges
 
 import org.specs2.mutable._
 import org.scalatest.WrapWith
-import org.scalatest.specs2.Spec2Runner
+import org.scalatest.specs2.Specs2Runner
 import org.scalatest.ScalaTestBridge
 import org.scalatest.events.IndentedText
 
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class ScalaTestBridgeTest extends Specification {
   "The getIndentedText()" should {
     "work properly if decoration is disabled" in {

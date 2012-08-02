@@ -4,12 +4,12 @@ import org.specs2.mutable.Specification
 import org.junit.runner.RunWith
 import org.scalatest.WrapWith
 import org.specs2.runner.JUnitRunner
-import org.scalatest.specs2.Spec2Runner
+import org.scalatest.specs2.Specs2Runner
 import ScalaTestNotifier._
 import org.scalatest.events.LineInFile
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class ScalaTestNotifierUnitSpecTest extends Specification {
   "The locator function" should {
     "require non-null parameter" in {

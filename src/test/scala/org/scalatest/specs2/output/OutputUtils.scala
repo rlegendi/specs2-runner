@@ -17,7 +17,7 @@ import org.scalatest.events.RunStopped
 import org.scalatest.events.TestCanceled
 import org.scalatest.Distributor
 import org.scalatest.events.ScopeClosed
-import org.scalatest.specs2.Spec2Runner
+import org.scalatest.specs2.Specs2Runner
 import org.specs2.specification.SpecificationStructure
 import org.scalatest.events.RunStarting
 import org.scalatest.Stopper
@@ -97,7 +97,7 @@ class TestReporter extends Reporter {
 
 object OutputUtils {
   // Had to hide this to prevent continuous OutOfMemory (PermGenSpace) caused by sbt-scct
-  class DummySpec2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Spec2Runner(specs2Class) {
+  class DummySpecs2Runner(specs2Class: Class[_ <: SpecificationStructure]) extends Specs2Runner(specs2Class) {
     override def run(testName: Option[String], reporter: Reporter, stopper: Stopper, filter: Filter,
       configMap: Map[String, Any], distributor: Option[Distributor], tracker: Tracker) {
 
@@ -111,9 +111,9 @@ object OutputUtils {
     val defaultRunstamp = 1
     val tracker = new Tracker(new Ordinal(defaultRunstamp))
     val reporter = new TestReporter
-    val runner = new DummySpec2Runner(clazz)
+    val runner = new DummySpecs2Runner(clazz)
 
-    runner.runSpec2(tracker, reporter, Filter())
+    runner.runSpecs2(tracker, reporter, Filter())
     reporter.stack.reverse.foreach(ft => println(ft.lvl + "/" + ft.msg))
     reporter.stack.reverse
   }

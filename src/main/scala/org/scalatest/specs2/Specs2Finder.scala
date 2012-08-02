@@ -9,7 +9,7 @@ import org.scalatest.specs.Spec1Finder
  *
  * @author rlegendi
  */
-class Spec2Finder extends Spec1Finder {
+class Specs2Finder extends Spec1Finder {
 
   // TODO Specifications with function 'is'? (scope..)
   // TODO JUnitRunner in Specs2 searches for test extensively and it is well-tested

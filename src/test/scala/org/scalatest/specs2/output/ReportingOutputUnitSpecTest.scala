@@ -6,7 +6,7 @@ import org.scalatest.WrapWith
 import org.scalatest.specs2.output.OutputUtils.runSpecAndReturnReversedScopeStack
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import org.scalatest.specs2.Spec2Runner
+import org.scalatest.specs2.Specs2Runner
 
 // Test subject
 class SimpleSpec extends Specification {
@@ -18,7 +18,7 @@ class SimpleSpec extends Specification {
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class ReportingOutputUnitSpecTest extends Specification {
 
   "The ScalaTest Specs2 runner" should {

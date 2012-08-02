@@ -7,7 +7,7 @@ import org.scalatest.WrapWith
 import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class FirsOfTwoSpecInSameFile extends Specification { def is =
 
   "This is the first of two specs"                         ^
@@ -17,7 +17,7 @@ class FirsOfTwoSpecInSameFile extends Specification { def is =
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class SecondOfTwoSpecInSameFile extends Specification { def is =
 
   "This is the second of two specs"                         ^

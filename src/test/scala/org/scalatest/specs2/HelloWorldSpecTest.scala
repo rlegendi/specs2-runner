@@ -22,7 +22,7 @@ class HelloWorldSpec extends Specification { def is =
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class HelloWorldSpecTest extends Specification { def is =
 
   "This is a specification for HelloWorldSpec as a standard specification"    ^
@@ -31,13 +31,13 @@ class HelloWorldSpecTest extends Specification { def is =
     "find 3 examples"                                                         ! threeExamplesFound^
                                                                               end
    val noFilter = new Filter(None, Set.empty[String])
-   val runner = new Spec2Runner(classOf[HelloWorldSpec])
+   val runner = new Specs2Runner(classOf[HelloWorldSpec])
 
    def threeExamplesFound = runner.expectedTestCount(noFilter) must be_==(3)
 }
 
 @RunWith(classOf[JUnitRunner])
-@WrapWith(classOf[Spec2Runner])
+@WrapWith(classOf[Specs2Runner])
 class HelloWorldSpecTest2 extends Specification { def is =
 
   "This is another Specification"    ^
