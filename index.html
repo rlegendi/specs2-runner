@@ -48,10 +48,18 @@
 
 Linking <a href="http://etorreborre.github.com/specs2/">Specs2</a> (<a href="http://www.youtube.com/watch?v=lMyNRUuEvNU">video</a>) into the <a href="http://skillsmatter.com/podcast/scala/scalatest-scalamock-subcut">ScalaTest integration</a> of <a href="http://scala-ide.org/">Scala IDE</a>.
 
+<!-- Left here for template :-)
 <div id="warning">
 <b>Warning!</b><br/>
 This work is in progress, the code is still a bit... volatile. It will take ~2 days to set it up in its current form, but for the end of the summer, the plan is to have a one-click installer through an update site. That work is pending, we will use the Scala IDE API for it.
 </div>
+-->
+
+<h4>Installation</h4>
+
+It should be straightforward to install and try the current version of the plugin, however it needs a specific configuration at the moment.
+
+Please consult the <a href="https://github.com/rlegendi/specs2-plugin-demo">specs2-plugin-demo description</a> for the details.
 
 <h4>Features</h4>
 
@@ -107,10 +115,12 @@ Create specifications easily with the new wizards!
 
 <h4>Limitations</h4>
 
+Don't panic! :-) Although the GSoC 2012 program is officially over, the work on the plugin definitely continues. I still have a PhD to write so I might not be able to fix things immediately, so please bear with me.
+
 <ul>
-	<li><code>Finder</code> implementation needs a bit of work, currently it is locating Specs specifications.</li>
-	<li>Line number informations is not handled properly.</li>
-	<li>Wizards are currently made within the original Scala IDE repo. A different repo should be created based on <a href="https://github.com/skyluc/scalatest">Skyluc's scalatest</a> repo.</li>
+	<li>Several libraries are required on <i>project level</i> to make the plugin work. We're working on it to reduce them.</li>
+	<li>You have to add a specific annotation, <code>@WrapWith(classOf[Specs2Runner])</code> before all of the specifications you wold like to run with the ScalaTest plug-in. We are also working on the issue with Bill Venners, Chua Chee Seng and Eric Torreborre (it requires extraction of some abstractions from ScalaTest and a slight modification of the Specs2 API).</li>
+	<li>Auto-formatting of acceptance specifications is working with the default behaviour of <a href="https://github.com/mdr/scalariform/">scalariform</a>. We are working on <a href="https://github.com/mdr/scalariform/issues/45">Specs2-specific extensions</a>.</li>
 </ul>
 
 <h4>Project Reports</h4>
