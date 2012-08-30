@@ -48,22 +48,24 @@
 
 Linking <a href="http://etorreborre.github.com/specs2/">Specs2</a> (<a href="http://www.youtube.com/watch?v=lMyNRUuEvNU">video</a>) into the <a href="http://skillsmatter.com/podcast/scala/scalatest-scalamock-subcut">ScalaTest integration</a> of <a href="http://scala-ide.org/">Scala IDE</a>.
 
-<!-- Left here for template :-)
-<div id="warning">
-<b>Warning!</b><br/>
-This work is in progress, the code is still a bit... volatile. It will take ~2 days to set it up in its current form, but for the end of the summer, the plan is to have a one-click installer through an update site. That work is pending, we will use the Scala IDE API for it.
+<div id="info">
+<b>Installation</b><br/>
+<p>It should be straightforward to install and try the current version of the plugin, however it needs a specific configuration at the moment.</p>
+
+<p>Please consult the <a href="https://github.com/rlegendi/specs2-plugin-demo">specs2-plugin-demo description</a> for the details.</p>
 </div>
--->
-
-<h4>Installation</h4>
-
-It should be straightforward to install and try the current version of the plugin, however it needs a specific configuration at the moment.
-
-Please consult the <a href="https://github.com/rlegendi/specs2-plugin-demo">specs2-plugin-demo description</a> for the details.
 
 <h4>Features</h4>
 
-A brief introduction of the major features - working more or less :-) Read <a href="https://github.com/rlegendi/scala-ide/wiki/Integration-of-Specs2-with-the-Scala-IDE">this Wiki</a> about the planned features and timeline.
+A brief introduction of the major features - working more or less :-)
+
+<p>
+For additional features and their specified milestones please take a look on the <a href="https://github.com/rlegendi/specs2-runner/issues">project tickets</a>.
+</p>
+
+<p>
+Read <a href="https://github.com/rlegendi/scala-ide/wiki/Integration-of-Specs2-with-the-Scala-IDE">this Wiki</a> about the planned features and timeline about what was completed during the GSoC 2012 program.
+</p>
 
 <h5>Working with the ScalaTest ScalaIDE Integration</h5>
 
@@ -71,7 +73,7 @@ A brief introduction of the major features - working more or less :-) Read <a hr
 	<li>Integration with the ScalaTest View</li>
 	<li>Package-based test execution</li>
 	<li>Select a Specs2 file/suite/test from source code to run</li>
-	<li>Navigation to source from the ScalaTest View (<i>limited capabilities</i>)</li>
+	<li>Navigation to source from the ScalaTest View</li>
 </ul>
 
 <a href="https://github.com/rlegendi/specs2-runner/raw/master/doc/01_first_succesful_run/code_is_a_junkpile_but_works.png"><img src="https://github.com/rlegendi/specs2-runner/raw/master/doc/01_first_succesful_run/code_is_a_junkpile_but_works.png"/></a>
@@ -115,19 +117,16 @@ Create specifications easily with the new wizards!
 
 <h4>Limitations</h4>
 
-Don't panic! :-) Although the GSoC 2012 program is officially over, the work on the plugin definitely continues. I still have a PhD to write so I might not be able to fix things immediately, so please bear with me.
-
 <ul>
 	<li>Several libraries are required on <i>project level</i> to make the plugin work. We're working on it to reduce them.</li>
 	<li>You have to add a specific annotation, <code>@WrapWith(classOf[Specs2Runner])</code> before all of the specifications you wold like to run with the ScalaTest plug-in. We are also working on the issue with Bill Venners, Chua Chee Seng and Eric Torreborre (it requires extraction of some abstractions from ScalaTest and a slight modification of the Specs2 API).</li>
 	<li>Auto-formatting of acceptance specifications is working with the default behaviour of <a href="https://github.com/mdr/scalariform/">scalariform</a>. We are working on <a href="https://github.com/mdr/scalariform/issues/45">Specs2-specific extensions</a>.</li>
 </ul>
 
-<h4>Project Reports</h4>
-
-<ul>
-	<li><a href="reports/coverage-report/index.html">Code coverage</a> (with <a href="http://mtkopone.github.com/scct/">scct</a>)</li>
-</ul>
+<h4>Future Work</h4>
+<p>
+Don't panic! :-) Although the GSoC 2012 program is officially over, the work on the plugin definitely continues. I still have a PhD to write so I might not be able to fix things immediately, so please bear with me.
+</p>
 
 <h4>Found a bug? Having an issue?</h4>
 
@@ -142,6 +141,12 @@ Post it on the issue list here:
 <p>
 I'll take a look on it!
 </p>
+
+<h4>Project Reports</h4>
+
+<ul>
+	<li><a href="reports/coverage-report/index.html">Code coverage</a> (with <a href="http://mtkopone.github.com/scct/">scct</a>)</li>
+</ul>
 
 <h3>Acknowledgement</h3>
 
@@ -158,11 +163,21 @@ I'll take a look on it!
 
 <p>Many thanks for <a href="http://etorreborre.blogspot.hu/">Eric Torreborre</a> (<a href="http://github.com/etorreborre/" class="user-mention">@etorreborre</a>) for the code reviews and quick replies when I got struck. Also thanks for both the ScalaIDE team (<a href="https://github.com/dotta">Mirco Dotta</a>, <a href="https://github.com/dragos">Iulian Dragos</a>, <a href="https://github.com/skyluc">Luc Bourlier</a> and others) and ScalaTest team (<a href="https://github.com/cheeseng">Chua Chee Seng</a> and <a href="https://github.com/bvenners">Bill Venners</a>) for helping me quite a lot here at Github and on the project mailing lists!</p>
 
+<p>
+Also, we've got great deal of feedbacks, thanks for the help and work, guys!
+</p>
+
+<ul>
+	<li><a href="https://github.com/MasseGuillaume">Guillaume Massé</a> for testing the plugin under MacOS X with JDK 6.0</li>
+</ul>
+
 <h3>Support and Contact</h3>
 
 <p>Having trouble with the plugin? Feel free to contact me at <script language="JavaScript">mailAddress('richard.legendi', 'gmail.com')</script> and I'll help you sort it out. Any feedback is more than appreciated!</p>
 
-<p>You can find my other accounts at my website: <a href="http://people.inf.elte.hu/legendi/">http://people.inf.elte.hu/legendi/</a>.</p>
+<p>
+If there is any updates on the project, I'll definitely send out a message on <a href="https://twitter.com/legendi_ELTE/">Twitter</a> or a post at <a href="http://xcafebabe.blogspot.com/">Blogger</a>, and to the related mailing lists of course (<i>scala-ide</i>, <i>specs2</i>).
+</p>
 
       </section>
     </div>
@@ -171,6 +186,16 @@ I'll take a look on it!
     <div id="footer_wrap" class="outer">
       <footer class="inner">
       <p class="copyright">Specs2-runner maintained by <a href="https://github.com/rlegendi">rlegendi</a>.</p>
+      <p>
+        <a href="http://people.inf.elte.hu/legendi/">Website</a> &middot;
+        <a href="https://twitter.com/legendi_ELTE/">Twitter</a> &middot;
+        <a href="http://xcafebabe.blogspot.com/">Blog</a> &middot;
+        <a href="https://github.com/rlegendi/">Github</a> &middot;
+        <a href="https://hu.linkedin.com/in/rlegendi/">LinkedIn</a> &middot;
+        <a href="http://scholar.google.hu/citations?user=PSSfimYAAAAJ&hl=en">Google Scholar</a> &middot;
+        <a href="http://stackoverflow.com/users/981284/rlegendi">StackOverflow</a> &middot;
+        <a href="http://www.slideshare.net/rlegendi/presentations">SlideShare</a>
+      </p>
       <p>Source code and documentation is released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>.</p>
       <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
